@@ -726,6 +726,15 @@ function handlePresenterMessage(peerId, data) {
             return;
         }
 
+        // Impedir más de una cita con la misma persona
+        const alreadyBooked = HOURS.some(hh => sA.slots[hh] === partnerId);
+        if (alreadyBooked) {
+            if (guestConnections[peerId]?.open) {
+                guestConnections[peerId].send({ type: 'book-error', hour: h, message: `Ya tienes una cita con ${sB.name}. Cada compañero solo puede aparecer una vez en el reloj.` });
+            }
+            return;
+        }
+
         sA.slots[h] = partnerId;
         sB.slots[h] = peerId;
         broadcastState();
@@ -1024,7 +1033,9 @@ function renderClassmatesList(state, me) {
 
         const item = document.createElement('div');
         item.className = `flex items-center justify-between p-3 rounded-xl border transition ${
-            s.connected ? 'bg-gray-50 border-gray-200' : 'bg-gray-100 border-gray-200 opacity-50'
+            !s.connected          ? 'bg-gray-100 border-gray-200 opacity-50' :
+            booked2gether > 0     ? 'bg-blue-50 border-blue-300' :
+                                    'bg-gray-50 border-gray-200'
         }`;
 
         const info = document.createElement('div');
@@ -1037,15 +1048,16 @@ function renderClassmatesList(state, me) {
         item.appendChild(info);
 
         if (state.phase === 'booking' && s.connected) {
+            const canBook = mutualFree > 0 && booked2gether === 0;
             const btn = document.createElement('button');
             btn.className = `text-sm font-bold py-1.5 px-3 rounded-lg transition flex-shrink-0 ${
-                mutualFree > 0
+                canBook
                     ? 'bg-green-500 hover:bg-green-600 text-white'
                     : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`;
-            btn.textContent = '+ Cita';
-            btn.disabled = mutualFree === 0;
-            if (mutualFree > 0) btn.onclick = () => openBookPanel(id);
+            btn.textContent = booked2gether > 0 ? 'Ya reservado' : '+ Cita';
+            btn.disabled = !canBook;
+            if (canBook) btn.onclick = () => openBookPanel(id);
             item.appendChild(btn);
         }
 
