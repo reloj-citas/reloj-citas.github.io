@@ -256,6 +256,12 @@
                     <span id="p-active-question-wrap"> — <span id="p-active-question" class="font-normal italic"></span></span>
                 </p>
             </div>
+            <div class="mt-4 pt-4 border-t border-gray-200">
+                <button onclick="endActivity()"
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-5 rounded-lg transition text-sm">
+                    Finalizar actividad
+                </button>
+            </div>
         </div>
 
         <!-- Students grid -->
@@ -362,6 +368,17 @@
             <p class="text-green-700 text-sm mt-1">Espera a que llame una hora.</p>
         </div>
 
+    </div>
+
+    <!-- Ended overlay -->
+    <div id="s-ended-overlay" class="hidden fixed inset-0 bg-gray-900/90 flex items-center justify-center z-50 p-6">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center">
+            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <h2 class="text-2xl font-extrabold text-gray-900 mb-2">Actividad finalizada</h2>
+            <p class="text-gray-500">El profesor ha dado por concluida la sesión.</p>
+        </div>
     </div>
 
     <!-- Book appointment panel (bottom sheet) -->
@@ -817,6 +834,19 @@ function clearCall() {
     updatePresenterUI();
 }
 
+function endActivity() {
+    if (!confirm('¿Finalizar la actividad? Los alumnos verán un mensaje de fin de sesión.')) return;
+    sessionState.phase           = 'ended';
+    sessionState.currentHour     = null;
+    sessionState.currentQuestion = '';
+    broadcastState();
+
+    const badge = document.getElementById('p-phase-badge');
+    badge.textContent = 'Actividad finalizada';
+    badge.className   = 'bg-red-100 text-red-800 text-xs font-bold px-3 py-1.5 rounded-full';
+    document.getElementById('p-call-panel').classList.add('hidden');
+}
+
 function copySessionCode() {
     const code = document.getElementById('p-session-code').textContent || document.getElementById('share-code-display').textContent;
     navigator.clipboard.writeText(code).then(() => showToast('Código copiado'));
@@ -1002,6 +1032,13 @@ function renderStudentView(state) {
         }
     } else {
         calledAlert.classList.add('hidden');
+    }
+
+    // Ended overlay
+    if (state.phase === 'ended') {
+        if (navigator.vibrate) navigator.vibrate([300, 150, 300, 150, 300]);
+        document.getElementById('s-ended-overlay').classList.remove('hidden');
+        return;
     }
 
     // Phase notice
