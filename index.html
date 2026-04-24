@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reloj de Citas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/peerjs/1.4.7/peerjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+
+        /* === CLOCK === */
+        .clock-wrap {
+            position: relative;
+            width: 280px; height: 280px;
+            margin: 0 auto;
+        }
+        .clock-face {
+            position: absolute; inset: 0;
+            border-radius: 50%;
+            border: 3px solid #d1d5db;
+            background: #f9fafb;
+        }
+        .clock-center {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: #9ca3af;
+            z-index: 2;
+        }
+        .clock-slot {
+            position: absolute;
+            width: 54px; height: 54px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid;
+            text-align: center;
+            padding: 2px;
+            user-select: none;
+            z-index: 1;
+        }
+        .slot-hour { font-size: 0.9rem; line-height: 1; }
+        .slot-name { font-size: 0.5rem; max-width: 48px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.2; margin-top: 1px; }
+
+        .clock-slot.free { background: white; border-color: #d1d5db; color: #6b7280; }
+        .clock-slot.free.interactive:hover { background: #eff6ff; border-color: #3b82f6; color: #1d4ed8; }
+        .clock-slot.booked { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
+        .clock-slot.booked.interactive:hover { background: #bfdbfe; }
+        .clock-slot.called { background: #fef3c7; border-color: #f59e0b; color: #92400e; animation: pulse-slot 1.5s ease-in-out infinite; }
+        .clock-slot.no-partner { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
+
+        @keyframes pulse-slot {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); }
+            50%       { box-shadow: 0 0 0 8px rgba(245,158,11,0); }
+        }
+
+        /* === MINI CLOCK (presenter monitoring) === */
+        .mini-clock-wrap {
+            position: relative;
+            width: 80px; height: 80px;
+            flex-shrink: 0;
+        }
+        .mini-clock-face {
+            position: absolute; inset: 0;
+            border-radius: 50%;
+            border: 2px solid #e5e7eb;
+            background: #f9fafb;
+        }
+        .mini-slot {
+            position: absolute;
+            width: 13px; height: 13px;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            border: 1.5px solid;
+        }
+        .mini-slot.free   { background: #f3f4f6; border-color: #d1d5db; }
+        .mini-slot.booked { background: #bfdbfe; border-color: #3b82f6; }
+        .mini-slot.called { background: #fde68a; border-color: #f59e0b; }
+        .mini-slot.no-partner { background: #fecaca; border-color: #ef4444; }
+
+        /* === LOADER === */
+        .loader {
+            border: 3px solid #e5e7eb;
+            border-top: 3px solid #3b82f6;
+            border-radius: 50%;
+            width: 20px; height: 20px;
+            animation: spin 0.8s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* === MISC === */
+        .timer-display { font-variant-numeric: tabular-nums; }
+        #toast { pointer-events: none; }
+        .student-list { max-height: 340px; overflow-y: auto; }
+
+        #qrcode-container img { display: block; }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+
+<!-- ===================== VIEW: ROLE SELECT ===================== -->
+<div id="view-role" class="flex flex-col items-center justify-center min-h-screen p-4">
+    <div class="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm text-center">
+        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+            </svg>
+        </div>
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-1">Reloj de Citas</h1>
+        <p class="text-gray-500 mb-8 text-sm">Técnica cooperativa de emparejamiento</p>
+        <div class="space-y-3">
+            <button onclick="selectRole('presenter')"
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition text-base">
+                Soy profesor/a
+            </button>
+            <button onclick="selectRole('student')"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-xl transition text-base">
+                Soy alumno/a
+            </button>
+        </div>
+        <a href="manual.html" class="inline-flex items-center gap-1.5 mt-6 text-sm text-gray-400 hover:text-blue-600 transition">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            ¿Cómo funciona?
+        </a>
+    </div>
+    <p class="text-center mt-6 text-sm text-gray-400">
+        Creado por <a href="https://bilateria.org" class="underline hover:text-gray-600" target="_blank">Juan José de Haro</a> &mdash;
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="underline hover:text-gray-600" target="_blank">CC BY-SA 4.0</a>
+    </p>
+</div>
+
+<!-- ===================== VIEW: PRESENTER SETUP ===================== -->
+<div id="view-presenter-setup" class="hidden flex flex-col items-center justify-center min-h-screen p-4">
+    <div class="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
+        <button onclick="goBack()" class="text-sm text-gray-400 hover:text-gray-600 mb-5 flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Atrás
+        </button>
+        <h2 class="text-2xl font-bold mb-6">Configurar sesión</h2>
+        <div class="mb-6">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo de preparación (minutos)</label>
+            <input type="number" id="timer-minutes" value="5" min="1" max="30"
+                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-lg font-semibold">
+            <p class="text-xs text-gray-400 mt-1">Tiempo que tienen los alumnos para concertar sus citas.</p>
+        </div>
+        <button onclick="startPresenterSession()" id="start-session-btn"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition flex items-center justify-center gap-3">
+            <span id="start-btn-text">Iniciar sesión</span>
+            <div class="loader hidden" id="start-loader"></div>
+        </button>
+        <p id="start-error" class="text-red-500 text-sm mt-3 hidden"></p>
+    </div>
+</div>
+
+<!-- ===================== VIEW: PRESENTER SESSION ===================== -->
+<div id="view-presenter-session" class="hidden min-h-screen p-3 md:p-6">
+    <div class="max-w-7xl mx-auto space-y-4">
+
+        <!-- Header bar -->
+        <div class="bg-white rounded-2xl shadow p-4 flex flex-wrap items-center gap-4 justify-between">
+            <div>
+                <h1 class="text-lg font-extrabold text-gray-900">Reloj de Citas — Panel del profesor</h1>
+                <p class="text-sm text-gray-500">
+                    Código:
+                    <span id="p-session-code" class="font-mono font-bold text-blue-600 cursor-pointer hover:underline"
+                          onclick="copySessionCode()" title="Clic para copiar"></span>
+                </p>
+            </div>
+            <div class="flex flex-wrap gap-2 items-center">
+                <a href="manual.html" target="_blank"
+                    class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-3 rounded-lg text-sm transition flex items-center gap-1"
+                    title="Abrir guía de uso">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    Ayuda
+                </a>
+                <button onclick="showShareModal()"
+                    class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-3 rounded-lg text-sm transition flex items-center gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                    Compartir
+                </button>
+                <!-- Timer -->
+                <div class="flex items-center gap-2 bg-gray-100 rounded-xl px-3 py-2">
+                    <span class="timer-display text-2xl font-bold text-gray-800" id="p-timer-display">5:00</span>
+                    <button id="timer-toggle-btn" onclick="toggleTimer()"
+                        class="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold py-1 px-3 rounded-lg transition">
+                        Iniciar
+                    </button>
+                    <button onclick="resetTimer()"
+                        class="bg-gray-400 hover:bg-gray-500 text-white text-xs font-bold py-1 px-2 rounded-lg transition">
+                        ↺
+                    </button>
+                </div>
+                <span id="p-phase-badge" class="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1.5 rounded-full">
+                    Fase: Citas
+                </span>
+            </div>
+        </div>
+
+        <!-- Stats bar -->
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2">
+            <span class="text-blue-900 font-semibold text-sm">
+                <span id="p-student-count">0</span> alumnos conectados
+            </span>
+            <span id="p-completion-text" class="text-blue-700 text-sm"></span>
+            <button id="p-phase-switch-btn" onclick="switchToActivityPhase()"
+                class="bg-green-600 hover:bg-green-700 text-white text-sm font-bold py-1.5 px-4 rounded-lg transition">
+                Pasar a fase de actividad
+            </button>
+        </div>
+
+        <!-- Call an hour (activity phase) -->
+        <div id="p-call-panel" class="hidden bg-white rounded-2xl shadow p-4">
+            <h3 class="font-bold text-gray-800 mb-3">Llamar una hora</h3>
+            <div class="flex flex-wrap gap-3 items-end">
+                <div>
+                    <label class="block text-xs text-gray-500 mb-1">Hora</label>
+                    <select id="p-call-hour" class="border border-gray-300 rounded-lg p-2 font-bold text-sm">
+                        <option value="">— Seleccionar —</option>
+                        <option value="1">1:00</option><option value="2">2:00</option>
+                        <option value="3">3:00</option><option value="4">4:00</option>
+                        <option value="5">5:00</option><option value="6">6:00</option>
+                        <option value="7">7:00</option><option value="8">8:00</option>
+                        <option value="9">9:00</option><option value="10">10:00</option>
+                        <option value="11">11:00</option><option value="12">12:00</option>
+                    </select>
+                </div>
+                <div class="flex-grow min-w-48">
+                    <label class="block text-xs text-gray-500 mb-1">Pregunta o tarea (opcional)</label>
+                    <input type="text" id="p-call-question"
+                        placeholder="Ej: Explicad el concepto de fotosíntesis..."
+                        class="w-full border border-gray-300 rounded-lg p-2 text-sm">
+                </div>
+                <button onclick="callHour()"
+                    class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-5 rounded-lg transition text-sm">
+                    Llamar
+                </button>
+                <button onclick="clearCall()"
+                    class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-3 rounded-lg transition text-sm">
+                    Limpiar
+                </button>
+            </div>
+            <div id="p-current-call" class="hidden mt-3 bg-orange-50 border border-orange-200 rounded-lg p-3">
+                <p class="text-orange-800 font-semibold text-sm">
+                    Hora activa: <span id="p-active-hour" class="font-extrabold"></span>:00
+                    <span id="p-active-question-wrap"> — <span id="p-active-question" class="font-normal italic"></span></span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Students grid -->
+        <div id="p-students-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+            <div class="col-span-full text-center text-gray-400 py-16" id="p-no-students">
+                Esperando que se conecten los alumnos...
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== VIEW: STUDENT JOIN ===================== -->
+<div id="view-student-join" class="hidden flex flex-col items-center justify-center min-h-screen p-4">
+    <div class="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
+        <button onclick="goBack()" class="text-sm text-gray-400 hover:text-gray-600 mb-5 flex items-center gap-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Atrás
+        </button>
+        <h2 class="text-2xl font-bold mb-6">Unirse a la sesión</h2>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Tu nombre</label>
+                <input type="text" id="s-name-input" placeholder="Ej: Ana García"
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
+                    autocomplete="off" maxlength="40">
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Código de sesión</label>
+                <input type="text" id="s-code-input" placeholder="XXXXXX"
+                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 font-mono text-2xl uppercase text-center tracking-widest"
+                    maxlength="6" autocomplete="off">
+            </div>
+            <button onclick="joinSession()" id="join-btn"
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl transition flex items-center justify-center gap-3">
+                <span id="join-btn-text">Unirse</span>
+                <div class="loader hidden" id="join-loader"></div>
+            </button>
+            <p id="join-error" class="text-red-500 text-sm hidden"></p>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== VIEW: STUDENT SESSION ===================== -->
+<div id="view-student-session" class="hidden min-h-screen bg-gray-100 p-3 md:p-6">
+    <div class="max-w-lg mx-auto space-y-4">
+
+        <!-- Header -->
+        <div class="bg-white rounded-2xl shadow p-4 flex items-center justify-between">
+            <div>
+                <h1 class="text-lg font-extrabold text-gray-900">Mi Reloj de Citas</h1>
+                <p class="text-sm text-gray-500">
+                    Hola, <span id="s-my-name" class="font-bold text-green-700"></span>
+                </p>
+            </div>
+            <a href="manual.html" target="_blank"
+                class="text-gray-400 hover:text-blue-600 transition flex-shrink-0 ml-3"
+                title="Guía de uso">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </a>
+        </div>
+
+        <!-- Timer bar -->
+        <div id="s-timer-bar" class="hidden bg-blue-600 text-white rounded-xl p-3 text-center">
+            <p class="text-xs font-medium opacity-80 mb-1">Tiempo para concertar citas</p>
+            <p class="timer-display text-4xl font-extrabold" id="s-timer-display">5:00</p>
+        </div>
+
+        <!-- Called hour alert -->
+        <div id="s-called-alert" class="hidden bg-orange-500 text-white rounded-2xl p-5 text-center shadow-lg">
+            <p class="font-bold text-base mb-1">Hora llamada:</p>
+            <p class="text-5xl font-extrabold mb-2"><span id="s-called-hour"></span>:00</p>
+            <p class="text-base font-semibold mb-4" id="s-called-question"></p>
+            <div id="s-partner-info" class="bg-white/25 rounded-xl p-4">
+                <p class="text-sm opacity-90 mb-1">Tu pareja es:</p>
+                <p class="text-2xl font-extrabold" id="s-partner-name"></p>
+            </div>
+            <div id="s-no-partner-info" class="hidden bg-white/25 rounded-xl p-4">
+                <p class="text-sm">No tienes pareja en esta hora. Consulta al profesor.</p>
+            </div>
+        </div>
+
+        <!-- Clock -->
+        <div class="bg-white rounded-2xl shadow p-6">
+            <h2 class="text-center font-bold text-gray-700 mb-4">
+                Mi reloj — <span id="s-slots-filled">0</span>/12 citas
+            </h2>
+            <div class="clock-wrap" id="s-clock"></div>
+            <p class="text-center text-xs text-gray-400 mt-4">
+                Haz clic en una hora libre para concertar una cita · Haz clic en una hora ocupada para cancelarla
+            </p>
+        </div>
+
+        <!-- Classmates -->
+        <div class="bg-white rounded-2xl shadow p-4">
+            <h2 class="font-bold text-gray-700 mb-3">Compañeros conectados</h2>
+            <div id="s-classmates-list" class="student-list space-y-2">
+                <p class="text-gray-400 text-sm text-center py-6">Esperando compañeros...</p>
+            </div>
+        </div>
+
+        <!-- Phase: activity message -->
+        <div id="s-activity-phase-notice" class="hidden bg-green-50 border border-green-200 rounded-xl p-4 text-center">
+            <p class="text-green-800 font-semibold">El profesor ha iniciado la fase de actividad.</p>
+            <p class="text-green-700 text-sm mt-1">Espera a que llame una hora.</p>
+        </div>
+
+    </div>
+
+    <!-- Book appointment panel (bottom sheet) -->
+    <div id="s-book-panel" class="hidden fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-4"
+         onclick="closeBookPanel()">
+        <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm" onclick="event.stopPropagation()">
+            <h3 class="font-bold text-lg mb-1">Concertar cita con</h3>
+            <p class="text-green-700 font-extrabold text-xl mb-4" id="book-partner-name"></p>
+            <p class="text-xs text-gray-500 mb-3">Verde: libres para los dos · Naranja: ocupada para tu compañero</p>
+            <div id="book-hours-grid" class="grid grid-cols-4 gap-2 mb-4"></div>
+            <button onclick="closeBookPanel()"
+                class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 rounded-xl transition">
+                Cancelar
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- ===================== SHARE MODAL ===================== -->
+<div id="share-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
+     onclick="if(event.target===this)this.classList.add('hidden')">
+    <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-xs text-center">
+        <h3 class="font-bold text-xl mb-4">Compartir sesión</h3>
+        <div id="share-qr" class="flex justify-center mb-4"></div>
+        <p class="text-gray-500 text-xs mb-1">O comparte el código:</p>
+        <p id="share-code-display"
+           class="font-mono text-4xl font-extrabold text-blue-600 mb-1 cursor-pointer hover:opacity-70 transition"
+           onclick="copySessionCode()" title="Clic para copiar"></p>
+        <p class="text-gray-400 text-xs mb-1">URL de acceso directo:</p>
+        <p id="share-url-display" class="text-gray-500 text-xs mb-4 break-all font-mono cursor-pointer hover:text-gray-700"
+           onclick="copyDirectUrl()" title="Clic para copiar"></p>
+        <button onclick="document.getElementById('share-modal').classList.add('hidden')"
+            class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 rounded-xl transition">
+            Cerrar
+        </button>
+    </div>
+</div>
+
+<!-- Toast -->
+<div id="toast"
+     class="fixed bottom-5 right-5 bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 text-sm z-50">
+</div>
+
+<script>
+// ======================== CONFIG ========================
+const PEER_CONFIG = {
+    host: '0.peerjs.com', port: 443, path: '/', secure: true, debug: 0,
+    config: {
+        iceServers: [
+            { urls: 'stun:stun.relay.metered.ca:80' },
+            { urls: 'turn:standard.relay.metered.ca:80',         username: '9745e21b303bdaea589c29bc', credential: 'UgG56tBqCEGNjzLY' },
+            { urls: 'turn:standard.relay.metered.ca:443?transport=tcp', username: '9745e21b303bdaea589c29bc', credential: 'UgG56tBqCEGNjzLY' }
+        ],
+        iceTransportPolicy: 'all'
+    }
+};
+
+const HOURS = [1,2,3,4,5,6,7,8,9,10,11,12];
+
+// ======================== GLOBAL STATE ========================
+let peer = null;
+
+// --- Presenter ---
+let guestConnections = {};   // peerId → PeerJS DataConnection
+let sessionState = {
+    students: {},            // peerId → { name, connected, slots: {1:null,...,12:null} }
+    phase: 'booking',        // 'booking' | 'activity'
+    timer: { running: false, totalSeconds: 300, remainingSeconds: 300 },
+    currentHour: null,
+    currentQuestion: ''
+};
+let timerInterval = null;
+
+// --- Student ---
+let hostConnection = null;
+let myPeerId = null;
+let myName = null;
+let lastState = null;
+let selectedPartnerId = null;
+let shareUrl = '';
+
+// ======================== UI HELPERS ========================
+function showView(id) {
+    ['view-role','view-presenter-setup','view-presenter-session',
+     'view-student-join','view-student-session'].forEach(v => {
+        const el = document.getElementById(v);
+        if (el) el.classList.add('hidden');
+    });
+    document.getElementById(id).classList.remove('hidden');
+}
+
+function goBack() {
+    if (peer) { try { peer.destroy(); } catch(e){} peer = null; }
+    hostConnection = null;
+    guestConnections = {};
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    sessionState = { students: {}, phase: 'booking', timer: { running: false, totalSeconds: 300, remainingSeconds: 300 }, currentHour: null, currentQuestion: '' };
+    showView('view-role');
+}
+
+let toastTimeout = null;
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.opacity = 1;
+    clearTimeout(toastTimeout);
+    toastTimeout = setTimeout(() => { t.style.opacity = 0; }, 2500);
+}
+
+function selectRole(role) {
+    if (role === 'presenter') {
+        showView('view-presenter-setup');
+    } else {
+        showView('view-student-join');
+        const urlCode = new URLSearchParams(window.location.search).get('session');
+        if (urlCode) document.getElementById('s-code-input').value = urlCode.toUpperCase();
+    }
+}
+
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ======================== CLOCK RENDERING ========================
+function clockPos(hour, size, radius) {
+    const angle = (hour * 30 - 90) * Math.PI / 180;
+    return { x: size/2 + radius * Math.cos(angle), y: size/2 + radius * Math.sin(angle) };
+}
+
+function renderClock(containerId, slots, students, calledHour, phase, interactive) {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = '';
+
+    const size = 280, radius = 108;
+
+    const face = document.createElement('div');
+    face.className = 'clock-face';
+    container.appendChild(face);
+
+    const center = document.createElement('div');
+    center.className = 'clock-center';
+    container.appendChild(center);
+
+    HOURS.forEach(h => {
+        const pos = clockPos(h, size, radius);
+        const partnerId = slots[h];
+        const partner = partnerId ? students[partnerId] : null;
+        const isCalled = parseInt(calledHour) === h;
+
+        const slot = document.createElement('div');
+        slot.className = 'clock-slot';
+
+        if (isCalled && partnerId)       slot.classList.add('called');
+        else if (isCalled && !partnerId) slot.classList.add('no-partner');
+        else if (partnerId)              slot.classList.add('booked');
+        else                             slot.classList.add('free');
+
+        if (interactive && phase === 'booking') slot.classList.add('interactive');
+
+        slot.style.left = pos.x + 'px';
+        slot.style.top  = pos.y + 'px';
+
+        const hourEl = document.createElement('span');
+        hourEl.className = 'slot-hour';
+        hourEl.textContent = h;
+        slot.appendChild(hourEl);
+
+        if (partner) {
+            const nameEl = document.createElement('span');
+            nameEl.className = 'slot-name';
+            nameEl.textContent = partner.name.split(' ')[0];
+            slot.appendChild(nameEl);
+            slot.title = `${h}:00 — ${partner.name}`;
+        } else {
+            slot.title = `${h}:00 — libre`;
+        }
+
+        if (interactive && phase === 'booking') {
+            if (partnerId) {
+                slot.onclick = () => confirmUnbook(h);
+            }
+            // Free slots: click handled via classmate list / book panel
+        }
+
+        container.appendChild(slot);
+    });
+}
+
+function renderMiniClock(container, slots, calledHour) {
+    container.innerHTML = '';
+    const size = 80, radius = 30;
+
+    const face = document.createElement('div');
+    face.className = 'mini-clock-face';
+    container.appendChild(face);
+
+    HOURS.forEach(h => {
+        const pos = clockPos(h, size, radius);
+        const el = document.createElement('div');
+        el.className = 'mini-slot';
+        const isCalled = parseInt(calledHour) === h;
+        const hasPartner = slots[h];
+
+        if (isCalled && hasPartner) el.classList.add('called');
+        else if (isCalled)          el.classList.add('no-partner');
+        else if (hasPartner)        el.classList.add('booked');
+        else                        el.classList.add('free');
+
+        el.style.left = pos.x + 'px';
+        el.style.top  = pos.y + 'px';
+        el.title = h;
+        container.appendChild(el);
+    });
+}
+
+// ======================== TIMER ========================
+function formatTime(sec) {
+    const m = Math.floor(sec / 60);
+    const s = sec % 60;
+    return `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+function toggleTimer() {
+    if (sessionState.timer.running) {
+        sessionState.timer.running = false;
+        clearInterval(timerInterval); timerInterval = null;
+        document.getElementById('timer-toggle-btn').textContent = 'Reanudar';
+    } else {
+        sessionState.timer.running = true;
+        document.getElementById('timer-toggle-btn').textContent = 'Pausar';
+        timerInterval = setInterval(() => {
+            if (sessionState.timer.remainingSeconds > 0) {
+                sessionState.timer.remainingSeconds--;
+                document.getElementById('p-timer-display').textContent = formatTime(sessionState.timer.remainingSeconds);
+                broadcastState();
+            } else {
+                sessionState.timer.running = false;
+                clearInterval(timerInterval); timerInterval = null;
+                document.getElementById('timer-toggle-btn').textContent = 'Iniciar';
+                broadcastState();
+            }
+        }, 1000);
+    }
+    document.getElementById('p-timer-display').textContent = formatTime(sessionState.timer.remainingSeconds);
+    broadcastState();
+}
+
+function resetTimer() {
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    sessionState.timer.running = false;
+    sessionState.timer.remainingSeconds = sessionState.timer.totalSeconds;
+    document.getElementById('timer-toggle-btn').textContent = 'Iniciar';
+    document.getElementById('p-timer-display').textContent = formatTime(sessionState.timer.remainingSeconds);
+    broadcastState();
+}
+
+// ======================== PRESENTER LOGIC ========================
+function startPresenterSession() {
+    const minutes = Math.max(1, parseInt(document.getElementById('timer-minutes').value) || 5);
+    sessionState.timer.totalSeconds = minutes * 60;
+    sessionState.timer.remainingSeconds = minutes * 60;
+
+    document.getElementById('start-btn-text').classList.add('hidden');
+    document.getElementById('start-loader').classList.remove('hidden');
+    document.getElementById('start-session-btn').disabled = true;
+
+    const sessionId = Math.random().toString(36).substring(2, 8).toUpperCase();
+    peer = new Peer(sessionId, PEER_CONFIG);
+
+    peer.on('open', (id) => {
+        const baseUrl = window.location.href.split('?')[0];
+        shareUrl = baseUrl + '?session=' + id;
+
+        showView('view-presenter-session');
+        document.getElementById('p-session-code').textContent = id;
+        document.getElementById('share-code-display').textContent = id;
+        document.getElementById('share-url-display').textContent = shareUrl;
+        document.getElementById('p-timer-display').textContent = formatTime(sessionState.timer.remainingSeconds);
+
+        // QR
+        const qrEl = document.getElementById('share-qr');
+        qrEl.innerHTML = '';
+        new QRCode(qrEl, { text: shareUrl, width: 180, height: 180, correctLevel: QRCode.CorrectLevel.H });
+
+        updatePresenterUI();
+    });
+
+    peer.on('connection', (conn) => {
+        conn.on('open', () => {
+            guestConnections[conn.peer] = conn;
+            conn.send({ type: 'state', payload: getStateSnapshot() });
+        });
+        conn.on('data', (data) => handlePresenterMessage(conn.peer, data));
+        conn.on('close', () => {
+            if (sessionState.students[conn.peer]) sessionState.students[conn.peer].connected = false;
+            delete guestConnections[conn.peer];
+            broadcastState();
+            updatePresenterUI();
+        });
+        conn.on('error', (err) => console.warn('conn error', err));
+    });
+
+    peer.on('error', (err) => {
+        console.error(err);
+        document.getElementById('start-error').textContent = 'Error al crear la sesión. Inténtalo de nuevo.';
+        document.getElementById('start-error').classList.remove('hidden');
+        document.getElementById('start-btn-text').classList.remove('hidden');
+        document.getElementById('start-loader').classList.add('hidden');
+        document.getElementById('start-session-btn').disabled = false;
+    });
+}
+
+function handlePresenterMessage(peerId, data) {
+    if (data.type === 'join') {
+        const name = String(data.name).trim().substring(0, 40);
+
+        // Reconnect: find offline student with same name
+        const prevId = Object.keys(sessionState.students).find(
+            id => sessionState.students[id].name === name && !sessionState.students[id].connected && id !== peerId
+        );
+
+        if (prevId) {
+            // Migrate: update partner references to new peerId
+            Object.keys(sessionState.students).forEach(sid => {
+                HOURS.forEach(h => {
+                    if (sessionState.students[sid].slots[h] === prevId)
+                        sessionState.students[sid].slots[h] = peerId;
+                });
+            });
+            sessionState.students[peerId] = { ...sessionState.students[prevId], connected: true };
+            delete sessionState.students[prevId];
+        } else if (!sessionState.students[peerId]) {
+            sessionState.students[peerId] = {
+                name,
+                connected: true,
+                slots: Object.fromEntries(HOURS.map(h => [h, null]))
+            };
+        } else {
+            sessionState.students[peerId].connected = true;
+        }
+
+        broadcastState();
+        updatePresenterUI();
+
+    } else if (data.type === 'book') {
+        const h = parseInt(data.hour);
+        const partnerId = data.partnerId;
+        if (!HOURS.includes(h)) return;
+        if (sessionState.phase !== 'booking') return;
+
+        const sA = sessionState.students[peerId];
+        const sB = sessionState.students[partnerId];
+        if (!sA || !sB) return;
+
+        if (sA.slots[h] !== null || sB.slots[h] !== null) {
+            if (guestConnections[peerId]?.open) {
+                guestConnections[peerId].send({ type: 'book-error', hour: h, message: 'Esa hora ya está ocupada. Elige otra.' });
+            }
+            return;
+        }
+
+        sA.slots[h] = partnerId;
+        sB.slots[h] = peerId;
+        broadcastState();
+        updatePresenterUI();
+
+    } else if (data.type === 'unbook') {
+        const h = parseInt(data.hour);
+        if (!HOURS.includes(h)) return;
+        if (sessionState.phase !== 'booking') return;
+
+        const sA = sessionState.students[peerId];
+        if (!sA) return;
+        const partnerId = sA.slots[h];
+        if (!partnerId) return;
+
+        sA.slots[h] = null;
+        if (sessionState.students[partnerId]) sessionState.students[partnerId].slots[h] = null;
+        broadcastState();
+        updatePresenterUI();
+    }
+}
+
+function getStateSnapshot() {
+    return JSON.parse(JSON.stringify({
+        students:        sessionState.students,
+        phase:           sessionState.phase,
+        timer:           sessionState.timer,
+        currentHour:     sessionState.currentHour,
+        currentQuestion: sessionState.currentQuestion
+    }));
+}
+
+function broadcastState() {
+    const payload = getStateSnapshot();
+    Object.values(guestConnections).forEach(conn => {
+        if (conn.open) conn.send({ type: 'state', payload });
+    });
+}
+
+function switchToActivityPhase() {
+    if (!confirm('¿Pasar a la fase de actividad? Los alumnos ya no podrán modificar sus citas.')) return;
+    sessionState.phase = 'activity';
+    if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+    sessionState.timer.running = false;
+
+    document.getElementById('p-phase-switch-btn').closest('div')?.classList.add('hidden');
+    document.getElementById('p-call-panel').classList.remove('hidden');
+
+    const badge = document.getElementById('p-phase-badge');
+    badge.textContent = 'Fase: Actividad';
+    badge.className = 'bg-green-100 text-green-800 text-xs font-bold px-3 py-1.5 rounded-full';
+
+    broadcastState();
+    updatePresenterUI();
+}
+
+function callHour() {
+    const hour = parseInt(document.getElementById('p-call-hour').value);
+    if (!hour) { showToast('Selecciona una hora'); return; }
+    const question = document.getElementById('p-call-question').value.trim();
+
+    sessionState.currentHour     = hour;
+    sessionState.currentQuestion = question;
+
+    document.getElementById('p-active-hour').textContent = hour;
+    document.getElementById('p-active-question').textContent = question;
+    document.getElementById('p-active-question-wrap').style.display = question ? '' : 'none';
+    document.getElementById('p-current-call').classList.remove('hidden');
+
+    broadcastState();
+    updatePresenterUI();
+}
+
+function clearCall() {
+    sessionState.currentHour     = null;
+    sessionState.currentQuestion = '';
+    document.getElementById('p-current-call').classList.add('hidden');
+    broadcastState();
+    updatePresenterUI();
+}
+
+function copySessionCode() {
+    const code = document.getElementById('p-session-code').textContent || document.getElementById('share-code-display').textContent;
+    navigator.clipboard.writeText(code).then(() => showToast('Código copiado'));
+}
+
+function copyDirectUrl() {
+    navigator.clipboard.writeText(shareUrl).then(() => showToast('URL copiada'));
+}
+
+function showShareModal() {
+    document.getElementById('share-modal').classList.remove('hidden');
+}
+
+function updatePresenterUI() {
+    const students = sessionState.students;
+    const ids = Object.keys(students);
+    const connectedIds = ids.filter(id => students[id].connected);
+
+    document.getElementById('p-student-count').textContent = connectedIds.length;
+
+    const fullyBooked = ids.filter(id => HOURS.every(h => students[id].slots[h] !== null)).length;
+    document.getElementById('p-completion-text').textContent =
+        ids.length ? `${fullyBooked}/${ids.length} con reloj completo` : '';
+
+    const grid   = document.getElementById('p-students-grid');
+    const noSt   = document.getElementById('p-no-students');
+
+    if (ids.length === 0) {
+        noSt.classList.remove('hidden');
+        // Clear old cards except the no-students placeholder
+        Array.from(grid.children).forEach(c => { if (c !== noSt) c.remove(); });
+        return;
+    }
+    noSt.classList.add('hidden');
+
+    // Rebuild cards
+    // Keep track of existing cards to avoid full re-render flicker
+    const existingCards = {};
+    Array.from(grid.children).forEach(c => {
+        const pid = c.dataset.peerId;
+        if (pid) existingCards[pid] = c;
+        else if (c !== noSt) c.remove();
+    });
+
+    // Remove stale cards
+    Object.keys(existingCards).forEach(pid => {
+        if (!students[pid]) { existingCards[pid].remove(); delete existingCards[pid]; }
+    });
+
+    ids.forEach((id, idx) => {
+        const s = students[id];
+        const booked = HOURS.filter(h => s.slots[h] !== null).length;
+
+        let card = existingCards[id];
+        if (!card) {
+            card = document.createElement('div');
+            card.dataset.peerId = id;
+            grid.appendChild(card);
+        }
+
+        card.className = `bg-white rounded-xl p-3 shadow text-center ${s.connected ? '' : 'opacity-50'}`;
+
+        const partnerForHour = sessionState.currentHour ? s.slots[sessionState.currentHour] : null;
+        const partnerName    = partnerForHour && students[partnerForHour] ? students[partnerForHour].name : null;
+
+        card.innerHTML = `
+            <p class="font-semibold text-sm text-gray-800 mb-0.5 truncate" title="${escapeHtml(s.name)}">${escapeHtml(s.name)}</p>
+            <p class="text-xs text-gray-400 mb-2">${booked}/12</p>
+            <div class="mini-clock-wrap mx-auto mb-2" id="mini-${id}"></div>
+            ${sessionState.currentHour ? `
+                <p class="text-xs font-semibold ${partnerName ? 'text-green-700' : 'text-red-500'}">
+                    ${partnerName ? '&#8594; ' + escapeHtml(partnerName.split(' ')[0]) : 'Sin pareja'}
+                </p>` : ''}
+            ${!s.connected ? '<p class="text-xs text-red-400 mt-1">Desconectado</p>' : ''}
+        `;
+
+        renderMiniClock(card.querySelector(`#mini-${id}`), s.slots, sessionState.currentHour);
+    });
+}
+
+// ======================== STUDENT LOGIC ========================
+function joinSession() {
+    const name = document.getElementById('s-name-input').value.trim();
+    const code = document.getElementById('s-code-input').value.trim().toUpperCase();
+
+    if (!name) { showJoinError('Introduce tu nombre.'); return; }
+    if (!code || code.length < 4) { showJoinError('Introduce el código de sesión.'); return; }
+
+    myName = name;
+
+    document.getElementById('join-btn').disabled = true;
+    document.getElementById('join-btn-text').classList.add('hidden');
+    document.getElementById('join-loader').classList.remove('hidden');
+    document.getElementById('join-error').classList.add('hidden');
+
+    peer = new Peer(null, PEER_CONFIG);
+
+    peer.on('open', (id) => {
+        myPeerId = id;
+        hostConnection = peer.connect(code, { reliable: true });
+
+        hostConnection.on('open', () => {
+            hostConnection.send({ type: 'join', name: myName });
+        });
+
+        hostConnection.on('data', (data) => handleStudentMessage(data));
+
+        hostConnection.on('close', () => {
+            showToast('Conexión perdida. Recarga para reconectar.');
+        });
+
+        hostConnection.on('error', (err) => {
+            console.error(err);
+            showJoinError('No se pudo conectar. Verifica el código.');
+        });
+    });
+
+    peer.on('error', (err) => {
+        console.error(err);
+        showJoinError('No se pudo conectar. Verifica el código e inténtalo de nuevo.');
+    });
+}
+
+function showJoinError(msg) {
+    document.getElementById('join-error').textContent = msg;
+    document.getElementById('join-error').classList.remove('hidden');
+    document.getElementById('join-btn').disabled = false;
+    document.getElementById('join-btn-text').classList.remove('hidden');
+    document.getElementById('join-loader').classList.add('hidden');
+}
+
+function handleStudentMessage(data) {
+    if (data.type === 'state') {
+        lastState = data.payload;
+
+        if (document.getElementById('view-student-session').classList.contains('hidden')) {
+            showView('view-student-session');
+            document.getElementById('s-my-name').textContent = myName;
+        }
+
+        renderStudentView(data.payload);
+
+    } else if (data.type === 'book-error') {
+        showToast(data.message || 'Esa hora ya está ocupada.');
+        closeBookPanel();
+    }
+}
+
+function renderStudentView(state) {
+    const me = state.students[myPeerId];
+    if (!me) return;
+
+    // Timer
+    const timerBar = document.getElementById('s-timer-bar');
+    if (state.timer.running || state.timer.remainingSeconds < state.timer.totalSeconds) {
+        timerBar.classList.remove('hidden');
+        document.getElementById('s-timer-display').textContent = formatTime(state.timer.remainingSeconds);
+    } else {
+        timerBar.classList.add('hidden');
+    }
+
+    // Called hour
+    const calledAlert = document.getElementById('s-called-alert');
+    if (state.currentHour) {
+        calledAlert.classList.remove('hidden');
+        document.getElementById('s-called-hour').textContent = state.currentHour;
+        document.getElementById('s-called-question').textContent = state.currentQuestion || '';
+
+        const partnerId = me.slots[state.currentHour];
+        const partner   = partnerId ? state.students[partnerId] : null;
+
+        if (partner) {
+            document.getElementById('s-partner-info').classList.remove('hidden');
+            document.getElementById('s-no-partner-info').classList.add('hidden');
+            document.getElementById('s-partner-name').textContent = partner.name;
+        } else {
+            document.getElementById('s-partner-info').classList.add('hidden');
+            document.getElementById('s-no-partner-info').classList.remove('hidden');
+        }
+    } else {
+        calledAlert.classList.add('hidden');
+    }
+
+    // Phase notice
+    const notice = document.getElementById('s-activity-phase-notice');
+    if (state.phase === 'activity' && !state.currentHour) {
+        notice.classList.remove('hidden');
+    } else {
+        notice.classList.add('hidden');
+    }
+
+    // Clock
+    const booked = HOURS.filter(h => me.slots[h] !== null).length;
+    document.getElementById('s-slots-filled').textContent = booked;
+    renderClock('s-clock', me.slots, state.students, state.currentHour, state.phase, true);
+
+    // Classmates
+    renderClassmatesList(state, me);
+}
+
+function renderClassmatesList(state, me) {
+    const list = document.getElementById('s-classmates-list');
+    const others = Object.keys(state.students).filter(id => id !== myPeerId);
+
+    if (others.length === 0) {
+        list.innerHTML = '<p class="text-gray-400 text-sm text-center py-6">No hay compañeros conectados aún.</p>';
+        return;
+    }
+
+    list.innerHTML = '';
+    others.forEach(id => {
+        const s = state.students[id];
+        const mutualFree    = HOURS.filter(h => !me.slots[h] && !s.slots[h]).length;
+        const booked2gether = HOURS.filter(h => me.slots[h] === id).length;
+
+        const item = document.createElement('div');
+        item.className = `flex items-center justify-between p-3 rounded-xl border transition ${
+            s.connected ? 'bg-gray-50 border-gray-200' : 'bg-gray-100 border-gray-200 opacity-50'
+        }`;
+
+        const info = document.createElement('div');
+        info.className = 'flex-grow min-w-0 mr-3';
+        info.innerHTML = `
+            <p class="font-semibold text-gray-800 truncate">${escapeHtml(s.name)}</p>
+            <p class="text-xs text-gray-400">${booked2gether} cita${booked2gether!==1?'s':''} · ${mutualFree} hora${mutualFree!==1?'s':''} libre${mutualFree!==1?'s':''}</p>
+        `;
+
+        item.appendChild(info);
+
+        if (state.phase === 'booking' && s.connected) {
+            const btn = document.createElement('button');
+            btn.className = `text-sm font-bold py-1.5 px-3 rounded-lg transition flex-shrink-0 ${
+                mutualFree > 0
+                    ? 'bg-green-500 hover:bg-green-600 text-white'
+                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            }`;
+            btn.textContent = '+ Cita';
+            btn.disabled = mutualFree === 0;
+            if (mutualFree > 0) btn.onclick = () => openBookPanel(id);
+            item.appendChild(btn);
+        }
+
+        list.appendChild(item);
+    });
+}
+
+function openBookPanel(partnerId) {
+    if (!lastState) return;
+    selectedPartnerId = partnerId;
+
+    const me      = lastState.students[myPeerId];
+    const partner = lastState.students[partnerId];
+    if (!me || !partner) return;
+
+    document.getElementById('book-partner-name').textContent = partner.name;
+
+    const grid = document.getElementById('book-hours-grid');
+    grid.innerHTML = '';
+
+    HOURS.forEach(h => {
+        const myFree    = !me.slots[h];
+        const theirFree = !partner.slots[h];
+        const bothFree  = myFree && theirFree;
+
+        const btn = document.createElement('button');
+        btn.className = `py-2 rounded-lg text-center font-bold text-sm border-2 transition `;
+        btn.textContent = `${h}:00`;
+
+        if (bothFree) {
+            btn.className += 'bg-green-50 border-green-400 text-green-800 hover:bg-green-100';
+            btn.title = 'Libres para los dos';
+            btn.onclick = () => bookAppointment(h);
+        } else if (!myFree) {
+            btn.className += 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed opacity-50';
+            btn.title = 'Tú tienes esta hora ocupada';
+            btn.disabled = true;
+        } else {
+            btn.className += 'bg-orange-50 border-orange-300 text-orange-500 cursor-not-allowed opacity-60';
+            btn.title = `${partner.name.split(' ')[0]} tiene esta hora ocupada`;
+            btn.disabled = true;
+        }
+
+        grid.appendChild(btn);
+    });
+
+    document.getElementById('s-book-panel').classList.remove('hidden');
+}
+
+function closeBookPanel() {
+    document.getElementById('s-book-panel').classList.add('hidden');
+    selectedPartnerId = null;
+}
+
+function bookAppointment(hour) {
+    if (!hostConnection?.open || !selectedPartnerId) return;
+    hostConnection.send({ type: 'book', hour, partnerId: selectedPartnerId });
+    closeBookPanel();
+}
+
+function confirmUnbook(hour) {
+    if (!lastState) return;
+    const me = lastState.students[myPeerId];
+    if (!me || !me.slots[hour]) return;
+    const partner = lastState.students[me.slots[hour]];
+    const who = partner ? partner.name : 'tu compañero/a';
+
+    if (confirm(`¿Cancelar la cita de las ${hour}:00 con ${who}?`)) {
+        hostConnection.send({ type: 'unbook', hour });
+    }
+}
+
+// ======================== INIT ========================
+window.onload = () => {
+    const params      = new URLSearchParams(window.location.search);
+    const sessionCode = params.get('session');
+    if (sessionCode) {
+        selectRole('student');
+        document.getElementById('s-code-input').value = sessionCode.toUpperCase();
+    }
+
+    // Keyboard shortcuts
+    document.getElementById('s-code-input').addEventListener('keydown', e => { if (e.key === 'Enter') joinSession(); });
+    document.getElementById('s-name-input').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('s-code-input').focus(); });
+    document.getElementById('s-code-input').addEventListener('input', e => {
+        e.target.value = e.target.value.toUpperCase();
+    });
+};
+</script>
+</body>
+</html>
