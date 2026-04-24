@@ -441,6 +441,7 @@ let myPeerId = null;
 let myName = null;
 let lastState = null;
 let selectedPartnerId = null;
+let lastCalledHour = null;
 let shareUrl = '';
 
 // ======================== UI HELPERS ========================
@@ -980,6 +981,10 @@ function renderStudentView(state) {
     // Called hour
     const calledAlert = document.getElementById('s-called-alert');
     if (state.currentHour) {
+        if (state.currentHour !== lastCalledHour) {
+            lastCalledHour = state.currentHour;
+            if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+        }
         calledAlert.classList.remove('hidden');
         document.getElementById('s-called-hour').textContent = state.currentHour;
         document.getElementById('s-called-question').textContent = state.currentQuestion || '';
