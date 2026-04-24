@@ -13,101 +13,66 @@
         body { font-family: 'Inter', sans-serif; }
 
         /* === CLOCK === */
-        .clock-wrap {
-            position: relative;
-            width: 280px; height: 280px;
-            margin: 0 auto;
-        }
-        .clock-face {
-            position: absolute; inset: 0;
-            border-radius: 50%;
-            border: 3px solid #d1d5db;
-            background: #f9fafb;
-        }
-        .clock-center {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            width: 10px; height: 10px;
-            border-radius: 50%;
-            background: #9ca3af;
-            z-index: 2;
-        }
+        .clock-wrap { position: relative; width: 280px; height: 280px; margin: 0 auto; }
+        .clock-face { position: absolute; inset: 0; border-radius: 50%; border: 3px solid #d1d5db; background: #f9fafb; }
+        .clock-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 10px; height: 10px; border-radius: 50%; background: #9ca3af; z-index: 2; }
         .clock-slot {
-            position: absolute;
-            width: 54px; height: 54px;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: 2px solid;
-            text-align: center;
-            padding: 2px;
-            user-select: none;
-            z-index: 1;
+            position: absolute; width: 54px; height: 54px;
+            transform: translate(-50%,-50%); border-radius: 50%;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            font-weight: 700; cursor: pointer; transition: all 0.2s; border: 2px solid;
+            text-align: center; padding: 2px; user-select: none; z-index: 1;
         }
         .slot-hour { font-size: 0.9rem; line-height: 1; }
         .slot-name { font-size: 0.5rem; max-width: 48px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 1.2; margin-top: 1px; }
-
-        .clock-slot.free { background: white; border-color: #d1d5db; color: #6b7280; }
+        .clock-slot.free   { background: white;   border-color: #d1d5db; color: #6b7280; }
         .clock-slot.free.interactive:hover { background: #eff6ff; border-color: #3b82f6; color: #1d4ed8; }
         .clock-slot.booked { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
         .clock-slot.booked.interactive:hover { background: #bfdbfe; }
         .clock-slot.called { background: #fef3c7; border-color: #f59e0b; color: #92400e; animation: pulse-slot 1.5s ease-in-out infinite; }
         .clock-slot.no-partner { background: #fee2e2; border-color: #ef4444; color: #991b1b; }
+        @keyframes pulse-slot { 0%,100% { box-shadow: 0 0 0 0 rgba(245,158,11,.4); } 50% { box-shadow: 0 0 0 8px rgba(245,158,11,0); } }
 
-        @keyframes pulse-slot {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(245,158,11,0.4); }
-            50%       { box-shadow: 0 0 0 8px rgba(245,158,11,0); }
-        }
-
-        /* === MINI CLOCK (presenter monitoring) === */
-        .mini-clock-wrap {
-            position: relative;
-            width: 80px; height: 80px;
-            flex-shrink: 0;
-        }
-        .mini-clock-face {
-            position: absolute; inset: 0;
-            border-radius: 50%;
-            border: 2px solid #e5e7eb;
-            background: #f9fafb;
-        }
-        .mini-slot {
-            position: absolute;
-            width: 13px; height: 13px;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            border: 1.5px solid;
-        }
-        .mini-slot.free   { background: #f3f4f6; border-color: #d1d5db; }
-        .mini-slot.booked { background: #bfdbfe; border-color: #3b82f6; }
-        .mini-slot.called { background: #fde68a; border-color: #f59e0b; }
+        /* === MINI CLOCK === */
+        .mini-clock-wrap { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
+        .mini-clock-face { position: absolute; inset: 0; border-radius: 50%; border: 2px solid #e5e7eb; background: #f9fafb; }
+        .mini-slot { position: absolute; width: 13px; height: 13px; transform: translate(-50%,-50%); border-radius: 50%; border: 1.5px solid; }
+        .mini-slot.free       { background: #f3f4f6; border-color: #d1d5db; }
+        .mini-slot.booked     { background: #bfdbfe; border-color: #3b82f6; }
+        .mini-slot.called     { background: #fde68a; border-color: #f59e0b; }
         .mini-slot.no-partner { background: #fecaca; border-color: #ef4444; }
 
         /* === LOADER === */
-        .loader {
-            border: 3px solid #e5e7eb;
-            border-top: 3px solid #3b82f6;
-            border-radius: 50%;
-            width: 20px; height: 20px;
-            animation: spin 0.8s linear infinite;
-            display: inline-block;
-        }
+        .loader { border: 3px solid #e5e7eb; border-top: 3px solid #3b82f6; border-radius: 50%; width: 20px; height: 20px; animation: spin 0.8s linear infinite; display: inline-block; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* === MISC === */
         .timer-display { font-variant-numeric: tabular-nums; }
         #toast { pointer-events: none; }
         .student-list { max-height: 340px; overflow-y: auto; }
-
         #qrcode-container img { display: block; }
+
+        /* === LANGUAGE SELECTOR === */
+        #lang-selector {
+            position: fixed; top: 0.6rem; right: 0.6rem; z-index: 200;
+            background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem;
+            padding: 0.25rem 0.4rem; font-size: 0.75rem; color: #374151;
+            cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.1);
+            font-family: 'Inter', sans-serif;
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
+
+<!-- Language selector (always visible) -->
+<select id="lang-selector" onchange="setLanguage(this.value)">
+    <option value="es">Español</option>
+    <option value="ca">Català</option>
+    <option value="gl">Galego</option>
+    <option value="eu">Euskara</option>
+    <option value="en">English</option>
+    <option value="fr">Français</option>
+    <option value="de">Deutsch</option>
+</select>
 
 <!-- ===================== VIEW: ROLE SELECT ===================== -->
 <div id="view-role" class="flex flex-col items-center justify-center min-h-screen p-4">
@@ -118,24 +83,22 @@
             </svg>
         </div>
         <h1 class="text-3xl font-extrabold text-gray-900 mb-1">Reloj de Citas</h1>
-        <p class="text-gray-500 mb-8 text-sm">Técnica cooperativa de emparejamiento</p>
+        <p class="text-gray-500 mb-8 text-sm" data-i18n="app_subtitle">Técnica cooperativa de emparejamiento</p>
         <div class="space-y-3">
             <button onclick="selectRole('presenter')"
-                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition text-base">
-                Soy profesor/a
-            </button>
+                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition text-base"
+                data-i18n="role_teacher">Soy profesor/a</button>
             <button onclick="selectRole('student')"
-                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-xl transition text-base">
-                Soy alumno/a
-            </button>
+                class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-xl transition text-base"
+                data-i18n="role_student">Soy alumno/a</button>
         </div>
         <a href="manual.html" class="inline-flex items-center gap-1.5 mt-6 text-sm text-gray-400 hover:text-blue-600 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            ¿Cómo funciona?
+            <span data-i18n="how_it_works">¿Cómo funciona?</span>
         </a>
     </div>
     <p class="text-center mt-6 text-sm text-gray-400">
-        Creado por <a href="https://bilateria.org" class="underline hover:text-gray-600" target="_blank">Juan José de Haro</a> &mdash;
+        <a href="https://bilateria.org" class="underline hover:text-gray-600" target="_blank">Juan José de Haro</a> &mdash;
         <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="underline hover:text-gray-600" target="_blank">CC BY-SA 4.0</a>
     </p>
 </div>
@@ -145,18 +108,18 @@
     <div class="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
         <button onclick="goBack()" class="text-sm text-gray-400 hover:text-gray-600 mb-5 flex items-center gap-1">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-            Atrás
+            <span data-i18n="back_btn">Atrás</span>
         </button>
-        <h2 class="text-2xl font-bold mb-6">Configurar sesión</h2>
+        <h2 class="text-2xl font-bold mb-6" data-i18n="setup_title">Configurar sesión</h2>
         <div class="mb-6">
-            <label class="block text-sm font-medium text-gray-700 mb-1">Tiempo de preparación (minutos)</label>
+            <label class="block text-sm font-medium text-gray-700 mb-1" data-i18n="setup_timer_label">Tiempo de preparación (minutos)</label>
             <input type="number" id="timer-minutes" value="5" min="1" max="30"
                 class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-lg font-semibold">
-            <p class="text-xs text-gray-400 mt-1">Tiempo que tienen los alumnos para concertar sus citas.</p>
+            <p class="text-xs text-gray-400 mt-1" data-i18n="setup_timer_help">Tiempo que tienen los alumnos para concertar sus citas.</p>
         </div>
         <button onclick="startPresenterSession()" id="start-session-btn"
             class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition flex items-center justify-center gap-3">
-            <span id="start-btn-text">Iniciar sesión</span>
+            <span id="start-btn-text" data-i18n="setup_start_btn">Iniciar sesión</span>
             <div class="loader hidden" id="start-loader"></div>
         </button>
         <p id="start-error" class="text-red-500 text-sm mt-3 hidden"></p>
@@ -167,66 +130,57 @@
 <div id="view-presenter-session" class="hidden min-h-screen p-3 md:p-6">
     <div class="max-w-7xl mx-auto space-y-4">
 
-        <!-- Header bar -->
+        <!-- Header -->
         <div class="bg-white rounded-2xl shadow p-4 flex flex-wrap items-center gap-4 justify-between">
             <div>
-                <h1 class="text-lg font-extrabold text-gray-900">Reloj de Citas — Panel del profesor</h1>
+                <h1 class="text-lg font-extrabold text-gray-900" data-i18n="presenter_title">Reloj de Citas — Panel del profesor</h1>
                 <p class="text-sm text-gray-500">
-                    Código:
+                    <span data-i18n="presenter_code_label">Código:</span>
                     <span id="p-session-code" class="font-mono font-bold text-blue-600 cursor-pointer hover:underline"
                           onclick="copySessionCode()" title="Clic para copiar"></span>
                 </p>
             </div>
             <div class="flex flex-wrap gap-2 items-center">
                 <a href="manual.html" target="_blank"
-                    class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-3 rounded-lg text-sm transition flex items-center gap-1"
-                    title="Abrir guía de uso">
+                    class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-3 rounded-lg text-sm transition flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                    Ayuda
+                    <span data-i18n="presenter_help">Ayuda</span>
                 </a>
                 <button onclick="showShareModal()"
                     class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 px-3 rounded-lg text-sm transition flex items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
-                    Compartir
+                    <span data-i18n="presenter_share">Compartir</span>
                 </button>
-                <!-- Timer -->
                 <div class="flex items-center gap-2 bg-gray-100 rounded-xl px-3 py-2">
                     <span class="timer-display text-2xl font-bold text-gray-800" id="p-timer-display">5:00</span>
                     <button id="timer-toggle-btn" onclick="toggleTimer()"
-                        class="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold py-1 px-3 rounded-lg transition">
-                        Iniciar
-                    </button>
+                        class="bg-blue-500 hover:bg-blue-600 text-white text-xs font-bold py-1 px-3 rounded-lg transition"
+                        data-i18n="timer_start">Iniciar</button>
                     <button onclick="resetTimer()"
-                        class="bg-gray-400 hover:bg-gray-500 text-white text-xs font-bold py-1 px-2 rounded-lg transition">
-                        ↺
-                    </button>
+                        class="bg-gray-400 hover:bg-gray-500 text-white text-xs font-bold py-1 px-2 rounded-lg transition">↺</button>
                 </div>
-                <span id="p-phase-badge" class="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1.5 rounded-full">
-                    Fase: Citas
-                </span>
+                <span id="p-phase-badge" class="bg-yellow-100 text-yellow-800 text-xs font-bold px-3 py-1.5 rounded-full"
+                      data-i18n="phase_booking">Fase: Citas</span>
             </div>
         </div>
 
         <!-- Stats bar -->
         <div class="bg-blue-50 border border-blue-200 rounded-xl p-3 flex flex-wrap items-center justify-between gap-2">
-            <span class="text-blue-900 font-semibold text-sm">
-                <span id="p-student-count">0</span> alumnos conectados
-            </span>
+            <span class="text-blue-900 font-semibold text-sm" id="p-student-count-text">0</span>
             <span id="p-completion-text" class="text-blue-700 text-sm"></span>
             <button id="p-phase-switch-btn" onclick="switchToActivityPhase()"
-                class="bg-green-600 hover:bg-green-700 text-white text-sm font-bold py-1.5 px-4 rounded-lg transition">
-                Pasar a fase de actividad
-            </button>
+                class="bg-green-600 hover:bg-green-700 text-white text-sm font-bold py-1.5 px-4 rounded-lg transition"
+                data-i18n="phase_switch_btn">Pasar a fase de actividad</button>
         </div>
 
         <!-- Call an hour (activity phase) -->
         <div id="p-call-panel" class="hidden bg-white rounded-2xl shadow p-4">
-            <h3 class="font-bold text-gray-800 mb-3">Llamar una hora</h3>
+            <h3 class="font-bold text-gray-800 mb-3" data-i18n="call_panel_title">Llamar una hora</h3>
             <div class="flex flex-wrap gap-3 items-end">
                 <div>
-                    <label class="block text-xs text-gray-500 mb-1">Hora</label>
+                    <label class="block text-xs text-gray-500 mb-1" data-i18n="call_hour_label">Hora</label>
                     <select id="p-call-hour" class="border border-gray-300 rounded-lg p-2 font-bold text-sm">
-                        <option value="">— Seleccionar —</option>
+                        <option value="" data-i18n="call_hour_placeholder">— Seleccionar —</option>
                         <option value="1">1:00</option><option value="2">2:00</option>
                         <option value="3">3:00</option><option value="4">4:00</option>
                         <option value="5">5:00</option><option value="6">6:00</option>
@@ -236,39 +190,36 @@
                     </select>
                 </div>
                 <div class="flex-grow min-w-48">
-                    <label class="block text-xs text-gray-500 mb-1">Pregunta o tarea (opcional)</label>
-                    <input type="text" id="p-call-question"
+                    <label class="block text-xs text-gray-500 mb-1" data-i18n="call_question_label">Pregunta o tarea (opcional)</label>
+                    <input type="text" id="p-call-question" data-i18n-placeholder="call_question_placeholder"
                         placeholder="Ej: Explicad el concepto de fotosíntesis..."
                         class="w-full border border-gray-300 rounded-lg p-2 text-sm">
                 </div>
                 <button onclick="callHour()"
-                    class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-5 rounded-lg transition text-sm">
-                    Llamar
-                </button>
+                    class="bg-orange-500 hover:bg-orange-600 text-white font-bold py-2 px-5 rounded-lg transition text-sm"
+                    data-i18n="call_btn">Llamar</button>
                 <button onclick="clearCall()"
-                    class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-3 rounded-lg transition text-sm">
-                    Limpiar
-                </button>
+                    class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-semibold py-2 px-3 rounded-lg transition text-sm"
+                    data-i18n="clear_btn">Limpiar</button>
             </div>
             <div id="p-current-call" class="hidden mt-3 bg-orange-50 border border-orange-200 rounded-lg p-3">
                 <p class="text-orange-800 font-semibold text-sm">
-                    Hora activa: <span id="p-active-hour" class="font-extrabold"></span>:00
+                    <span data-i18n="active_hour_label">Hora activa:</span>
+                    <span id="p-active-hour" class="font-extrabold"></span>:00
                     <span id="p-active-question-wrap"> — <span id="p-active-question" class="font-normal italic"></span></span>
                 </p>
             </div>
             <div class="mt-4 pt-4 border-t border-gray-200">
                 <button onclick="endActivity()"
-                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-5 rounded-lg transition text-sm">
-                    Finalizar actividad
-                </button>
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-5 rounded-lg transition text-sm"
+                    data-i18n="end_activity_btn">Finalizar actividad</button>
             </div>
         </div>
 
         <!-- Students grid -->
         <div id="p-students-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-            <div class="col-span-full text-center text-gray-400 py-16" id="p-no-students">
-                Esperando que se conecten los alumnos...
-            </div>
+            <div class="col-span-full text-center text-gray-400 py-16" id="p-no-students"
+                 data-i18n="no_students_msg">Esperando que se conecten los alumnos...</div>
         </div>
     </div>
 </div>
@@ -278,25 +229,26 @@
     <div class="bg-white rounded-2xl shadow-lg p-8 w-full max-w-sm">
         <button onclick="goBack()" class="text-sm text-gray-400 hover:text-gray-600 mb-5 flex items-center gap-1">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-            Atrás
+            <span data-i18n="back_btn">Atrás</span>
         </button>
-        <h2 class="text-2xl font-bold mb-6">Unirse a la sesión</h2>
+        <h2 class="text-2xl font-bold mb-6" data-i18n="join_title">Unirse a la sesión</h2>
         <div class="space-y-4">
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Tu nombre</label>
-                <input type="text" id="s-name-input" placeholder="Ej: Ana García"
+                <label class="block text-sm font-medium text-gray-700 mb-1" data-i18n="join_name_label">Tu nombre</label>
+                <input type="text" id="s-name-input" data-i18n-placeholder="join_name_placeholder"
+                    placeholder="Ej: Ana García"
                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500"
                     autocomplete="off" maxlength="40">
             </div>
             <div>
-                <label class="block text-sm font-medium text-gray-700 mb-1">Código de sesión</label>
+                <label class="block text-sm font-medium text-gray-700 mb-1" data-i18n="join_code_label">Código de sesión</label>
                 <input type="text" id="s-code-input" placeholder="XXXXXX"
                     class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 font-mono text-2xl uppercase text-center tracking-widest"
                     maxlength="6" autocomplete="off">
             </div>
             <button onclick="joinSession()" id="join-btn"
                 class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-xl transition flex items-center justify-center gap-3">
-                <span id="join-btn-text">Unirse</span>
+                <span id="join-btn-text" data-i18n="join_btn">Unirse</span>
                 <div class="loader hidden" id="join-loader"></div>
             </button>
             <p id="join-error" class="text-red-500 text-sm hidden"></p>
@@ -311,63 +263,75 @@
         <!-- Header -->
         <div class="bg-white rounded-2xl shadow p-4 flex items-center justify-between">
             <div>
-                <h1 class="text-lg font-extrabold text-gray-900">Mi Reloj de Citas</h1>
+                <h1 class="text-lg font-extrabold text-gray-900" data-i18n="student_title">Mi Reloj de Citas</h1>
                 <p class="text-sm text-gray-500">
-                    Hola, <span id="s-my-name" class="font-bold text-green-700"></span>
+                    <span data-i18n="student_hello">Hola,</span>
+                    <span id="s-my-name" class="font-bold text-green-700"></span>
                 </p>
             </div>
             <a href="manual.html" target="_blank"
-                class="text-gray-400 hover:text-blue-600 transition flex-shrink-0 ml-3"
-                title="Guía de uso">
+                class="text-gray-400 hover:text-blue-600 transition flex-shrink-0 ml-3">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
             </a>
         </div>
 
         <!-- Timer bar -->
         <div id="s-timer-bar" class="hidden bg-blue-600 text-white rounded-xl p-3 text-center">
-            <p class="text-xs font-medium opacity-80 mb-1">Tiempo para concertar citas</p>
+            <p class="text-xs font-medium opacity-80 mb-1" data-i18n="timer_banner_label">Tiempo para concertar citas</p>
             <p class="timer-display text-4xl font-extrabold" id="s-timer-display">5:00</p>
         </div>
 
         <!-- Called hour alert -->
         <div id="s-called-alert" class="hidden bg-orange-500 text-white rounded-2xl p-5 text-center shadow-lg">
-            <p class="font-bold text-base mb-1">Hora llamada:</p>
+            <p class="font-bold text-base mb-1" data-i18n="hour_called_label">Hora llamada:</p>
             <p class="text-5xl font-extrabold mb-2"><span id="s-called-hour"></span>:00</p>
             <p class="text-base font-semibold mb-4" id="s-called-question"></p>
             <div id="s-partner-info" class="bg-white/25 rounded-xl p-4">
-                <p class="text-sm opacity-90 mb-1">Tu pareja es:</p>
+                <p class="text-sm opacity-90 mb-1" data-i18n="your_partner_label">Tu pareja es:</p>
                 <p class="text-2xl font-extrabold" id="s-partner-name"></p>
             </div>
             <div id="s-no-partner-info" class="hidden bg-white/25 rounded-xl p-4">
-                <p class="text-sm">No tienes pareja en esta hora. Consulta al profesor.</p>
+                <p class="text-sm" data-i18n="no_partner_msg">No tienes pareja en esta hora. Consulta al profesor.</p>
             </div>
         </div>
 
         <!-- Clock -->
         <div class="bg-white rounded-2xl shadow p-6">
-            <h2 class="text-center font-bold text-gray-700 mb-4">
-                Mi reloj — <span id="s-slots-filled">0</span>/12 citas
-            </h2>
+            <h2 class="text-center font-bold text-gray-700 mb-4" id="s-clock-title">Mi reloj — 0/12 citas</h2>
             <div class="clock-wrap" id="s-clock"></div>
-            <p class="text-center text-xs text-gray-400 mt-4">
+            <p class="text-center text-xs text-gray-400 mt-4" data-i18n="clock_hint">
                 Haz clic en una hora libre para concertar una cita · Haz clic en una hora ocupada para cancelarla
             </p>
         </div>
 
         <!-- Classmates -->
         <div class="bg-white rounded-2xl shadow p-4">
-            <h2 class="font-bold text-gray-700 mb-3">Compañeros conectados</h2>
+            <h2 class="font-bold text-gray-700 mb-3" data-i18n="classmates_title">Compañeros conectados</h2>
             <div id="s-classmates-list" class="student-list space-y-2">
-                <p class="text-gray-400 text-sm text-center py-6">Esperando compañeros...</p>
+                <p class="text-gray-400 text-sm text-center py-6" data-i18n="no_classmates_yet">Esperando compañeros...</p>
             </div>
         </div>
 
-        <!-- Phase: activity message -->
+        <!-- Activity notice -->
         <div id="s-activity-phase-notice" class="hidden bg-green-50 border border-green-200 rounded-xl p-4 text-center">
-            <p class="text-green-800 font-semibold">El profesor ha iniciado la fase de actividad.</p>
-            <p class="text-green-700 text-sm mt-1">Espera a que llame una hora.</p>
+            <p class="text-green-800 font-semibold" data-i18n="activity_notice">El profesor ha iniciado la fase de actividad.</p>
+            <p class="text-green-700 text-sm mt-1" data-i18n="activity_wait">Espera a que llame una hora.</p>
         </div>
 
+    </div>
+
+    <!-- Book appointment panel -->
+    <div id="s-book-panel" class="hidden fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-4"
+         onclick="closeBookPanel()">
+        <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm" onclick="event.stopPropagation()">
+            <h3 class="font-bold text-lg mb-1" data-i18n="book_title">Concertar cita con</h3>
+            <p class="text-green-700 font-extrabold text-xl mb-4" id="book-partner-name"></p>
+            <p class="text-xs text-gray-500 mb-3" data-i18n="book_hint">Verde: libres para los dos · Naranja: ocupada para tu compañero</p>
+            <div id="book-hours-grid" class="grid grid-cols-4 gap-2 mb-4"></div>
+            <button onclick="closeBookPanel()"
+                class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 rounded-xl transition"
+                data-i18n="cancel_btn">Cancelar</button>
+        </div>
     </div>
 
     <!-- Ended overlay -->
@@ -376,23 +340,8 @@
             <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
             </div>
-            <h2 class="text-2xl font-extrabold text-gray-900 mb-2">Actividad finalizada</h2>
-            <p class="text-gray-500">El profesor ha dado por concluida la sesión.</p>
-        </div>
-    </div>
-
-    <!-- Book appointment panel (bottom sheet) -->
-    <div id="s-book-panel" class="hidden fixed inset-0 bg-black/50 flex items-end sm:items-center justify-center z-50 p-4"
-         onclick="closeBookPanel()">
-        <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-sm" onclick="event.stopPropagation()">
-            <h3 class="font-bold text-lg mb-1">Concertar cita con</h3>
-            <p class="text-green-700 font-extrabold text-xl mb-4" id="book-partner-name"></p>
-            <p class="text-xs text-gray-500 mb-3">Verde: libres para los dos · Naranja: ocupada para tu compañero</p>
-            <div id="book-hours-grid" class="grid grid-cols-4 gap-2 mb-4"></div>
-            <button onclick="closeBookPanel()"
-                class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 rounded-xl transition">
-                Cancelar
-            </button>
+            <h2 class="text-2xl font-extrabold text-gray-900 mb-2" data-i18n="ended_title">Actividad finalizada</h2>
+            <p class="text-gray-500" data-i18n="ended_subtitle">El profesor ha dado por concluida la sesión.</p>
         </div>
     </div>
 </div>
@@ -401,36 +350,645 @@
 <div id="share-modal" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4"
      onclick="if(event.target===this)this.classList.add('hidden')">
     <div class="bg-white rounded-2xl shadow-xl p-6 w-full max-w-xs text-center">
-        <h3 class="font-bold text-xl mb-4">Compartir sesión</h3>
+        <h3 class="font-bold text-xl mb-4" data-i18n="share_title">Compartir sesión</h3>
         <div id="share-qr" class="flex justify-center mb-4"></div>
-        <p class="text-gray-500 text-xs mb-1">O comparte el código:</p>
+        <p class="text-gray-500 text-xs mb-1" data-i18n="share_code_label">O comparte el código:</p>
         <p id="share-code-display"
            class="font-mono text-4xl font-extrabold text-blue-600 mb-1 cursor-pointer hover:opacity-70 transition"
-           onclick="copySessionCode()" title="Clic para copiar"></p>
-        <p class="text-gray-400 text-xs mb-1">URL de acceso directo:</p>
+           onclick="copySessionCode()"></p>
+        <p class="text-gray-400 text-xs mb-1" data-i18n="share_url_label">URL de acceso directo:</p>
         <p id="share-url-display" class="text-gray-500 text-xs mb-4 break-all font-mono cursor-pointer hover:text-gray-700"
-           onclick="copyDirectUrl()" title="Clic para copiar"></p>
+           onclick="copyDirectUrl()"></p>
         <button onclick="document.getElementById('share-modal').classList.add('hidden')"
-            class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 rounded-xl transition">
-            Cerrar
-        </button>
+            class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-2 rounded-xl transition"
+            data-i18n="close_btn">Cerrar</button>
     </div>
 </div>
 
 <!-- Toast -->
-<div id="toast"
-     class="fixed bottom-5 right-5 bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 text-sm z-50">
-</div>
+<div id="toast" class="fixed bottom-5 right-5 bg-gray-900 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 text-sm z-50"></div>
 
 <script>
+// ======================== TRANSLATIONS ========================
+const TRANSLATIONS = {
+    es: {
+        app_subtitle:           'Técnica cooperativa de emparejamiento',
+        role_teacher:           'Soy profesor/a',
+        role_student:           'Soy alumno/a',
+        how_it_works:           '¿Cómo funciona?',
+        back_btn:               'Atrás',
+        setup_title:            'Configurar sesión',
+        setup_timer_label:      'Tiempo de preparación (minutos)',
+        setup_timer_help:       'Tiempo que tienen los alumnos para concertar sus citas.',
+        setup_start_btn:        'Iniciar sesión',
+        presenter_title:        'Reloj de Citas — Panel del profesor',
+        presenter_code_label:   'Código:',
+        presenter_help:         'Ayuda',
+        presenter_share:        'Compartir',
+        timer_start:            'Iniciar',
+        timer_pause:            'Pausar',
+        timer_resume:           'Reanudar',
+        phase_booking:          'Fase: Citas',
+        phase_activity:         'Fase: Actividad',
+        phase_ended_badge:      'Actividad finalizada',
+        students_connected:     '{0} alumnos conectados',
+        clock_complete:         '{0}/{1} con reloj completo',
+        phase_switch_btn:       'Pasar a fase de actividad',
+        call_panel_title:       'Llamar una hora',
+        call_hour_label:        'Hora',
+        call_hour_placeholder:  '— Seleccionar —',
+        call_question_label:    'Pregunta o tarea (opcional)',
+        call_question_placeholder: 'Ej: Explicad el concepto de fotosíntesis...',
+        call_btn:               'Llamar',
+        clear_btn:              'Limpiar',
+        active_hour_label:      'Hora activa:',
+        end_activity_btn:       'Finalizar actividad',
+        no_students_msg:        'Esperando que se conecten los alumnos...',
+        join_title:             'Unirse a la sesión',
+        join_name_label:        'Tu nombre',
+        join_name_placeholder:  'Ej: Ana García',
+        join_code_label:        'Código de sesión',
+        join_btn:               'Unirse',
+        student_title:          'Mi Reloj de Citas',
+        student_hello:          'Hola,',
+        timer_banner_label:     'Tiempo para concertar citas',
+        hour_called_label:      'Hora llamada:',
+        your_partner_label:     'Tu pareja es:',
+        no_partner_msg:         'No tienes pareja en esta hora. Consulta al profesor.',
+        my_clock_label:         'Mi reloj',
+        clock_appointments:     '{0}/12 citas',
+        clock_hint:             'Haz clic en una hora libre para concertar una cita · Haz clic en una hora ocupada para cancelarla',
+        classmates_title:       'Compañeros conectados',
+        no_classmates_yet:      'Esperando compañeros...',
+        no_classmates_connected:'No hay compañeros conectados aún.',
+        activity_notice:        'El profesor ha iniciado la fase de actividad.',
+        activity_wait:          'Espera a que llame una hora.',
+        ended_title:            'Actividad finalizada',
+        ended_subtitle:         'El profesor ha dado por concluida la sesión.',
+        book_title:             'Concertar cita con',
+        book_hint:              'Verde: libres para los dos · Naranja: ocupada para tu compañero',
+        cancel_btn:             'Cancelar',
+        share_title:            'Compartir sesión',
+        share_code_label:       'O comparte el código:',
+        share_url_label:        'URL de acceso directo:',
+        close_btn:              'Cerrar',
+        already_booked_btn:     'Ya reservado',
+        add_appointment_btn:    '+ Cita',
+        disconnected_label:     'Desconectado',
+        no_partner_label:       'Sin pareja',
+        appointments_info:      '{0} cita · {1} horas libres',
+        toast_code_copied:      'Código copiado',
+        toast_url_copied:       'URL copiada',
+        toast_select_hour:      'Selecciona una hora',
+        confirm_activity_phase: '¿Pasar a la fase de actividad? Los alumnos ya no podrán modificar sus citas.',
+        confirm_end_activity:   '¿Finalizar la actividad? Los alumnos verán un mensaje de fin de sesión.',
+        confirm_unbook:         '¿Cancelar la cita de las {0}:00 con {1}?',
+        error_create_session:   'Error al crear la sesión. Inténtalo de nuevo.',
+        error_enter_name:       'Introduce tu nombre.',
+        error_enter_code:       'Introduce el código de sesión.',
+        error_connection:       'No se pudo conectar. Verifica el código e inténtalo de nuevo.',
+        error_connection_lost:  'Conexión perdida. Recarga para reconectar.',
+        error_hour_busy:        'Esa hora ya está ocupada. Elige otra.',
+        error_already_booked:   'Ya tienes una cita con {0}. Cada compañero solo puede aparecer una vez en el reloj.',
+    },
+    ca: {
+        app_subtitle:           "Tècnica cooperativa d'aparellament",
+        role_teacher:           'Soc professor/a',
+        role_student:           'Soc alumne/a',
+        how_it_works:           'Com funciona?',
+        back_btn:               'Enrere',
+        setup_title:            'Configurar sessió',
+        setup_timer_label:      'Temps de preparació (minuts)',
+        setup_timer_help:       'Temps que tenen els alumnes per concertar les seves cites.',
+        setup_start_btn:        'Iniciar sessió',
+        presenter_title:        'Rellotge de Cites — Tauler del professor',
+        presenter_code_label:   'Codi:',
+        presenter_help:         'Ajuda',
+        presenter_share:        'Compartir',
+        timer_start:            'Iniciar',
+        timer_pause:            'Pausar',
+        timer_resume:           'Reprendre',
+        phase_booking:          'Fase: Cites',
+        phase_activity:         'Fase: Activitat',
+        phase_ended_badge:      'Activitat finalitzada',
+        students_connected:     '{0} alumnes connectats',
+        clock_complete:         '{0}/{1} amb rellotge complet',
+        phase_switch_btn:       "Passar a la fase d'activitat",
+        call_panel_title:       'Cridar una hora',
+        call_hour_label:        'Hora',
+        call_hour_placeholder:  '— Seleccionar —',
+        call_question_label:    'Pregunta o tasca (opcional)',
+        call_question_placeholder: 'Ex: Expliqueu el concepte de fotosíntesi...',
+        call_btn:               'Cridar',
+        clear_btn:              'Netejar',
+        active_hour_label:      'Hora activa:',
+        end_activity_btn:       'Finalitzar activitat',
+        no_students_msg:        'Esperant que es connectin els alumnes...',
+        join_title:             'Unir-se a la sessió',
+        join_name_label:        'El teu nom',
+        join_name_placeholder:  'Ex: Anna García',
+        join_code_label:        'Codi de sessió',
+        join_btn:               'Unir-se',
+        student_title:          'El meu Rellotge de Cites',
+        student_hello:          'Hola,',
+        timer_banner_label:     'Temps per concertar cites',
+        hour_called_label:      'Hora cridada:',
+        your_partner_label:     'La teva parella és:',
+        no_partner_msg:         'No tens parella en aquesta hora. Consulta al professor.',
+        my_clock_label:         'El meu rellotge',
+        clock_appointments:     '{0}/12 cites',
+        clock_hint:             'Fes clic en una hora lliure per concertar una cita · Fes clic en una hora ocupada per cancel·lar-la',
+        classmates_title:       'Companys connectats',
+        no_classmates_yet:      'Esperant companys...',
+        no_classmates_connected:'No hi ha companys connectats encara.',
+        activity_notice:        "El professor ha iniciat la fase d'activitat.",
+        activity_wait:          'Espera que cridi una hora.',
+        ended_title:            'Activitat finalitzada',
+        ended_subtitle:         'El professor ha donat per conclosa la sessió.',
+        book_title:             'Concertar cita amb',
+        book_hint:              'Verd: lliures per als dos · Taronja: ocupada per al teu company',
+        cancel_btn:             'Cancel·lar',
+        share_title:            'Compartir sessió',
+        share_code_label:       'O comparteix el codi:',
+        share_url_label:        "URL d'accés directe:",
+        close_btn:              'Tancar',
+        already_booked_btn:     'Ja reservat',
+        add_appointment_btn:    '+ Cita',
+        disconnected_label:     'Desconnectat',
+        no_partner_label:       'Sense parella',
+        appointments_info:      '{0} cita · {1} hores lliures',
+        toast_code_copied:      'Codi copiat',
+        toast_url_copied:       'URL copiada',
+        toast_select_hour:      'Selecciona una hora',
+        confirm_activity_phase: "Passar a la fase d'activitat? Els alumnes ja no podran modificar les seves cites.",
+        confirm_end_activity:   "Finalitzar l'activitat? Els alumnes veuran un missatge de fi de sessió.",
+        confirm_unbook:         'Cancel·lar la cita de les {0}:00 amb {1}?',
+        error_create_session:   'Error en crear la sessió. Torna-ho a intentar.',
+        error_enter_name:       'Introdueix el teu nom.',
+        error_enter_code:       'Introdueix el codi de sessió.',
+        error_connection:       'No s\'ha pogut connectar. Verifica el codi i torna-ho a intentar.',
+        error_connection_lost:  'Connexió perduda. Recarrega per reconnectar.',
+        error_hour_busy:        'Aquesta hora ja està ocupada. Tria\'n una altra.',
+        error_already_booked:   'Ja tens una cita amb {0}. Cada company només pot aparèixer una vegada al rellotge.',
+    },
+    gl: {
+        app_subtitle:           'Técnica cooperativa de emparellamento',
+        role_teacher:           'Son profesor/a',
+        role_student:           'Son alumno/a',
+        how_it_works:           'Como funciona?',
+        back_btn:               'Atrás',
+        setup_title:            'Configurar sesión',
+        setup_timer_label:      'Tempo de preparación (minutos)',
+        setup_timer_help:       'Tempo que teñen os alumnos para concertar as súas citas.',
+        setup_start_btn:        'Iniciar sesión',
+        presenter_title:        'Reloxo de Citas — Panel do profesor',
+        presenter_code_label:   'Código:',
+        presenter_help:         'Axuda',
+        presenter_share:        'Compartir',
+        timer_start:            'Iniciar',
+        timer_pause:            'Pausar',
+        timer_resume:           'Retomar',
+        phase_booking:          'Fase: Citas',
+        phase_activity:         'Fase: Actividade',
+        phase_ended_badge:      'Actividade finalizada',
+        students_connected:     '{0} alumnos conectados',
+        clock_complete:         '{0}/{1} con reloxo completo',
+        phase_switch_btn:       'Pasar á fase de actividade',
+        call_panel_title:       'Chamar unha hora',
+        call_hour_label:        'Hora',
+        call_hour_placeholder:  '— Seleccionar —',
+        call_question_label:    'Pregunta ou tarefa (opcional)',
+        call_question_placeholder: 'Ex: Explicade o concepto de fotosíntese...',
+        call_btn:               'Chamar',
+        clear_btn:              'Limpar',
+        active_hour_label:      'Hora activa:',
+        end_activity_btn:       'Finalizar actividade',
+        no_students_msg:        'Agardando que se conecten os alumnos...',
+        join_title:             'Unirse á sesión',
+        join_name_label:        'O teu nome',
+        join_name_placeholder:  'Ex: Ana García',
+        join_code_label:        'Código de sesión',
+        join_btn:               'Unirse',
+        student_title:          'O meu Reloxo de Citas',
+        student_hello:          'Ola,',
+        timer_banner_label:     'Tempo para concertar citas',
+        hour_called_label:      'Hora chamada:',
+        your_partner_label:     'A túa parella é:',
+        no_partner_msg:         'Non tes parella nesta hora. Consulta ao profesor.',
+        my_clock_label:         'O meu reloxo',
+        clock_appointments:     '{0}/12 citas',
+        clock_hint:             'Fai clic nunha hora libre para concertar unha cita · Fai clic nunha hora ocupada para cancelala',
+        classmates_title:       'Compañeiros conectados',
+        no_classmates_yet:      'Agardando compañeiros...',
+        no_classmates_connected:'Non hai compañeiros conectados aínda.',
+        activity_notice:        'O profesor iniciou a fase de actividade.',
+        activity_wait:          'Agarda a que chame unha hora.',
+        ended_title:            'Actividade finalizada',
+        ended_subtitle:         'O profesor deu por rematada a sesión.',
+        book_title:             'Concertar cita con',
+        book_hint:              'Verde: libres para os dous · Laranxa: ocupada para o teu compañeiro',
+        cancel_btn:             'Cancelar',
+        share_title:            'Compartir sesión',
+        share_code_label:       'Ou comparte o código:',
+        share_url_label:        'URL de acceso directo:',
+        close_btn:              'Pechar',
+        already_booked_btn:     'Xa reservado',
+        add_appointment_btn:    '+ Cita',
+        disconnected_label:     'Desconectado',
+        no_partner_label:       'Sen parella',
+        appointments_info:      '{0} cita · {1} horas libres',
+        toast_code_copied:      'Código copiado',
+        toast_url_copied:       'URL copiada',
+        toast_select_hour:      'Selecciona unha hora',
+        confirm_activity_phase: '¿Pasar á fase de actividade? Os alumnos xa non poderán modificar as súas citas.',
+        confirm_end_activity:   '¿Finalizar a actividade? Os alumnos verán unha mensaxe de fin de sesión.',
+        confirm_unbook:         '¿Cancelar a cita das {0}:00 con {1}?',
+        error_create_session:   'Erro ao crear a sesión. Inténtao de novo.',
+        error_enter_name:       'Introduce o teu nome.',
+        error_enter_code:       'Introduce o código de sesión.',
+        error_connection:       'Non se puido conectar. Verifica o código e inténtao de novo.',
+        error_connection_lost:  'Conexión perdida. Recarga para reconectar.',
+        error_hour_busy:        'Esa hora xa está ocupada. Escolle outra.',
+        error_already_booked:   'Xa tes unha cita con {0}. Cada compañeiro só pode aparecer unha vez no reloxo.',
+    },
+    eu: {
+        app_subtitle:           'Bikotekatzeko teknika kooperatiboa',
+        role_teacher:           'Irakaslea naiz',
+        role_student:           'Ikaslea naiz',
+        how_it_works:           'Nola funtzionatzen du?',
+        back_btn:               'Atzera',
+        setup_title:            'Saioa konfiguratu',
+        setup_timer_label:      'Prestaketa denbora (minutuak)',
+        setup_timer_help:       'Ikasleek hitzorduak adosteko duten denbora.',
+        setup_start_btn:        'Saioa hasi',
+        presenter_title:        'Hitzordu Erlojua — Irakaslearen panela',
+        presenter_code_label:   'Kodea:',
+        presenter_help:         'Laguntza',
+        presenter_share:        'Partekatu',
+        timer_start:            'Hasi',
+        timer_pause:            'Pausatu',
+        timer_resume:           'Berrasi',
+        phase_booking:          'Fasea: Hitzorduak',
+        phase_activity:         'Fasea: Jarduera',
+        phase_ended_badge:      'Jarduera amaituta',
+        students_connected:     '{0} ikasle konektatuta',
+        clock_complete:         '{0}/{1} erloju osoarekin',
+        phase_switch_btn:       'Jarduera fasera pasa',
+        call_panel_title:       'Ordu bat deitu',
+        call_hour_label:        'Ordua',
+        call_hour_placeholder:  '— Hautatu —',
+        call_question_label:    'Galdera edo zeregina (aukerakoa)',
+        call_question_placeholder: 'Ad.: Azaldu fotosintesiaren kontzeptua...',
+        call_btn:               'Deitu',
+        clear_btn:              'Garbitu',
+        active_hour_label:      'Ordu aktiboa:',
+        end_activity_btn:       'Jarduera amaitu',
+        no_students_msg:        'Ikasleak konektatzen itxarotzen...',
+        join_title:             'Saioari batu',
+        join_name_label:        'Zure izena',
+        join_name_placeholder:  'Ad.: Ane García',
+        join_code_label:        'Saio kodea',
+        join_btn:               'Batu',
+        student_title:          'Nire Hitzordu Erlojua',
+        student_hello:          'Kaixo,',
+        timer_banner_label:     'Hitzorduak adosteko denbora',
+        hour_called_label:      'Deitutako ordua:',
+        your_partner_label:     'Zure bikotea da:',
+        no_partner_msg:         'Ez duzu bikoterik ordu honetan. Galdetu irakasleari.',
+        my_clock_label:         'Nire erlojua',
+        clock_appointments:     '{0}/12 hitzordu',
+        clock_hint:             'Sakatu ordu libre batean hitzordu bat adosteko · Sakatu ordu bete batean bertan behera uzteko',
+        classmates_title:       'Konektatutako ikasleak',
+        no_classmates_yet:      'Ikasleak itxarotzen...',
+        no_classmates_connected:'Ez dago ikaslerik oraindik konektatuta.',
+        activity_notice:        'Irakasleak jarduera fasea hasi du.',
+        activity_wait:          'Itxaron ordu bat deitu arte.',
+        ended_title:            'Jarduera amaituta',
+        ended_subtitle:         'Irakasleak saioa amaitutzat eman du.',
+        book_title:             'Hitzordua adostu honekin:',
+        book_hint:              'Berdea: bientzat libre · Laranja: zure ikasleak okupatua',
+        cancel_btn:             'Utzi',
+        share_title:            'Saioa partekatu',
+        share_code_label:       'Edo partekatu kodea:',
+        share_url_label:        'Zuzeneko sarbide URL:',
+        close_btn:              'Itxi',
+        already_booked_btn:     'Dagoeneko erreservatua',
+        add_appointment_btn:    '+ Hitzordua',
+        disconnected_label:     'Deskonektatuta',
+        no_partner_label:       'Bikoterik gabe',
+        appointments_info:      '{0} hitzordu · {1} ordu libre',
+        toast_code_copied:      'Kodea kopiatuta',
+        toast_url_copied:       'URL kopiatuta',
+        toast_select_hour:      'Hautatu ordu bat',
+        confirm_activity_phase: 'Jarduera fasera pasa? Ikasleek ezingo dituzte hitzorduak aldatu.',
+        confirm_end_activity:   'Jarduera amaitu? Ikasleek saioaren amaiera mezu bat ikusiko dute.',
+        confirm_unbook:         '{0}:00eko hitzordua {1}-rekin bertan behera utzi?',
+        error_create_session:   'Errorea saioa sortzean. Saiatu berriro.',
+        error_enter_name:       'Sartu zure izena.',
+        error_enter_code:       'Sartu saio kodea.',
+        error_connection:       'Ezin izan da konektatu. Egiaztatu kodea eta saiatu berriro.',
+        error_connection_lost:  'Konexioa galdu da. Kargatu berriro konektatzeko.',
+        error_hour_busy:        'Ordu hori dagoeneko beteta dago. Hautatu beste bat.',
+        error_already_booked:   'Dagoeneko hitzordua duzu {0}-rekin. Laguntzaile bakoitza behin bakarrik ager daiteke erlojuan.',
+    },
+    en: {
+        app_subtitle:           'Cooperative pairing technique',
+        role_teacher:           'I am a teacher',
+        role_student:           'I am a student',
+        how_it_works:           'How does it work?',
+        back_btn:               'Back',
+        setup_title:            'Configure session',
+        setup_timer_label:      'Preparation time (minutes)',
+        setup_timer_help:       'Time students have to arrange their appointments.',
+        setup_start_btn:        'Start session',
+        presenter_title:        'Appointment Clock — Teacher panel',
+        presenter_code_label:   'Code:',
+        presenter_help:         'Help',
+        presenter_share:        'Share',
+        timer_start:            'Start',
+        timer_pause:            'Pause',
+        timer_resume:           'Resume',
+        phase_booking:          'Phase: Appointments',
+        phase_activity:         'Phase: Activity',
+        phase_ended_badge:      'Activity ended',
+        students_connected:     '{0} students connected',
+        clock_complete:         '{0}/{1} with full clock',
+        phase_switch_btn:       'Switch to activity phase',
+        call_panel_title:       'Call an hour',
+        call_hour_label:        'Hour',
+        call_hour_placeholder:  '— Select —',
+        call_question_label:    'Question or task (optional)',
+        call_question_placeholder: 'E.g.: Explain the concept of photosynthesis...',
+        call_btn:               'Call',
+        clear_btn:              'Clear',
+        active_hour_label:      'Active hour:',
+        end_activity_btn:       'End activity',
+        no_students_msg:        'Waiting for students to connect...',
+        join_title:             'Join the session',
+        join_name_label:        'Your name',
+        join_name_placeholder:  'E.g.: Ana García',
+        join_code_label:        'Session code',
+        join_btn:               'Join',
+        student_title:          'My Appointment Clock',
+        student_hello:          'Hello,',
+        timer_banner_label:     'Time to arrange appointments',
+        hour_called_label:      'Hour called:',
+        your_partner_label:     'Your partner is:',
+        no_partner_msg:         'You have no partner for this hour. Ask the teacher.',
+        my_clock_label:         'My clock',
+        clock_appointments:     '{0}/12 appointments',
+        clock_hint:             'Click a free hour to arrange an appointment · Click a booked hour to cancel it',
+        classmates_title:       'Connected classmates',
+        no_classmates_yet:      'Waiting for classmates...',
+        no_classmates_connected:'No classmates connected yet.',
+        activity_notice:        'The teacher has started the activity phase.',
+        activity_wait:          'Wait for the teacher to call an hour.',
+        ended_title:            'Activity ended',
+        ended_subtitle:         'The teacher has concluded the session.',
+        book_title:             'Book appointment with',
+        book_hint:              'Green: free for both · Orange: occupied by your classmate',
+        cancel_btn:             'Cancel',
+        share_title:            'Share session',
+        share_code_label:       'Or share the code:',
+        share_url_label:        'Direct access URL:',
+        close_btn:              'Close',
+        already_booked_btn:     'Already booked',
+        add_appointment_btn:    '+ Appt',
+        disconnected_label:     'Disconnected',
+        no_partner_label:       'No partner',
+        appointments_info:      '{0} appt · {1} free hours',
+        toast_code_copied:      'Code copied',
+        toast_url_copied:       'URL copied',
+        toast_select_hour:      'Select an hour',
+        confirm_activity_phase: 'Switch to activity phase? Students will no longer be able to modify their appointments.',
+        confirm_end_activity:   'End the activity? Students will see an end-of-session message.',
+        confirm_unbook:         'Cancel the {0}:00 appointment with {1}?',
+        error_create_session:   'Error creating the session. Please try again.',
+        error_enter_name:       'Please enter your name.',
+        error_enter_code:       'Please enter the session code.',
+        error_connection:       'Could not connect. Check the code and try again.',
+        error_connection_lost:  'Connection lost. Reload to reconnect.',
+        error_hour_busy:        'That hour is already taken. Choose another.',
+        error_already_booked:   'You already have an appointment with {0}. Each classmate can only appear once on the clock.',
+    },
+    fr: {
+        app_subtitle:           "Technique coopérative d'appariement",
+        role_teacher:           'Je suis enseignant(e)',
+        role_student:           'Je suis élève',
+        how_it_works:           'Comment ça marche?',
+        back_btn:               'Retour',
+        setup_title:            'Configurer la session',
+        setup_timer_label:      'Temps de préparation (minutes)',
+        setup_timer_help:       'Temps dont disposent les élèves pour organiser leurs rendez-vous.',
+        setup_start_btn:        'Démarrer la session',
+        presenter_title:        'Horloge de Rendez-vous — Panneau enseignant',
+        presenter_code_label:   'Code:',
+        presenter_help:         'Aide',
+        presenter_share:        'Partager',
+        timer_start:            'Démarrer',
+        timer_pause:            'Pause',
+        timer_resume:           'Reprendre',
+        phase_booking:          'Phase: Rendez-vous',
+        phase_activity:         'Phase: Activité',
+        phase_ended_badge:      'Activité terminée',
+        students_connected:     '{0} élèves connectés',
+        clock_complete:         '{0}/{1} avec horloge complète',
+        phase_switch_btn:       "Passer à la phase d'activité",
+        call_panel_title:       'Appeler une heure',
+        call_hour_label:        'Heure',
+        call_hour_placeholder:  '— Sélectionner —',
+        call_question_label:    'Question ou tâche (optionnel)',
+        call_question_placeholder: 'Ex: Expliquez le concept de photosynthèse...',
+        call_btn:               'Appeler',
+        clear_btn:              'Effacer',
+        active_hour_label:      'Heure active:',
+        end_activity_btn:       "Terminer l'activité",
+        no_students_msg:        'En attente de connexion des élèves...',
+        join_title:             'Rejoindre la session',
+        join_name_label:        'Votre prénom',
+        join_name_placeholder:  'Ex: Ana García',
+        join_code_label:        'Code de session',
+        join_btn:               'Rejoindre',
+        student_title:          'Mon Horloge de Rendez-vous',
+        student_hello:          'Bonjour,',
+        timer_banner_label:     'Temps pour organiser les rendez-vous',
+        hour_called_label:      'Heure appelée:',
+        your_partner_label:     'Votre partenaire est:',
+        no_partner_msg:         "Vous n'avez pas de partenaire pour cette heure. Consultez l'enseignant.",
+        my_clock_label:         'Mon horloge',
+        clock_appointments:     '{0}/12 rendez-vous',
+        clock_hint:             "Cliquez sur une heure libre pour prendre rendez-vous · Cliquez sur une heure réservée pour l'annuler",
+        classmates_title:       'Camarades connectés',
+        no_classmates_yet:      'En attente de camarades...',
+        no_classmates_connected:'Aucun camarade connecté pour l\'instant.',
+        activity_notice:        "L'enseignant a démarré la phase d'activité.",
+        activity_wait:          "Attendez que l'enseignant appelle une heure.",
+        ended_title:            'Activité terminée',
+        ended_subtitle:         'L\'enseignant a conclu la session.',
+        book_title:             'Prendre rendez-vous avec',
+        book_hint:              'Vert: libres pour les deux · Orange: occupée par votre camarade',
+        cancel_btn:             'Annuler',
+        share_title:            'Partager la session',
+        share_code_label:       'Ou partagez le code:',
+        share_url_label:        "URL d'accès direct:",
+        close_btn:              'Fermer',
+        already_booked_btn:     'Déjà réservé',
+        add_appointment_btn:    '+ RDV',
+        disconnected_label:     'Déconnecté',
+        no_partner_label:       'Sans partenaire',
+        appointments_info:      '{0} RDV · {1} heures libres',
+        toast_code_copied:      'Code copié',
+        toast_url_copied:       'URL copiée',
+        toast_select_hour:      'Sélectionnez une heure',
+        confirm_activity_phase: "Passer à la phase d'activité? Les élèves ne pourront plus modifier leurs rendez-vous.",
+        confirm_end_activity:   "Terminer l'activité? Les élèves verront un message de fin de session.",
+        confirm_unbook:         'Annuler le rendez-vous de {0}h00 avec {1}?',
+        error_create_session:   'Erreur lors de la création de la session. Réessayez.',
+        error_enter_name:       'Veuillez entrer votre prénom.',
+        error_enter_code:       'Veuillez entrer le code de session.',
+        error_connection:       'Impossible de se connecter. Vérifiez le code et réessayez.',
+        error_connection_lost:  'Connexion perdue. Rechargez pour vous reconnecter.',
+        error_hour_busy:        'Cette heure est déjà occupée. Choisissez-en une autre.',
+        error_already_booked:   'Vous avez déjà un rendez-vous avec {0}. Chaque camarade ne peut apparaître qu\'une fois sur l\'horloge.',
+    },
+    de: {
+        app_subtitle:           'Kooperative Partnervermittlungstechnik',
+        role_teacher:           'Ich bin Lehrer/in',
+        role_student:           'Ich bin Schüler/in',
+        how_it_works:           'Wie funktioniert es?',
+        back_btn:               'Zurück',
+        setup_title:            'Sitzung konfigurieren',
+        setup_timer_label:      'Vorbereitungszeit (Minuten)',
+        setup_timer_help:       'Zeit, die die Schüler haben, um ihre Termine zu vereinbaren.',
+        setup_start_btn:        'Sitzung starten',
+        presenter_title:        'Terminuhr — Lehrerpanel',
+        presenter_code_label:   'Code:',
+        presenter_help:         'Hilfe',
+        presenter_share:        'Teilen',
+        timer_start:            'Starten',
+        timer_pause:            'Pause',
+        timer_resume:           'Fortsetzen',
+        phase_booking:          'Phase: Termine',
+        phase_activity:         'Phase: Aktivität',
+        phase_ended_badge:      'Aktivität beendet',
+        students_connected:     '{0} Schüler verbunden',
+        clock_complete:         '{0}/{1} mit vollem Zifferblatt',
+        phase_switch_btn:       'Zur Aktivitätsphase wechseln',
+        call_panel_title:       'Eine Stunde aufrufen',
+        call_hour_label:        'Stunde',
+        call_hour_placeholder:  '— Auswählen —',
+        call_question_label:    'Frage oder Aufgabe (optional)',
+        call_question_placeholder: 'Bsp.: Erklärt das Konzept der Photosynthese...',
+        call_btn:               'Aufrufen',
+        clear_btn:              'Leeren',
+        active_hour_label:      'Aktive Stunde:',
+        end_activity_btn:       'Aktivität beenden',
+        no_students_msg:        'Warten auf Schülerverbindungen...',
+        join_title:             'Der Sitzung beitreten',
+        join_name_label:        'Dein Name',
+        join_name_placeholder:  'Bsp.: Ana García',
+        join_code_label:        'Sitzungscode',
+        join_btn:               'Beitreten',
+        student_title:          'Meine Terminuhr',
+        student_hello:          'Hallo,',
+        timer_banner_label:     'Zeit für Terminvereinbarungen',
+        hour_called_label:      'Aufgerufene Stunde:',
+        your_partner_label:     'Dein Partner ist:',
+        no_partner_msg:         'Du hast keinen Partner für diese Stunde. Frag den Lehrer.',
+        my_clock_label:         'Meine Uhr',
+        clock_appointments:     '{0}/12 Termine',
+        clock_hint:             'Klick auf eine freie Stunde zum Vereinbaren · Klick auf eine belegte Stunde zum Stornieren',
+        classmates_title:       'Verbundene Mitschüler',
+        no_classmates_yet:      'Warten auf Mitschüler...',
+        no_classmates_connected:'Noch keine Mitschüler verbunden.',
+        activity_notice:        'Der Lehrer hat die Aktivitätsphase gestartet.',
+        activity_wait:          'Warte, bis der Lehrer eine Stunde aufruft.',
+        ended_title:            'Aktivität beendet',
+        ended_subtitle:         'Der Lehrer hat die Sitzung beendet.',
+        book_title:             'Termin vereinbaren mit',
+        book_hint:              'Grün: für beide frei · Orange: von deinem Mitschüler belegt',
+        cancel_btn:             'Abbrechen',
+        share_title:            'Sitzung teilen',
+        share_code_label:       'Oder teile den Code:',
+        share_url_label:        'Direktzugriff-URL:',
+        close_btn:              'Schließen',
+        already_booked_btn:     'Bereits gebucht',
+        add_appointment_btn:    '+ Termin',
+        disconnected_label:     'Getrennt',
+        no_partner_label:       'Kein Partner',
+        appointments_info:      '{0} Termin · {1} freie Std.',
+        toast_code_copied:      'Code kopiert',
+        toast_url_copied:       'URL kopiert',
+        toast_select_hour:      'Wähle eine Stunde',
+        confirm_activity_phase: 'Zur Aktivitätsphase wechseln? Schüler können ihre Termine nicht mehr ändern.',
+        confirm_end_activity:   'Aktivität beenden? Schüler sehen eine Sitzungsende-Nachricht.',
+        confirm_unbook:         'Termin um {0}:00 Uhr mit {1} stornieren?',
+        error_create_session:   'Fehler beim Erstellen der Sitzung. Versuche es erneut.',
+        error_enter_name:       'Bitte gib deinen Namen ein.',
+        error_enter_code:       'Bitte gib den Sitzungscode ein.',
+        error_connection:       'Verbindung fehlgeschlagen. Überprüfe den Code und versuche es erneut.',
+        error_connection_lost:  'Verbindung verloren. Neu laden zum Wiederverbinden.',
+        error_hour_busy:        'Diese Stunde ist bereits belegt. Wähle eine andere.',
+        error_already_booked:   'Du hast bereits einen Termin mit {0}. Jeder Mitschüler darf nur einmal auf der Uhr erscheinen.',
+    }
+};
+
+// ======================== i18n ========================
+let currentLang = 'es';
+
+function t(key, ...args) {
+    let str = (TRANSLATIONS[currentLang] || TRANSLATIONS.es)[key] || TRANSLATIONS.es[key] || key;
+    args.forEach((arg, i) => { str = str.replace(new RegExp(`\\{${i}\\}`, 'g'), arg); });
+    return str;
+}
+
+function applyTranslations() {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = t(el.getAttribute('data-i18n'));
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+    });
+    document.documentElement.lang = currentLang;
+}
+
+function setLanguage(lang) {
+    if (!TRANSLATIONS[lang]) return;
+    currentLang = lang;
+    localStorage.setItem('reloj_citas_lang', lang);
+    document.getElementById('lang-selector').value = lang;
+    applyTranslations();
+    // Update dynamic elements if already rendered
+    updateTimerBtn();
+}
+
+function detectLanguage() {
+    const saved   = localStorage.getItem('reloj_citas_lang');
+    const browser = (navigator.language || 'es').split('-')[0];
+    const lang    = (saved && TRANSLATIONS[saved]) ? saved
+                  : (TRANSLATIONS[browser])        ? browser
+                  : 'es';
+    currentLang = lang;
+    document.getElementById('lang-selector').value = lang;
+}
+
+function updateTimerBtn() {
+    const btn = document.getElementById('timer-toggle-btn');
+    if (!btn) return;
+    if (timerInterval) btn.textContent = t('timer_pause');
+    else if (sessionState.timer.remainingSeconds < sessionState.timer.totalSeconds)
+         btn.textContent = t('timer_resume');
+    else btn.textContent = t('timer_start');
+}
+
 // ======================== CONFIG ========================
 const PEER_CONFIG = {
     host: '0.peerjs.com', port: 443, path: '/', secure: true, debug: 0,
     config: {
         iceServers: [
             { urls: 'stun:stun.relay.metered.ca:80' },
-            { urls: 'turn:standard.relay.metered.ca:80',         username: '9745e21b303bdaea589c29bc', credential: 'UgG56tBqCEGNjzLY' },
-            { urls: 'turn:standard.relay.metered.ca:443?transport=tcp', username: '9745e21b303bdaea589c29bc', credential: 'UgG56tBqCEGNjzLY' }
+            { urls: 'turn:standard.relay.metered.ca:80',              username: '9745e21b303bdaea589c29bc', credential: 'UgG56tBqCEGNjzLY' },
+            { urls: 'turn:standard.relay.metered.ca:443?transport=tcp',username: '9745e21b303bdaea589c29bc', credential: 'UgG56tBqCEGNjzLY' }
         ],
         iceTransportPolicy: 'all'
     }
@@ -441,40 +999,38 @@ const HOURS = [1,2,3,4,5,6,7,8,9,10,11,12];
 // ======================== GLOBAL STATE ========================
 let peer = null;
 
-// --- Presenter ---
-let guestConnections = {};   // peerId → PeerJS DataConnection
+// Presenter
+let guestConnections = {};
 let sessionState = {
-    students: {},            // peerId → { name, connected, slots: {1:null,...,12:null} }
-    phase: 'booking',        // 'booking' | 'activity'
+    students: {},
+    phase: 'booking',
     timer: { running: false, totalSeconds: 300, remainingSeconds: 300 },
     currentHour: null,
     currentQuestion: ''
 };
 let timerInterval = null;
 
-// --- Student ---
-let hostConnection = null;
-let myPeerId = null;
-let myName = null;
-let lastState = null;
+// Student
+let hostConnection  = null;
+let myPeerId        = null;
+let myName          = null;
+let lastState       = null;
 let selectedPartnerId = null;
-let lastCalledHour = null;
-let shareUrl = '';
+let lastCalledHour  = null;
+let shareUrl        = '';
 
 // ======================== UI HELPERS ========================
 function showView(id) {
     ['view-role','view-presenter-setup','view-presenter-session',
      'view-student-join','view-student-session'].forEach(v => {
-        const el = document.getElementById(v);
-        if (el) el.classList.add('hidden');
+        document.getElementById(v)?.classList.add('hidden');
     });
     document.getElementById(id).classList.remove('hidden');
 }
 
 function goBack() {
     if (peer) { try { peer.destroy(); } catch(e){} peer = null; }
-    hostConnection = null;
-    guestConnections = {};
+    hostConnection = null; guestConnections = {};
     if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
     sessionState = { students: {}, phase: 'booking', timer: { running: false, totalSeconds: 300, remainingSeconds: 300 }, currentHour: null, currentQuestion: '' };
     showView('view-role');
@@ -482,11 +1038,10 @@ function goBack() {
 
 let toastTimeout = null;
 function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.style.opacity = 1;
+    const el = document.getElementById('toast');
+    el.textContent = msg; el.style.opacity = 1;
     clearTimeout(toastTimeout);
-    toastTimeout = setTimeout(() => { t.style.opacity = 0; }, 2500);
+    toastTimeout = setTimeout(() => { el.style.opacity = 0; }, 2500);
 }
 
 function selectRole(role) {
@@ -500,9 +1055,7 @@ function selectRole(role) {
 }
 
 function escapeHtml(str) {
-    return String(str)
-        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
 // ======================== CLOCK RENDERING ========================
@@ -515,58 +1068,42 @@ function renderClock(containerId, slots, students, calledHour, phase, interactiv
     const container = document.getElementById(containerId);
     if (!container) return;
     container.innerHTML = '';
-
     const size = 280, radius = 108;
 
-    const face = document.createElement('div');
-    face.className = 'clock-face';
-    container.appendChild(face);
-
-    const center = document.createElement('div');
-    center.className = 'clock-center';
-    container.appendChild(center);
+    const face = document.createElement('div'); face.className = 'clock-face'; container.appendChild(face);
+    const center = document.createElement('div'); center.className = 'clock-center'; container.appendChild(center);
 
     HOURS.forEach(h => {
         const pos = clockPos(h, size, radius);
         const partnerId = slots[h];
-        const partner = partnerId ? students[partnerId] : null;
-        const isCalled = parseInt(calledHour) === h;
+        const partner   = partnerId ? students[partnerId] : null;
+        const isCalled  = parseInt(calledHour) === h;
 
         const slot = document.createElement('div');
         slot.className = 'clock-slot';
-
         if (isCalled && partnerId)       slot.classList.add('called');
         else if (isCalled && !partnerId) slot.classList.add('no-partner');
         else if (partnerId)              slot.classList.add('booked');
         else                             slot.classList.add('free');
 
         if (interactive && phase === 'booking') slot.classList.add('interactive');
+        slot.style.left = pos.x + 'px'; slot.style.top = pos.y + 'px';
 
-        slot.style.left = pos.x + 'px';
-        slot.style.top  = pos.y + 'px';
-
-        const hourEl = document.createElement('span');
-        hourEl.className = 'slot-hour';
-        hourEl.textContent = h;
+        const hourEl = document.createElement('span'); hourEl.className = 'slot-hour'; hourEl.textContent = h;
         slot.appendChild(hourEl);
 
         if (partner) {
-            const nameEl = document.createElement('span');
-            nameEl.className = 'slot-name';
+            const nameEl = document.createElement('span'); nameEl.className = 'slot-name';
             nameEl.textContent = partner.name.split(' ')[0];
             slot.appendChild(nameEl);
             slot.title = `${h}:00 — ${partner.name}`;
         } else {
-            slot.title = `${h}:00 — libre`;
+            slot.title = `${h}:00`;
         }
 
-        if (interactive && phase === 'booking') {
-            if (partnerId) {
-                slot.onclick = () => confirmUnbook(h);
-            }
-            // Free slots: click handled via classmate list / book panel
+        if (interactive && phase === 'booking' && partnerId) {
+            slot.onclick = () => confirmUnbook(h);
         }
-
         container.appendChild(slot);
     });
 }
@@ -574,45 +1111,31 @@ function renderClock(containerId, slots, students, calledHour, phase, interactiv
 function renderMiniClock(container, slots, calledHour) {
     container.innerHTML = '';
     const size = 80, radius = 30;
-
-    const face = document.createElement('div');
-    face.className = 'mini-clock-face';
-    container.appendChild(face);
-
+    const face = document.createElement('div'); face.className = 'mini-clock-face'; container.appendChild(face);
     HOURS.forEach(h => {
         const pos = clockPos(h, size, radius);
-        const el = document.createElement('div');
-        el.className = 'mini-slot';
+        const el  = document.createElement('div'); el.className = 'mini-slot';
         const isCalled = parseInt(calledHour) === h;
-        const hasPartner = slots[h];
-
-        if (isCalled && hasPartner) el.classList.add('called');
-        else if (isCalled)          el.classList.add('no-partner');
-        else if (hasPartner)        el.classList.add('booked');
-        else                        el.classList.add('free');
-
-        el.style.left = pos.x + 'px';
-        el.style.top  = pos.y + 'px';
-        el.title = h;
+        if (isCalled && slots[h]) el.classList.add('called');
+        else if (isCalled)        el.classList.add('no-partner');
+        else if (slots[h])        el.classList.add('booked');
+        else                      el.classList.add('free');
+        el.style.left = pos.x + 'px'; el.style.top = pos.y + 'px';
         container.appendChild(el);
     });
 }
 
 // ======================== TIMER ========================
 function formatTime(sec) {
-    const m = Math.floor(sec / 60);
-    const s = sec % 60;
-    return `${m}:${s.toString().padStart(2,'0')}`;
+    return `${Math.floor(sec/60)}:${(sec%60).toString().padStart(2,'0')}`;
 }
 
 function toggleTimer() {
-    if (sessionState.timer.running) {
+    if (timerInterval) {
         sessionState.timer.running = false;
         clearInterval(timerInterval); timerInterval = null;
-        document.getElementById('timer-toggle-btn').textContent = 'Reanudar';
     } else {
         sessionState.timer.running = true;
-        document.getElementById('timer-toggle-btn').textContent = 'Pausar';
         timerInterval = setInterval(() => {
             if (sessionState.timer.remainingSeconds > 0) {
                 sessionState.timer.remainingSeconds--;
@@ -621,11 +1144,12 @@ function toggleTimer() {
             } else {
                 sessionState.timer.running = false;
                 clearInterval(timerInterval); timerInterval = null;
-                document.getElementById('timer-toggle-btn').textContent = 'Iniciar';
+                updateTimerBtn();
                 broadcastState();
             }
         }, 1000);
     }
+    updateTimerBtn();
     document.getElementById('p-timer-display').textContent = formatTime(sessionState.timer.remainingSeconds);
     broadcastState();
 }
@@ -634,7 +1158,7 @@ function resetTimer() {
     if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
     sessionState.timer.running = false;
     sessionState.timer.remainingSeconds = sessionState.timer.totalSeconds;
-    document.getElementById('timer-toggle-btn').textContent = 'Iniciar';
+    updateTimerBtn();
     document.getElementById('p-timer-display').textContent = formatTime(sessionState.timer.remainingSeconds);
     broadcastState();
 }
@@ -661,10 +1185,9 @@ function startPresenterSession() {
         document.getElementById('share-code-display').textContent = id;
         document.getElementById('share-url-display').textContent = shareUrl;
         document.getElementById('p-timer-display').textContent = formatTime(sessionState.timer.remainingSeconds);
+        updateTimerBtn();
 
-        // QR
-        const qrEl = document.getElementById('share-qr');
-        qrEl.innerHTML = '';
+        const qrEl = document.getElementById('share-qr'); qrEl.innerHTML = '';
         new QRCode(qrEl, { text: shareUrl, width: 180, height: 180, correctLevel: QRCode.CorrectLevel.H });
 
         updatePresenterUI();
@@ -675,19 +1198,18 @@ function startPresenterSession() {
             guestConnections[conn.peer] = conn;
             conn.send({ type: 'state', payload: getStateSnapshot() });
         });
-        conn.on('data', (data) => handlePresenterMessage(conn.peer, data));
+        conn.on('data',  (data) => handlePresenterMessage(conn.peer, data));
         conn.on('close', () => {
             if (sessionState.students[conn.peer]) sessionState.students[conn.peer].connected = false;
             delete guestConnections[conn.peer];
-            broadcastState();
-            updatePresenterUI();
+            broadcastState(); updatePresenterUI();
         });
         conn.on('error', (err) => console.warn('conn error', err));
     });
 
     peer.on('error', (err) => {
         console.error(err);
-        document.getElementById('start-error').textContent = 'Error al crear la sesión. Inténtalo de nuevo.';
+        document.getElementById('start-error').textContent = t('error_create_session');
         document.getElementById('start-error').classList.remove('hidden');
         document.getElementById('start-btn-text').classList.remove('hidden');
         document.getElementById('start-loader').classList.add('hidden');
@@ -698,102 +1220,66 @@ function startPresenterSession() {
 function handlePresenterMessage(peerId, data) {
     if (data.type === 'join') {
         const name = String(data.name).trim().substring(0, 40);
-
-        // Reconnect: find offline student with same name
         const prevId = Object.keys(sessionState.students).find(
             id => sessionState.students[id].name === name && !sessionState.students[id].connected && id !== peerId
         );
-
         if (prevId) {
-            // Migrate: update partner references to new peerId
             Object.keys(sessionState.students).forEach(sid => {
-                HOURS.forEach(h => {
-                    if (sessionState.students[sid].slots[h] === prevId)
-                        sessionState.students[sid].slots[h] = peerId;
-                });
+                HOURS.forEach(h => { if (sessionState.students[sid].slots[h] === prevId) sessionState.students[sid].slots[h] = peerId; });
             });
             sessionState.students[peerId] = { ...sessionState.students[prevId], connected: true };
             delete sessionState.students[prevId];
         } else if (!sessionState.students[peerId]) {
-            sessionState.students[peerId] = {
-                name,
-                connected: true,
-                slots: Object.fromEntries(HOURS.map(h => [h, null]))
-            };
+            sessionState.students[peerId] = { name, connected: true, slots: Object.fromEntries(HOURS.map(h => [h, null])) };
         } else {
             sessionState.students[peerId].connected = true;
         }
-
-        broadcastState();
-        updatePresenterUI();
+        broadcastState(); updatePresenterUI();
 
     } else if (data.type === 'book') {
-        const h = parseInt(data.hour);
-        const partnerId = data.partnerId;
-        if (!HOURS.includes(h)) return;
-        if (sessionState.phase !== 'booking') return;
-
-        const sA = sessionState.students[peerId];
-        const sB = sessionState.students[partnerId];
+        const h = parseInt(data.hour); const partnerId = data.partnerId;
+        if (!HOURS.includes(h) || sessionState.phase !== 'booking') return;
+        const sA = sessionState.students[peerId]; const sB = sessionState.students[partnerId];
         if (!sA || !sB) return;
 
         if (sA.slots[h] !== null || sB.slots[h] !== null) {
-            if (guestConnections[peerId]?.open) {
-                guestConnections[peerId].send({ type: 'book-error', hour: h, message: 'Esa hora ya está ocupada. Elige otra.' });
-            }
+            guestConnections[peerId]?.open && guestConnections[peerId].send({ type: 'book-error', code: 'hour_busy' });
             return;
         }
-
-        // Impedir más de una cita con la misma persona
         const alreadyBooked = HOURS.some(hh => sA.slots[hh] === partnerId);
         if (alreadyBooked) {
-            if (guestConnections[peerId]?.open) {
-                guestConnections[peerId].send({ type: 'book-error', hour: h, message: `Ya tienes una cita con ${sB.name}. Cada compañero solo puede aparecer una vez en el reloj.` });
-            }
+            guestConnections[peerId]?.open && guestConnections[peerId].send({ type: 'book-error', code: 'already_booked', partnerName: sB.name });
             return;
         }
-
-        sA.slots[h] = partnerId;
-        sB.slots[h] = peerId;
-        broadcastState();
-        updatePresenterUI();
+        sA.slots[h] = partnerId; sB.slots[h] = peerId;
+        broadcastState(); updatePresenterUI();
 
     } else if (data.type === 'unbook') {
         const h = parseInt(data.hour);
-        if (!HOURS.includes(h)) return;
-        if (sessionState.phase !== 'booking') return;
-
-        const sA = sessionState.students[peerId];
-        if (!sA) return;
-        const partnerId = sA.slots[h];
-        if (!partnerId) return;
-
+        if (!HOURS.includes(h) || sessionState.phase !== 'booking') return;
+        const sA = sessionState.students[peerId]; if (!sA) return;
+        const partnerId = sA.slots[h]; if (!partnerId) return;
         sA.slots[h] = null;
         if (sessionState.students[partnerId]) sessionState.students[partnerId].slots[h] = null;
-        broadcastState();
-        updatePresenterUI();
+        broadcastState(); updatePresenterUI();
     }
 }
 
 function getStateSnapshot() {
     return JSON.parse(JSON.stringify({
-        students:        sessionState.students,
-        phase:           sessionState.phase,
-        timer:           sessionState.timer,
-        currentHour:     sessionState.currentHour,
+        students: sessionState.students, phase: sessionState.phase,
+        timer: sessionState.timer, currentHour: sessionState.currentHour,
         currentQuestion: sessionState.currentQuestion
     }));
 }
 
 function broadcastState() {
     const payload = getStateSnapshot();
-    Object.values(guestConnections).forEach(conn => {
-        if (conn.open) conn.send({ type: 'state', payload });
-    });
+    Object.values(guestConnections).forEach(conn => { if (conn.open) conn.send({ type: 'state', payload }); });
 }
 
 function switchToActivityPhase() {
-    if (!confirm('¿Pasar a la fase de actividad? Los alumnos ya no podrán modificar sus citas.')) return;
+    if (!confirm(t('confirm_activity_phase'))) return;
     sessionState.phase = 'activity';
     if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
     sessionState.timer.running = false;
@@ -802,127 +1288,97 @@ function switchToActivityPhase() {
     document.getElementById('p-call-panel').classList.remove('hidden');
 
     const badge = document.getElementById('p-phase-badge');
-    badge.textContent = 'Fase: Actividad';
+    badge.textContent = t('phase_activity');
     badge.className = 'bg-green-100 text-green-800 text-xs font-bold px-3 py-1.5 rounded-full';
+    badge.removeAttribute('data-i18n');
 
-    broadcastState();
-    updatePresenterUI();
+    broadcastState(); updatePresenterUI();
 }
 
 function callHour() {
     const hour = parseInt(document.getElementById('p-call-hour').value);
-    if (!hour) { showToast('Selecciona una hora'); return; }
+    if (!hour) { showToast(t('toast_select_hour')); return; }
     const question = document.getElementById('p-call-question').value.trim();
-
-    sessionState.currentHour     = hour;
-    sessionState.currentQuestion = question;
-
+    sessionState.currentHour = hour; sessionState.currentQuestion = question;
     document.getElementById('p-active-hour').textContent = hour;
     document.getElementById('p-active-question').textContent = question;
     document.getElementById('p-active-question-wrap').style.display = question ? '' : 'none';
     document.getElementById('p-current-call').classList.remove('hidden');
-
-    broadcastState();
-    updatePresenterUI();
+    broadcastState(); updatePresenterUI();
 }
 
 function clearCall() {
-    sessionState.currentHour     = null;
-    sessionState.currentQuestion = '';
+    sessionState.currentHour = null; sessionState.currentQuestion = '';
     document.getElementById('p-current-call').classList.add('hidden');
-    broadcastState();
-    updatePresenterUI();
+    broadcastState(); updatePresenterUI();
 }
 
 function endActivity() {
-    if (!confirm('¿Finalizar la actividad? Los alumnos verán un mensaje de fin de sesión.')) return;
-    sessionState.phase           = 'ended';
-    sessionState.currentHour     = null;
-    sessionState.currentQuestion = '';
+    if (!confirm(t('confirm_end_activity'))) return;
+    sessionState.phase = 'ended'; sessionState.currentHour = null; sessionState.currentQuestion = '';
     broadcastState();
-
     const badge = document.getElementById('p-phase-badge');
-    badge.textContent = 'Actividad finalizada';
+    badge.textContent = t('phase_ended_badge');
     badge.className   = 'bg-red-100 text-red-800 text-xs font-bold px-3 py-1.5 rounded-full';
+    badge.removeAttribute('data-i18n');
     document.getElementById('p-call-panel').classList.add('hidden');
 }
 
 function copySessionCode() {
     const code = document.getElementById('p-session-code').textContent || document.getElementById('share-code-display').textContent;
-    navigator.clipboard.writeText(code).then(() => showToast('Código copiado'));
+    navigator.clipboard.writeText(code).then(() => showToast(t('toast_code_copied')));
 }
 
 function copyDirectUrl() {
-    navigator.clipboard.writeText(shareUrl).then(() => showToast('URL copiada'));
+    navigator.clipboard.writeText(shareUrl).then(() => showToast(t('toast_url_copied')));
 }
 
-function showShareModal() {
-    document.getElementById('share-modal').classList.remove('hidden');
-}
+function showShareModal() { document.getElementById('share-modal').classList.remove('hidden'); }
 
 function updatePresenterUI() {
     const students = sessionState.students;
     const ids = Object.keys(students);
-    const connectedIds = ids.filter(id => students[id].connected);
+    const connectedCount = ids.filter(id => students[id].connected).length;
 
-    document.getElementById('p-student-count').textContent = connectedIds.length;
+    document.getElementById('p-student-count-text').textContent = t('students_connected', connectedCount);
 
     const fullyBooked = ids.filter(id => HOURS.every(h => students[id].slots[h] !== null)).length;
-    document.getElementById('p-completion-text').textContent =
-        ids.length ? `${fullyBooked}/${ids.length} con reloj completo` : '';
+    document.getElementById('p-completion-text').textContent = ids.length ? t('clock_complete', fullyBooked, ids.length) : '';
 
-    const grid   = document.getElementById('p-students-grid');
-    const noSt   = document.getElementById('p-no-students');
+    const grid = document.getElementById('p-students-grid');
+    const noSt = document.getElementById('p-no-students');
 
     if (ids.length === 0) {
         noSt.classList.remove('hidden');
-        // Clear old cards except the no-students placeholder
         Array.from(grid.children).forEach(c => { if (c !== noSt) c.remove(); });
         return;
     }
     noSt.classList.add('hidden');
 
-    // Rebuild cards
-    // Keep track of existing cards to avoid full re-render flicker
     const existingCards = {};
     Array.from(grid.children).forEach(c => {
-        const pid = c.dataset.peerId;
-        if (pid) existingCards[pid] = c;
+        if (c.dataset.peerId) existingCards[c.dataset.peerId] = c;
         else if (c !== noSt) c.remove();
     });
+    Object.keys(existingCards).forEach(pid => { if (!students[pid]) { existingCards[pid].remove(); delete existingCards[pid]; } });
 
-    // Remove stale cards
-    Object.keys(existingCards).forEach(pid => {
-        if (!students[pid]) { existingCards[pid].remove(); delete existingCards[pid]; }
-    });
-
-    ids.forEach((id, idx) => {
+    ids.forEach(id => {
         const s = students[id];
         const booked = HOURS.filter(h => s.slots[h] !== null).length;
-
         let card = existingCards[id];
-        if (!card) {
-            card = document.createElement('div');
-            card.dataset.peerId = id;
-            grid.appendChild(card);
-        }
-
-        card.className = `bg-white rounded-xl p-3 shadow text-center ${s.connected ? '' : 'opacity-50'}`;
+        if (!card) { card = document.createElement('div'); card.dataset.peerId = id; grid.appendChild(card); }
 
         const partnerForHour = sessionState.currentHour ? s.slots[sessionState.currentHour] : null;
         const partnerName    = partnerForHour && students[partnerForHour] ? students[partnerForHour].name : null;
 
+        card.className = `bg-white rounded-xl p-3 shadow text-center ${s.connected ? '' : 'opacity-50'}`;
         card.innerHTML = `
             <p class="font-semibold text-sm text-gray-800 mb-0.5 truncate" title="${escapeHtml(s.name)}">${escapeHtml(s.name)}</p>
             <p class="text-xs text-gray-400 mb-2">${booked}/12</p>
             <div class="mini-clock-wrap mx-auto mb-2" id="mini-${id}"></div>
-            ${sessionState.currentHour ? `
-                <p class="text-xs font-semibold ${partnerName ? 'text-green-700' : 'text-red-500'}">
-                    ${partnerName ? '&#8594; ' + escapeHtml(partnerName.split(' ')[0]) : 'Sin pareja'}
-                </p>` : ''}
-            ${!s.connected ? '<p class="text-xs text-red-400 mt-1">Desconectado</p>' : ''}
+            ${sessionState.currentHour ? `<p class="text-xs font-semibold ${partnerName ? 'text-green-700' : 'text-red-500'}">${partnerName ? '&#8594; ' + escapeHtml(partnerName.split(' ')[0]) : t('no_partner_label')}</p>` : ''}
+            ${!s.connected ? `<p class="text-xs text-red-400 mt-1">${t('disconnected_label')}</p>` : ''}
         `;
-
         renderMiniClock(card.querySelector(`#mini-${id}`), s.slots, sessionState.currentHour);
     });
 }
@@ -931,10 +1387,8 @@ function updatePresenterUI() {
 function joinSession() {
     const name = document.getElementById('s-name-input').value.trim();
     const code = document.getElementById('s-code-input').value.trim().toUpperCase();
-
-    if (!name) { showJoinError('Introduce tu nombre.'); return; }
-    if (!code || code.length < 4) { showJoinError('Introduce el código de sesión.'); return; }
-
+    if (!name) { showJoinError(t('error_enter_name')); return; }
+    if (!code || code.length < 4) { showJoinError(t('error_enter_code')); return; }
     myName = name;
 
     document.getElementById('join-btn').disabled = true;
@@ -943,31 +1397,15 @@ function joinSession() {
     document.getElementById('join-error').classList.add('hidden');
 
     peer = new Peer(null, PEER_CONFIG);
-
     peer.on('open', (id) => {
         myPeerId = id;
         hostConnection = peer.connect(code, { reliable: true });
-
-        hostConnection.on('open', () => {
-            hostConnection.send({ type: 'join', name: myName });
-        });
-
-        hostConnection.on('data', (data) => handleStudentMessage(data));
-
-        hostConnection.on('close', () => {
-            showToast('Conexión perdida. Recarga para reconectar.');
-        });
-
-        hostConnection.on('error', (err) => {
-            console.error(err);
-            showJoinError('No se pudo conectar. Verifica el código.');
-        });
+        hostConnection.on('open',  () => { hostConnection.send({ type: 'join', name: myName }); });
+        hostConnection.on('data',  (data) => handleStudentMessage(data));
+        hostConnection.on('close', () => showToast(t('error_connection_lost')));
+        hostConnection.on('error', () => showJoinError(t('error_connection')));
     });
-
-    peer.on('error', (err) => {
-        console.error(err);
-        showJoinError('No se pudo conectar. Verifica el código e inténtalo de nuevo.');
-    });
+    peer.on('error', () => showJoinError(t('error_connection')));
 }
 
 function showJoinError(msg) {
@@ -981,23 +1419,21 @@ function showJoinError(msg) {
 function handleStudentMessage(data) {
     if (data.type === 'state') {
         lastState = data.payload;
-
         if (document.getElementById('view-student-session').classList.contains('hidden')) {
             showView('view-student-session');
             document.getElementById('s-my-name').textContent = myName;
         }
-
         renderStudentView(data.payload);
-
     } else if (data.type === 'book-error') {
-        showToast(data.message || 'Esa hora ya está ocupada.');
-        closeBookPanel();
+        const msg = data.code === 'already_booked'
+            ? t('error_already_booked', data.partnerName || '')
+            : t('error_hour_busy');
+        showToast(msg); closeBookPanel();
     }
 }
 
 function renderStudentView(state) {
-    const me = state.students[myPeerId];
-    if (!me) return;
+    const me = state.students[myPeerId]; if (!me) return;
 
     // Timer
     const timerBar = document.getElementById('s-timer-bar');
@@ -1006,6 +1442,13 @@ function renderStudentView(state) {
         document.getElementById('s-timer-display').textContent = formatTime(state.timer.remainingSeconds);
     } else {
         timerBar.classList.add('hidden');
+    }
+
+    // Ended
+    if (state.phase === 'ended') {
+        if (navigator.vibrate) navigator.vibrate([300, 150, 300, 150, 300]);
+        document.getElementById('s-ended-overlay').classList.remove('hidden');
+        return;
     }
 
     // Called hour
@@ -1018,10 +1461,7 @@ function renderStudentView(state) {
         calledAlert.classList.remove('hidden');
         document.getElementById('s-called-hour').textContent = state.currentHour;
         document.getElementById('s-called-question').textContent = state.currentQuestion || '';
-
-        const partnerId = me.slots[state.currentHour];
-        const partner   = partnerId ? state.students[partnerId] : null;
-
+        const partner = me.slots[state.currentHour] ? state.students[me.slots[state.currentHour]] : null;
         if (partner) {
             document.getElementById('s-partner-info').classList.remove('hidden');
             document.getElementById('s-no-partner-info').classList.add('hidden');
@@ -1034,75 +1474,61 @@ function renderStudentView(state) {
         calledAlert.classList.add('hidden');
     }
 
-    // Ended overlay
-    if (state.phase === 'ended') {
-        if (navigator.vibrate) navigator.vibrate([300, 150, 300, 150, 300]);
-        document.getElementById('s-ended-overlay').classList.remove('hidden');
-        return;
-    }
-
-    // Phase notice
+    // Activity notice
     const notice = document.getElementById('s-activity-phase-notice');
-    if (state.phase === 'activity' && !state.currentHour) {
-        notice.classList.remove('hidden');
-    } else {
-        notice.classList.add('hidden');
-    }
+    (state.phase === 'activity' && !state.currentHour)
+        ? notice.classList.remove('hidden')
+        : notice.classList.add('hidden');
 
-    // Clock
+    // Clock title
     const booked = HOURS.filter(h => me.slots[h] !== null).length;
-    document.getElementById('s-slots-filled').textContent = booked;
-    renderClock('s-clock', me.slots, state.students, state.currentHour, state.phase, true);
+    document.getElementById('s-clock-title').textContent =
+        t('my_clock_label') + ' — ' + t('clock_appointments', booked);
 
-    // Classmates
+    renderClock('s-clock', me.slots, state.students, state.currentHour, state.phase, true);
     renderClassmatesList(state, me);
 }
 
 function renderClassmatesList(state, me) {
-    const list = document.getElementById('s-classmates-list');
+    const list   = document.getElementById('s-classmates-list');
     const others = Object.keys(state.students).filter(id => id !== myPeerId);
 
     if (others.length === 0) {
-        list.innerHTML = '<p class="text-gray-400 text-sm text-center py-6">No hay compañeros conectados aún.</p>';
+        list.innerHTML = `<p class="text-gray-400 text-sm text-center py-6">${t('no_classmates_connected')}</p>`;
         return;
     }
-
     list.innerHTML = '';
+
     others.forEach(id => {
-        const s = state.students[id];
-        const mutualFree    = HOURS.filter(h => !me.slots[h] && !s.slots[h]).length;
-        const booked2gether = HOURS.filter(h => me.slots[h] === id).length;
+        const s            = state.students[id];
+        const mutualFree   = HOURS.filter(h => !me.slots[h] && !s.slots[h]).length;
+        const booked2gether= HOURS.filter(h => me.slots[h] === id).length;
 
         const item = document.createElement('div');
         item.className = `flex items-center justify-between p-3 rounded-xl border transition ${
-            !s.connected          ? 'bg-gray-100 border-gray-200 opacity-50' :
-            booked2gether > 0     ? 'bg-blue-50 border-blue-300' :
-                                    'bg-gray-50 border-gray-200'
+            !s.connected      ? 'bg-gray-100 border-gray-200 opacity-50' :
+            booked2gether > 0 ? 'bg-blue-50 border-blue-300' :
+                                'bg-gray-50 border-gray-200'
         }`;
 
-        const info = document.createElement('div');
-        info.className = 'flex-grow min-w-0 mr-3';
+        const info = document.createElement('div'); info.className = 'flex-grow min-w-0 mr-3';
         info.innerHTML = `
             <p class="font-semibold text-gray-800 truncate">${escapeHtml(s.name)}</p>
-            <p class="text-xs text-gray-400">${booked2gether} cita${booked2gether!==1?'s':''} · ${mutualFree} hora${mutualFree!==1?'s':''} libre${mutualFree!==1?'s':''}</p>
+            <p class="text-xs text-gray-400">${t('appointments_info', booked2gether, mutualFree)}</p>
         `;
-
         item.appendChild(info);
 
         if (state.phase === 'booking' && s.connected) {
             const canBook = mutualFree > 0 && booked2gether === 0;
             const btn = document.createElement('button');
             btn.className = `text-sm font-bold py-1.5 px-3 rounded-lg transition flex-shrink-0 ${
-                canBook
-                    ? 'bg-green-500 hover:bg-green-600 text-white'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                canBook ? 'bg-green-500 hover:bg-green-600 text-white' : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`;
-            btn.textContent = booked2gether > 0 ? 'Ya reservado' : '+ Cita';
+            btn.textContent = booked2gether > 0 ? t('already_booked_btn') : t('add_appointment_btn');
             btn.disabled = !canBook;
             if (canBook) btn.onclick = () => openBookPanel(id);
             item.appendChild(btn);
         }
-
         list.appendChild(item);
     });
 }
@@ -1110,42 +1536,24 @@ function renderClassmatesList(state, me) {
 function openBookPanel(partnerId) {
     if (!lastState) return;
     selectedPartnerId = partnerId;
-
-    const me      = lastState.students[myPeerId];
-    const partner = lastState.students[partnerId];
+    const me = lastState.students[myPeerId]; const partner = lastState.students[partnerId];
     if (!me || !partner) return;
-
     document.getElementById('book-partner-name').textContent = partner.name;
 
-    const grid = document.getElementById('book-hours-grid');
-    grid.innerHTML = '';
-
+    const grid = document.getElementById('book-hours-grid'); grid.innerHTML = '';
     HOURS.forEach(h => {
-        const myFree    = !me.slots[h];
-        const theirFree = !partner.slots[h];
-        const bothFree  = myFree && theirFree;
-
+        const myFree   = !me.slots[h]; const theirFree = !partner.slots[h]; const bothFree = myFree && theirFree;
         const btn = document.createElement('button');
-        btn.className = `py-2 rounded-lg text-center font-bold text-sm border-2 transition `;
         btn.textContent = `${h}:00`;
-
-        if (bothFree) {
-            btn.className += 'bg-green-50 border-green-400 text-green-800 hover:bg-green-100';
-            btn.title = 'Libres para los dos';
-            btn.onclick = () => bookAppointment(h);
-        } else if (!myFree) {
-            btn.className += 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed opacity-50';
-            btn.title = 'Tú tienes esta hora ocupada';
-            btn.disabled = true;
-        } else {
-            btn.className += 'bg-orange-50 border-orange-300 text-orange-500 cursor-not-allowed opacity-60';
-            btn.title = `${partner.name.split(' ')[0]} tiene esta hora ocupada`;
-            btn.disabled = true;
-        }
-
+        btn.className = `py-2 rounded-lg text-center font-bold text-sm border-2 transition ` + (
+            bothFree  ? 'bg-green-50 border-green-400 text-green-800 hover:bg-green-100' :
+            !myFree   ? 'bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed opacity-50' :
+                        'bg-orange-50 border-orange-300 text-orange-500 cursor-not-allowed opacity-60'
+        );
+        btn.disabled = !bothFree;
+        if (bothFree) btn.onclick = () => bookAppointment(h);
         grid.appendChild(btn);
     });
-
     document.getElementById('s-book-panel').classList.remove('hidden');
 }
 
@@ -1162,31 +1570,26 @@ function bookAppointment(hour) {
 
 function confirmUnbook(hour) {
     if (!lastState) return;
-    const me = lastState.students[myPeerId];
-    if (!me || !me.slots[hour]) return;
+    const me = lastState.students[myPeerId]; if (!me || !me.slots[hour]) return;
     const partner = lastState.students[me.slots[hour]];
-    const who = partner ? partner.name : 'tu compañero/a';
-
-    if (confirm(`¿Cancelar la cita de las ${hour}:00 con ${who}?`)) {
-        hostConnection.send({ type: 'unbook', hour });
-    }
+    const who = partner ? partner.name : '?';
+    if (confirm(t('confirm_unbook', hour, who))) hostConnection.send({ type: 'unbook', hour });
 }
 
 // ======================== INIT ========================
 window.onload = () => {
-    const params      = new URLSearchParams(window.location.search);
-    const sessionCode = params.get('session');
+    detectLanguage();
+    applyTranslations();
+
+    const sessionCode = new URLSearchParams(window.location.search).get('session');
     if (sessionCode) {
         selectRole('student');
         document.getElementById('s-code-input').value = sessionCode.toUpperCase();
     }
 
-    // Keyboard shortcuts
     document.getElementById('s-code-input').addEventListener('keydown', e => { if (e.key === 'Enter') joinSession(); });
     document.getElementById('s-name-input').addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('s-code-input').focus(); });
-    document.getElementById('s-code-input').addEventListener('input', e => {
-        e.target.value = e.target.value.toUpperCase();
-    });
+    document.getElementById('s-code-input').addEventListener('input',   e => { e.target.value = e.target.value.toUpperCase(); });
 };
 </script>
 </body>

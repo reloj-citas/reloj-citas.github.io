@@ -47,9 +47,26 @@
         .cd-free   { background: white;   border-color: #d1d5db; color: #6b7280; }
         .cd-booked { background: #dbeafe; border-color: #3b82f6; color: #1d4ed8; }
         .cd-called { background: #fef3c7; border-color: #f59e0b; color: #92400e; }
+        #lang-selector {
+            position: fixed; top: 0.6rem; right: 0.6rem; z-index: 200;
+            background: white; border: 1px solid #e5e7eb; border-radius: 0.5rem;
+            padding: 0.25rem 0.4rem; font-size: 0.75rem; color: #374151;
+            cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,.1);
+            font-family: 'Inter', sans-serif;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
+
+<select id="lang-selector" onchange="setLanguage(this.value)">
+    <option value="es">Español</option>
+    <option value="ca">Català</option>
+    <option value="gl">Galego</option>
+    <option value="eu">Euskara</option>
+    <option value="en">English</option>
+    <option value="fr">Français</option>
+    <option value="de">Deutsch</option>
+</select>
 
 <div class="max-w-2xl mx-auto px-4 py-10">
 
@@ -57,24 +74,24 @@
     <div class="text-center mb-10">
         <a href="index.html" class="inline-flex items-center gap-1 text-sm text-gray-400 hover:text-gray-600 mb-6 transition">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-            Volver a la aplicación
+            <span data-i18n="back_link">Volver a la aplicación</span>
         </a>
         <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-9 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
             </svg>
         </div>
-        <h1 class="text-3xl font-extrabold text-gray-900">Reloj de Citas</h1>
-        <p class="text-gray-500 mt-2">Guía rápida de uso</p>
+        <h1 class="text-3xl font-extrabold text-gray-900" data-i18n="app_title">Reloj de Citas</h1>
+        <p class="text-gray-500 mt-2" data-i18n="app_subtitle_manual">Guía rápida de uso</p>
     </div>
 
     <!-- ¿Qué es? -->
     <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-6">
-        <h2 class="text-xl font-bold mb-3">¿Qué es el Reloj de Citas?</h2>
-        <p class="text-gray-600 leading-relaxed">
+        <h2 class="text-xl font-bold mb-3" data-i18n="what_is_title">¿Qué es el Reloj de Citas?</h2>
+        <p class="text-gray-600 leading-relaxed" data-i18n="what_is_p1">
             Es una técnica cooperativa en la que cada alumno/a concierta citas con sus compañeros asignando a cada uno una hora del reloj (del 1 al 12). Cuando el profesor llama una hora, cada alumno busca a la persona con quien tiene cita en ese momento y trabajan juntos la tarea propuesta.
         </p>
-        <p class="text-gray-600 leading-relaxed mt-3">
+        <p class="text-gray-600 leading-relaxed mt-3" data-i18n="what_is_p2">
             Esta aplicación digitaliza ese proceso: gestiona las citas, avisa de conflictos de horario y lanza las preguntas a todos los dispositivos al mismo tiempo.
         </p>
     </section>
@@ -83,53 +100,53 @@
     <section class="bg-blue-50 border border-blue-100 rounded-2xl p-6 mb-6">
         <h2 class="text-xl font-bold text-blue-900 mb-5 flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-            Para el profesorado
+            <span data-i18n="teacher_title">Para el profesorado</span>
         </h2>
 
         <div class="space-y-5">
             <div class="flex gap-3">
                 <div class="step-num bg-blue-600 text-white">1</div>
                 <div>
-                    <p class="font-semibold text-gray-900">Abre la aplicación y pulsa <em>Soy profesor/a</em>.</p>
-                    <p class="text-gray-500 text-sm mt-0.5">Elige cuántos minutos quieres dar al alumnado para que concierten sus citas (por defecto, 5 minutos) y pulsa <strong>Iniciar sesión</strong>.</p>
+                    <p class="font-semibold text-gray-900" data-i18n-html="t_step1_title">Abre la aplicación y pulsa <em>Soy profesor/a</em>.</p>
+                    <p class="text-gray-500 text-sm mt-0.5" data-i18n-html="t_step1_desc">Elige cuántos minutos quieres dar al alumnado para que concierten sus citas (por defecto, 5 minutos) y pulsa <strong>Iniciar sesión</strong>.</p>
                 </div>
             </div>
 
             <div class="flex gap-3">
                 <div class="step-num bg-blue-600 text-white">2</div>
                 <div>
-                    <p class="font-semibold text-gray-900">Comparte el código o el QR con el alumnado.</p>
-                    <p class="text-gray-500 text-sm mt-0.5">Pulsa el botón <strong>Compartir</strong> para ver el código de 6 letras y el código QR. Proyéctalo en la pizarra o envía el enlace directo. El alumnado solo tiene que introducir el código o escanear el QR desde su móvil o tablet.</p>
+                    <p class="font-semibold text-gray-900" data-i18n="t_step2_title">Comparte el código o el QR con el alumnado.</p>
+                    <p class="text-gray-500 text-sm mt-0.5" data-i18n-html="t_step2_desc">Pulsa el botón <strong>Compartir</strong> para ver el código de 6 letras y el código QR. Proyéctalo en la pizarra o envía el enlace directo. El alumnado solo tiene que introducir el código o escanear el QR desde su móvil o tablet.</p>
                 </div>
             </div>
 
             <div class="flex gap-3">
                 <div class="step-num bg-blue-600 text-white">3</div>
                 <div>
-                    <p class="font-semibold text-gray-900">Pulsa <em>Iniciar</em> en el cronómetro para arrancar el tiempo de citas.</p>
-                    <p class="text-gray-500 text-sm mt-0.5">El temporizador se muestra también en los dispositivos del alumnado. En tu panel verás los relojes de todos los alumnos actualizándose en tiempo real. Cuando todos tengan su reloj completo (o cuando se acabe el tiempo), puedes continuar.</p>
+                    <p class="font-semibold text-gray-900" data-i18n-html="t_step3_title">Pulsa <em>Iniciar</em> en el cronómetro para arrancar el tiempo de citas.</p>
+                    <p class="text-gray-500 text-sm mt-0.5" data-i18n="t_step3_desc">El temporizador se muestra también en los dispositivos del alumnado. En tu panel verás los relojes de todos los alumnos actualizándose en tiempo real. Cuando todos tengan su reloj completo (o cuando se acabe el tiempo), puedes continuar.</p>
                 </div>
             </div>
 
             <div class="flex gap-3">
                 <div class="step-num bg-blue-600 text-white">4</div>
                 <div>
-                    <p class="font-semibold text-gray-900">Pulsa <em>Pasar a fase de actividad</em>.</p>
-                    <p class="text-gray-500 text-sm mt-0.5">Esto bloquea las citas para que no puedan modificarse y activa el panel de llamada de horas.</p>
+                    <p class="font-semibold text-gray-900" data-i18n-html="t_step4_title">Pulsa <em>Pasar a fase de actividad</em>.</p>
+                    <p class="text-gray-500 text-sm mt-0.5" data-i18n="t_step4_desc">Esto bloquea las citas para que no puedan modificarse y activa el panel de llamada de horas.</p>
                 </div>
             </div>
 
             <div class="flex gap-3">
                 <div class="step-num bg-blue-600 text-white">5</div>
                 <div>
-                    <p class="font-semibold text-gray-900">Llama una hora y escribe la pregunta o tarea.</p>
-                    <p class="text-gray-500 text-sm mt-0.5">Selecciona la hora (p. ej. <em>3:00</em>), escribe la pregunta en el campo de texto y pulsa <strong>Llamar</strong>. Al instante, en el dispositivo de cada alumno aparecerá la pregunta y el nombre del compañero o compañera con quien tiene cita a esa hora. Repite este paso tantas veces como quieras durante la sesión.</p>
+                    <p class="font-semibold text-gray-900" data-i18n="t_step5_title">Llama una hora y escribe la pregunta o tarea.</p>
+                    <p class="text-gray-500 text-sm mt-0.5" data-i18n-html="t_step5_desc">Selecciona la hora (p. ej. <em>3:00</em>), escribe la pregunta en el campo de texto y pulsa <strong>Llamar</strong>. Al instante, en el dispositivo de cada alumno aparecerá la pregunta y el nombre del compañero o compañera con quien tiene cita a esa hora. Repite este paso tantas veces como quieras durante la sesión.</p>
                 </div>
             </div>
 
             <div class="bg-blue-100 rounded-xl p-4 text-sm text-blue-800 mt-2">
-                <p class="font-semibold mb-1">Si hay un número impar de alumnos</p>
-                <p>Algún alumno puede quedarse sin pareja en una hora determinada. En tu panel aparecerá marcado en rojo como <em>Sin pareja</em>. Puedes indicarle verbalmente que se una a otro grupo.</p>
+                <p class="font-semibold mb-1" data-i18n="t_odd_title">Si hay un número impar de alumnos</p>
+                <p data-i18n-html="t_odd_desc">Algún alumno puede quedarse sin pareja en una hora determinada. En tu panel aparecerá marcado en rojo como <em>Sin pareja</em>. Puedes indicarle verbalmente que se una a otro grupo.</p>
             </div>
         </div>
     </section>
@@ -138,32 +155,31 @@
     <section class="bg-green-50 border border-green-100 rounded-2xl p-6 mb-6">
         <h2 class="text-xl font-bold text-green-900 mb-5 flex items-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-            Para el alumnado
+            <span data-i18n="student_title">Para el alumnado</span>
         </h2>
 
         <div class="space-y-5">
             <div class="flex gap-3">
                 <div class="step-num bg-green-600 text-white">1</div>
                 <div>
-                    <p class="font-semibold text-gray-900">Abre la aplicación, pulsa <em>Soy alumno/a</em> e introduce tu nombre y el código de la sesión.</p>
-                    <p class="text-gray-500 text-sm mt-0.5">El código te lo dará el profesor. También puedes escanear directamente el QR de la pizarra y se rellenará solo. Pulsa <strong>Unirse</strong>.</p>
+                    <p class="font-semibold text-gray-900" data-i18n-html="s_step1_title">Abre la aplicación, pulsa <em>Soy alumno/a</em> e introduce tu nombre y el código de la sesión.</p>
+                    <p class="text-gray-500 text-sm mt-0.5" data-i18n-html="s_step1_desc">El código te lo dará el profesor. También puedes escanear directamente el QR de la pizarra y se rellenará solo. Pulsa <strong>Unirse</strong>.</p>
                 </div>
             </div>
 
             <div class="flex gap-3">
                 <div class="step-num bg-green-600 text-white">2</div>
                 <div>
-                    <p class="font-semibold text-gray-900">Concierta citas con tus compañeros antes de que acabe el tiempo.</p>
-                    <p class="text-gray-500 text-sm mt-0.5">Verás la lista de compañeros conectados. Pulsa el botón <strong>+ Cita</strong> junto al nombre de alguien. Se abrirá un panel con las horas disponibles para los dos; las horas en <span class="badge bg-green-100 text-green-700">verde</span> están libres para ambos y las de <span class="badge bg-orange-100 text-orange-700">naranja</span> solo para ti. Toca la hora que prefieras para reservarla.</p>
+                    <p class="font-semibold text-gray-900" data-i18n="s_step2_title">Concierta citas con tus compañeros antes de que acabe el tiempo.</p>
+                    <p class="text-gray-500 text-sm mt-0.5" data-i18n-html="s_step2_desc">Verás la lista de compañeros conectados. Pulsa el botón <strong>+ Cita</strong> junto al nombre de alguien. Se abrirá un panel con las horas disponibles para los dos; las horas en <span class="badge bg-green-100 text-green-700">verde</span> están libres para ambos y las de <span class="badge bg-orange-100 text-orange-700">naranja</span> solo para ti. Toca la hora que prefieras para reservarla.</p>
                 </div>
             </div>
 
             <!-- Mini demo clock -->
             <div class="bg-white rounded-xl p-4 text-center">
-                <p class="text-xs text-gray-500 mb-3 font-medium">Así se ve tu reloj</p>
+                <p class="text-xs text-gray-500 mb-3 font-medium" data-i18n="clock_demo_label">Así se ve tu reloj</p>
                 <div class="clock-demo mx-auto mb-3">
                     <div class="clock-demo-face"></div>
-                    <!-- Hours placed via inline style; only illustrative subset -->
                     <div class="clock-demo-dot cd-free"   style="left:50%;top:12%">12</div>
                     <div class="clock-demo-dot cd-booked" style="left:88%;top:25%">1</div>
                     <div class="clock-demo-dot cd-booked" style="left:95%;top:50%">3</div>
@@ -174,25 +190,25 @@
                     <div class="clock-demo-dot cd-free"   style="left:12%;top:25%">11</div>
                 </div>
                 <div class="flex flex-wrap justify-center gap-3 text-xs">
-                    <span class="flex items-center gap-1"><span class="badge bg-gray-100 text-gray-500">Gris</span> hora libre</span>
-                    <span class="flex items-center gap-1"><span class="badge bg-blue-100 text-blue-700">Azul</span> cita reservada</span>
-                    <span class="flex items-center gap-1"><span class="badge bg-yellow-100 text-yellow-700">Amarillo</span> hora llamada</span>
+                    <span class="flex items-center gap-1" data-i18n-html="badge_free"><span class="badge bg-gray-100 text-gray-500">Gris</span> hora libre</span>
+                    <span class="flex items-center gap-1" data-i18n-html="badge_booked"><span class="badge bg-blue-100 text-blue-700">Azul</span> cita reservada</span>
+                    <span class="flex items-center gap-1" data-i18n-html="badge_called"><span class="badge bg-yellow-100 text-yellow-700">Amarillo</span> hora llamada</span>
                 </div>
             </div>
 
             <div class="flex gap-3">
                 <div class="step-num bg-green-600 text-white">3</div>
                 <div>
-                    <p class="font-semibold text-gray-900">Intenta llenar las 12 horas antes de que se acabe el tiempo.</p>
-                    <p class="text-gray-500 text-sm mt-0.5">No es obligatorio completar el reloj, pero cuantas más citas tengas, más variedad de compañeros trabajarás durante la sesión. Si te equivocas, puedes cancelar una cita tocando esa hora en el reloj.</p>
+                    <p class="font-semibold text-gray-900" data-i18n="s_step3_title">Intenta llenar las 12 horas antes de que se acabe el tiempo.</p>
+                    <p class="text-gray-500 text-sm mt-0.5" data-i18n="s_step3_desc">No es obligatorio completar el reloj, pero cuantas más citas tengas, más variedad de compañeros trabajarás durante la sesión. Si te equivocas, puedes cancelar una cita tocando esa hora en el reloj.</p>
                 </div>
             </div>
 
             <div class="flex gap-3">
                 <div class="step-num bg-green-600 text-white">4</div>
                 <div>
-                    <p class="font-semibold text-gray-900">Cuando el profesor llame una hora, busca a tu pareja y trabaja con ella.</p>
-                    <p class="text-gray-500 text-sm mt-0.5">Tu pantalla mostrará en grande la hora llamada, el nombre del compañero o compañera con quien tienes cita y la pregunta o tarea que propone el profesor. Encuéntralo en el aula y trabajan juntos.</p>
+                    <p class="font-semibold text-gray-900" data-i18n="s_step4_title">Cuando el profesor llame una hora, busca a tu pareja y trabaja con ella.</p>
+                    <p class="text-gray-500 text-sm mt-0.5" data-i18n="s_step4_desc">Tu pantalla mostrará en grande la hora llamada, el nombre del compañero o compañera con quien tienes cita y la pregunta o tarea que propone el profesor. Encuéntralo en el aula y trabajan juntos.</p>
                 </div>
             </div>
         </div>
@@ -200,37 +216,411 @@
 
     <!-- Preguntas frecuentes -->
     <section class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
-        <h2 class="text-lg font-bold mb-4">Preguntas frecuentes</h2>
+        <h2 class="text-lg font-bold mb-4" data-i18n="faq_title">Preguntas frecuentes</h2>
         <div class="space-y-4 text-sm text-gray-600">
             <div>
-                <p class="font-semibold text-gray-800">¿Hay que instalar algo?</p>
-                <p>No. La aplicación funciona directamente en el navegador de cualquier dispositivo (móvil, tablet u ordenador). No requiere registro ni cuenta.</p>
+                <p class="font-semibold text-gray-800" data-i18n="faq_q1">¿Hay que instalar algo?</p>
+                <p data-i18n="faq_a1">No. La aplicación funciona directamente en el navegador de cualquier dispositivo (móvil, tablet u ordenador). No requiere registro ni cuenta.</p>
             </div>
             <div>
-                <p class="font-semibold text-gray-800">¿Se guardan los datos?</p>
-                <p>No. Toda la información existe únicamente durante la sesión y en los dispositivos conectados. Al cerrar la ventana del profesor, la sesión desaparece.</p>
+                <p class="font-semibold text-gray-800" data-i18n="faq_q2">¿Se guardan los datos?</p>
+                <p data-i18n="faq_a2">No. Toda la información existe únicamente durante la sesión y en los dispositivos conectados. Al cerrar la ventana del profesor, la sesión desaparece.</p>
             </div>
             <div>
-                <p class="font-semibold text-gray-800">Un alumno se ha desconectado sin querer. ¿Pierde sus citas?</p>
-                <p>No. Si vuelve a entrar con el mismo nombre y el mismo código, el sistema reconocerá a esa persona y restaurará todas sus citas.</p>
+                <p class="font-semibold text-gray-800" data-i18n="faq_q3">Un alumno se ha desconectado sin querer. ¿Pierde sus citas?</p>
+                <p data-i18n="faq_a3">No. Si vuelve a entrar con el mismo nombre y el mismo código, el sistema reconocerá a esa persona y restaurará todas sus citas.</p>
             </div>
             <div>
-                <p class="font-semibold text-gray-800">Dos alumnos han intentado reservar la misma hora a la vez. ¿Qué pasa?</p>
-                <p>La aplicación comprueba la disponibilidad de los dos en el momento de confirmar la reserva. Si la hora ya no está libre para alguno de los dos, la solicitud se rechaza y se avisa al alumno para que elija otra.</p>
+                <p class="font-semibold text-gray-800" data-i18n="faq_q4">Dos alumnos han intentado reservar la misma hora a la vez. ¿Qué pasa?</p>
+                <p data-i18n="faq_a4">La aplicación comprueba la disponibilidad de los dos en el momento de confirmar la reserva. Si la hora ya no está libre para alguno de los dos, la solicitud se rechaza y se avisa al alumno para que elija otra.</p>
             </div>
             <div>
-                <p class="font-semibold text-gray-800">¿Funciona sin internet?</p>
-                <p>Necesita conexión a internet para establecer la comunicación entre dispositivos. Una vez conectados, la comunicación es directa entre ellos (tecnología WebRTC), por lo que funciona bien en redes escolares.</p>
+                <p class="font-semibold text-gray-800" data-i18n="faq_q5">¿Funciona sin internet?</p>
+                <p data-i18n="faq_a5">Necesita conexión a internet para establecer la comunicación entre dispositivos. Una vez conectados, la comunicación es directa entre ellos (tecnología WebRTC), por lo que funciona bien en redes escolares.</p>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
     <footer class="text-center text-sm text-gray-400 pb-6">
-        <p>Creado por <a href="https://bilateria.org" class="underline hover:text-gray-600" target="_blank">Juan José de Haro</a></p>
+        <p><span data-i18n="footer_by">Creado por</span> <a href="https://bilateria.org" class="underline hover:text-gray-600" target="_blank">Juan José de Haro</a></p>
         <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="underline hover:text-gray-600" target="_blank">CC BY-SA 4.0</a>
     </footer>
 
 </div>
+
+<script>
+const TRANSLATIONS = {
+    es: {
+        page_title:         'Manual — Reloj de Citas',
+        back_link:          'Volver a la aplicación',
+        app_title:          'Reloj de Citas',
+        app_subtitle_manual:'Guía rápida de uso',
+        what_is_title:      '¿Qué es el Reloj de Citas?',
+        what_is_p1:         'Es una técnica cooperativa en la que cada alumno/a concierta citas con sus compañeros asignando a cada uno una hora del reloj (del 1 al 12). Cuando el profesor llama una hora, cada alumno busca a la persona con quien tiene cita en ese momento y trabajan juntos la tarea propuesta.',
+        what_is_p2:         'Esta aplicación digitaliza ese proceso: gestiona las citas, avisa de conflictos de horario y lanza las preguntas a todos los dispositivos al mismo tiempo.',
+        teacher_title:      'Para el profesorado',
+        t_step1_title:      'Abre la aplicación y pulsa <em>Soy profesor/a</em>.',
+        t_step1_desc:       'Elige cuántos minutos quieres dar al alumnado para que concierten sus citas (por defecto, 5 minutos) y pulsa <strong>Iniciar sesión</strong>.',
+        t_step2_title:      'Comparte el código o el QR con el alumnado.',
+        t_step2_desc:       'Pulsa el botón <strong>Compartir</strong> para ver el código de 6 letras y el código QR. Proyéctalo en la pizarra o envía el enlace directo. El alumnado solo tiene que introducir el código o escanear el QR desde su móvil o tablet.',
+        t_step3_title:      'Pulsa <em>Iniciar</em> en el cronómetro para arrancar el tiempo de citas.',
+        t_step3_desc:       'El temporizador se muestra también en los dispositivos del alumnado. En tu panel verás los relojes de todos los alumnos actualizándose en tiempo real. Cuando todos tengan su reloj completo (o cuando se acabe el tiempo), puedes continuar.',
+        t_step4_title:      'Pulsa <em>Pasar a fase de actividad</em>.',
+        t_step4_desc:       'Esto bloquea las citas para que no puedan modificarse y activa el panel de llamada de horas.',
+        t_step5_title:      'Llama una hora y escribe la pregunta o tarea.',
+        t_step5_desc:       'Selecciona la hora (p. ej. <em>3:00</em>), escribe la pregunta en el campo de texto y pulsa <strong>Llamar</strong>. Al instante, en el dispositivo de cada alumno aparecerá la pregunta y el nombre del compañero o compañera con quien tiene cita a esa hora. Repite este paso tantas veces como quieras durante la sesión.',
+        t_odd_title:        'Si hay un número impar de alumnos',
+        t_odd_desc:         'Algún alumno puede quedarse sin pareja en una hora determinada. En tu panel aparecerá marcado en rojo como <em>Sin pareja</em>. Puedes indicarle verbalmente que se una a otro grupo.',
+        student_title:      'Para el alumnado',
+        s_step1_title:      'Abre la aplicación, pulsa <em>Soy alumno/a</em> e introduce tu nombre y el código de la sesión.',
+        s_step1_desc:       'El código te lo dará el profesor. También puedes escanear directamente el QR de la pizarra y se rellenará solo. Pulsa <strong>Unirse</strong>.',
+        s_step2_title:      'Concierta citas con tus compañeros antes de que acabe el tiempo.',
+        s_step2_desc:       'Verás la lista de compañeros conectados. Pulsa el botón <strong>+ Cita</strong> junto al nombre de alguien. Se abrirá un panel con las horas disponibles para los dos; las horas en <span class="badge bg-green-100 text-green-700">verde</span> están libres para ambos y las de <span class="badge bg-orange-100 text-orange-700">naranja</span> solo para ti. Toca la hora que prefieras para reservarla.',
+        clock_demo_label:   'Así se ve tu reloj',
+        badge_free:         '<span class="badge bg-gray-100 text-gray-500">Gris</span> hora libre',
+        badge_booked:       '<span class="badge bg-blue-100 text-blue-700">Azul</span> cita reservada',
+        badge_called:       '<span class="badge bg-yellow-100 text-yellow-700">Amarillo</span> hora llamada',
+        s_step3_title:      'Intenta llenar las 12 horas antes de que se acabe el tiempo.',
+        s_step3_desc:       'No es obligatorio completar el reloj, pero cuantas más citas tengas, más variedad de compañeros trabajarás durante la sesión. Si te equivocas, puedes cancelar una cita tocando esa hora en el reloj.',
+        s_step4_title:      'Cuando el profesor llame una hora, busca a tu pareja y trabaja con ella.',
+        s_step4_desc:       'Tu pantalla mostrará en grande la hora llamada, el nombre del compañero o compañera con quien tienes cita y la pregunta o tarea que propone el profesor. Encuéntralo en el aula y trabajan juntos.',
+        faq_title:          'Preguntas frecuentes',
+        faq_q1:             '¿Hay que instalar algo?',
+        faq_a1:             'No. La aplicación funciona directamente en el navegador de cualquier dispositivo (móvil, tablet u ordenador). No requiere registro ni cuenta.',
+        faq_q2:             '¿Se guardan los datos?',
+        faq_a2:             'No. Toda la información existe únicamente durante la sesión y en los dispositivos conectados. Al cerrar la ventana del profesor, la sesión desaparece.',
+        faq_q3:             'Un alumno se ha desconectado sin querer. ¿Pierde sus citas?',
+        faq_a3:             'No. Si vuelve a entrar con el mismo nombre y el mismo código, el sistema reconocerá a esa persona y restaurará todas sus citas.',
+        faq_q4:             'Dos alumnos han intentado reservar la misma hora a la vez. ¿Qué pasa?',
+        faq_a4:             'La aplicación comprueba la disponibilidad de los dos en el momento de confirmar la reserva. Si la hora ya no está libre para alguno de los dos, la solicitud se rechaza y se avisa al alumno para que elija otra.',
+        faq_q5:             '¿Funciona sin internet?',
+        faq_a5:             'Necesita conexión a internet para establecer la comunicación entre dispositivos. Una vez conectados, la comunicación es directa entre ellos (tecnología WebRTC), por lo que funciona bien en redes escolares.',
+        footer_by:          'Creado por',
+    },
+    ca: {
+        page_title:         'Manual — Rellotge de Cites',
+        back_link:          "Tornar a l'aplicació",
+        app_title:          'Rellotge de Cites',
+        app_subtitle_manual:"Guia ràpida d'ús",
+        what_is_title:      'Què és el Rellotge de Cites?',
+        what_is_p1:         "És una tècnica cooperativa en la qual cada alumne/a concerta cites amb els seus companys assignant a cadascun una hora del rellotge (de l'1 al 12). Quan el professor crida una hora, cada alumne busca la persona amb qui té cita en aquell moment i treballen junts la tasca proposada.",
+        what_is_p2:         "Aquesta aplicació digitalitza aquest procés: gestiona les cites, avisa de conflictes d'horari i llança les preguntes a tots els dispositius al mateix temps.",
+        teacher_title:      'Per al professorat',
+        t_step1_title:      "Obre l'aplicació i prem <em>Soc professor/a</em>.",
+        t_step1_desc:       "Tria quants minuts vols donar a l'alumnat per concertar les seves cites (per defecte, 5 minuts) i prem <strong>Iniciar sessió</strong>.",
+        t_step2_title:      "Comparteix el codi o el QR amb l'alumnat.",
+        t_step2_desc:       "Prem el botó <strong>Compartir</strong> per veure el codi de 6 lletres i el codi QR. Projecta'l a la pissarra o envia l'enllaç directe. L'alumnat només ha d'introduir el codi o escanejar el QR des del seu mòbil o tauleta.",
+        t_step3_title:      'Prem <em>Iniciar</em> al cronòmetre per arrencar el temps de cites.',
+        t_step3_desc:       "El temporitzador es mostra també als dispositius de l'alumnat. Al teu tauler veuràs els rellotges de tots els alumnes actualitzant-se en temps real. Quan tots tinguin el seu rellotge complet (o quan s'acabi el temps), pots continuar.",
+        t_step4_title:      "Prem <em>Passar a la fase d'activitat</em>.",
+        t_step4_desc:       "Això bloqueja les cites perquè no puguin modificar-se i activa el tauler de crida d'hores.",
+        t_step5_title:      'Crida una hora i escriu la pregunta o tasca.',
+        t_step5_desc:       "Selecciona l'hora (p. ex. <em>3:00</em>), escriu la pregunta al camp de text i prem <strong>Cridar</strong>. A l'instant, al dispositiu de cada alumne apareixerà la pregunta i el nom del company o companya amb qui té cita a aquella hora. Repeteix aquest pas tantes vegades com vulguis durant la sessió.",
+        t_odd_title:        "Si hi ha un nombre imparell d'alumnes",
+        t_odd_desc:         "Algun alumne pot quedar-se sense parella en una hora determinada. Al teu tauler apareixerà marcat en vermell com a <em>Sense parella</em>. Pots indicar-li verbalment que s'uneixi a un altre grup.",
+        student_title:      "Per a l'alumnat",
+        s_step1_title:      "Obre l'aplicació, prem <em>Soc alumne/a</em> i introdueix el teu nom i el codi de la sessió.",
+        s_step1_desc:       "El codi te'l donarà el professor. També pots escanejar directament el QR de la pissarra i s'omplirà sol. Prem <strong>Unir-se</strong>.",
+        s_step2_title:      'Concerta cites amb els teus companys abans que s\'acabi el temps.',
+        s_step2_desc:       'Veuràs la llista de companys connectats. Prem el botó <strong>+ Cita</strong> al costat del nom d\'algú. S\'obrirà un panell amb les hores disponibles per als dos; les hores en <span class="badge bg-green-100 text-green-700">verd</span> estan lliures per a ambdós i les de <span class="badge bg-orange-100 text-orange-700">taronja</span> només per a tu. Toca l\'hora que prefereixis per reservar-la.',
+        clock_demo_label:   'Així es veu el teu rellotge',
+        badge_free:         '<span class="badge bg-gray-100 text-gray-500">Gris</span> hora lliure',
+        badge_booked:       '<span class="badge bg-blue-100 text-blue-700">Blau</span> cita reservada',
+        badge_called:       '<span class="badge bg-yellow-100 text-yellow-700">Groc</span> hora cridada',
+        s_step3_title:      "Intenta omplir les 12 hores abans que s'acabi el temps.",
+        s_step3_desc:       "No és obligatori completar el rellotge, però com més cites tinguis, més varietat de companys treballaràs durant la sessió. Si t'equivoques, pots cancel·lar una cita tocant aquella hora al rellotge.",
+        s_step4_title:      'Quan el professor cridi una hora, busca la teva parella i treballa amb ella.',
+        s_step4_desc:       "La teva pantalla mostrarà en gran l'hora cridada, el nom del company o companya amb qui tens cita i la pregunta o tasca que proposa el professor. Troba'l a l'aula i treballeu junts.",
+        faq_title:          'Preguntes freqüents',
+        faq_q1:             'Cal instal·lar res?',
+        faq_a1:             "No. L'aplicació funciona directament al navegador de qualsevol dispositiu (mòbil, tauleta o ordinador). No requereix registre ni compte.",
+        faq_q2:             'Es guarden les dades?',
+        faq_a2:             'No. Tota la informació existeix únicament durant la sessió i als dispositius connectats. En tancar la finestra del professor, la sessió desapareix.',
+        faq_q3:             "Un alumne s'ha desconnectat sense voler. Perd les seves cites?",
+        faq_a3:             'No. Si torna a entrar amb el mateix nom i el mateix codi, el sistema reconeixerà aquesta persona i restaurarà totes les seves cites.',
+        faq_q4:             'Dos alumnes han intentat reservar la mateixa hora alhora. Què passa?',
+        faq_a4:             "L'aplicació comprova la disponibilitat dels dos en el moment de confirmar la reserva. Si l'hora ja no és lliure per a algun dels dos, la sol·licitud es rebutja i s'avisa l'alumne perquè en triï una altra.",
+        faq_q5:             'Funciona sense internet?',
+        faq_a5:             'Necessita connexió a internet per establir la comunicació entre dispositius. Un cop connectats, la comunicació és directa entre ells (tecnologia WebRTC), de manera que funciona bé a les xarxes escolars.',
+        footer_by:          'Creat per',
+    },
+    gl: {
+        page_title:         'Manual — Reloxo de Citas',
+        back_link:          'Volver á aplicación',
+        app_title:          'Reloxo de Citas',
+        app_subtitle_manual:'Guía rápida de uso',
+        what_is_title:      'Que é o Reloxo de Citas?',
+        what_is_p1:         'É unha técnica cooperativa na que cada alumno/a concierta citas cos seus compañeiros asignando a cada un unha hora do reloxo (do 1 ao 12). Cando o profesor chama unha hora, cada alumno busca a persoa con quen ten cita nese momento e traballan xuntos a tarefa proposta.',
+        what_is_p2:         'Esta aplicación dixitaliza ese proceso: xestiona as citas, avisa de conflitos de horario e lanza as preguntas a todos os dispositivos ao mesmo tempo.',
+        teacher_title:      'Para o profesorado',
+        t_step1_title:      'Abre a aplicación e preme <em>Son profesor/a</em>.',
+        t_step1_desc:       'Escolle cantos minutos queres dar ao alumnado para que concierten as súas citas (por defecto, 5 minutos) e preme <strong>Iniciar sesión</strong>.',
+        t_step2_title:      'Comparte o código ou o QR co alumnado.',
+        t_step2_desc:       'Preme o botón <strong>Compartir</strong> para ver o código de 6 letras e o código QR. Proxéctao na lousa ou envía a ligazón directa. O alumnado só ten que introducir o código ou escanear o QR dende o seu móbil ou tablet.',
+        t_step3_title:      'Preme <em>Iniciar</em> no cronómetro para arrincar o tempo de citas.',
+        t_step3_desc:       'O temporizador móstrase tamén nos dispositivos do alumnado. No teu panel verás os reloxos de todos os alumnos actualizándose en tempo real. Cando todos teñan o seu reloxo completo (ou cando se esgote o tempo), podes continuar.',
+        t_step4_title:      'Preme <em>Pasar á fase de actividade</em>.',
+        t_step4_desc:       'Isto bloquea as citas para que non poidan modificarse e activa o panel de chamada de horas.',
+        t_step5_title:      'Chama unha hora e escribe a pregunta ou tarefa.',
+        t_step5_desc:       'Selecciona a hora (p. ex. <em>3:00</em>), escribe a pregunta no campo de texto e preme <strong>Chamar</strong>. De inmediato, no dispositivo de cada alumno aparecerá a pregunta e o nome do compañeiro ou compañeira con quen ten cita a esa hora. Repite este paso tantas veces como queiras durante a sesión.',
+        t_odd_title:        'Se hai un número impar de alumnos',
+        t_odd_desc:         'Algún alumno pode quedar sen parella nunha hora determinada. No teu panel aparecerá marcado en vermello como <em>Sen parella</em>. Podes indicarlle verbalmente que se una a outro grupo.',
+        student_title:      'Para o alumnado',
+        s_step1_title:      'Abre a aplicación, preme <em>Son alumno/a</em> e introduce o teu nome e o código da sesión.',
+        s_step1_desc:       'O código darache o profesor. Tamén podes escanear directamente o QR da lousa e encherase só. Preme <strong>Unirse</strong>.',
+        s_step2_title:      'Concierta citas cos teus compañeiros antes de que remate o tempo.',
+        s_step2_desc:       'Verás a lista de compañeiros conectados. Preme o botón <strong>+ Cita</strong> xunto ao nome de alguén. Abrirase un panel coas horas dispoñibles para os dous; as horas en <span class="badge bg-green-100 text-green-700">verde</span> están libres para ambos e as de <span class="badge bg-orange-100 text-orange-700">laranxa</span> só para ti. Toca a hora que prefiras para reservala.',
+        clock_demo_label:   'Así se ve o teu reloxo',
+        badge_free:         '<span class="badge bg-gray-100 text-gray-500">Gris</span> hora libre',
+        badge_booked:       '<span class="badge bg-blue-100 text-blue-700">Azul</span> cita reservada',
+        badge_called:       '<span class="badge bg-yellow-100 text-yellow-700">Amarelo</span> hora chamada',
+        s_step3_title:      'Intenta encher as 12 horas antes de que se esgote o tempo.',
+        s_step3_desc:       'Non é obrigatorio completar o reloxo, pero canto máis citas teñas, máis variedade de compañeiros traballarás durante a sesión. Se te equivocas, podes cancelar unha cita tocando esa hora no reloxo.',
+        s_step4_title:      'Cando o profesor chame unha hora, busca a túa parella e traballa con ela.',
+        s_step4_desc:       'A túa pantalla mostrará en grande a hora chamada, o nome do compañeiro ou compañeira con quen tes cita e a pregunta ou tarefa que propón o profesor. Atópao na aula e traballan xuntos.',
+        faq_title:          'Preguntas frecuentes',
+        faq_q1:             'Hai que instalar algo?',
+        faq_a1:             'Non. A aplicación funciona directamente no navegador de calquera dispositivo (móbil, tablet ou ordenador). Non require rexistro nin conta.',
+        faq_q2:             'Gárdanse os datos?',
+        faq_a2:             'Non. Toda a información existe unicamente durante a sesión e nos dispositivos conectados. Ao pechar a xanela do profesor, a sesión desaparece.',
+        faq_q3:             'Un alumno desconectouse sen querer. Perde as súas citas?',
+        faq_a3:             'Non. Se volve entrar co mesmo nome e o mesmo código, o sistema recoñecerá a esa persoa e restaurará todas as súas citas.',
+        faq_q4:             'Dous alumnos tentaron reservar a mesma hora á vez. Que pasa?',
+        faq_a4:             'A aplicación comproba a dispoñibilidade dos dous no momento de confirmar a reserva. Se a hora xa non está libre para algún dos dous, a solicitude rexéitase e avísase ao alumno para que escolla outra.',
+        faq_q5:             'Funciona sen internet?',
+        faq_a5:             'Necesita conexión a internet para establecer a comunicación entre dispositivos. Unha vez conectados, a comunicación é directa entre eles (tecnoloxía WebRTC), polo que funciona ben nas redes escolares.',
+        footer_by:          'Creado por',
+    },
+    eu: {
+        page_title:         'Eskuliburua — Hitzordu Erlojua',
+        back_link:          'Aplikaziora itzuli',
+        app_title:          'Hitzordu Erlojua',
+        app_subtitle_manual:'Erabilera gida azkarra',
+        what_is_title:      'Zer da Hitzordu Erlojua?',
+        what_is_p1:         'Teknika kooperatibo bat da, non ikasle bakoitzak bere ikaslekideekin hitzorduak adosten dituen erlojuko ordu bat esleituz (1etik 12ra). Irakasleak ordu bat deitzen duenean, ikasle bakoitzak une horretan hitzordua duen pertsonaren bila joaten da eta proposatutako zeregina elkarrekin egiten dute.',
+        what_is_p2:         'Aplikazio honek prozesu hori digitalizatzen du: hitzorduak kudeatzen ditu, ordutegiaren gatazkak jakinarazten ditu eta galderak aldi berean bidaltzen ditu gailu guztietara.',
+        teacher_title:      'Irakaslearentzat',
+        t_step1_title:      'Ireki aplikazioa eta sakatu <em>Irakaslea naiz</em>.',
+        t_step1_desc:       'Aukeratu zenbat minutu eman nahi dizkiezun ikasleei hitzorduak adosteko (lehenespenez, 5 minutu) eta sakatu <strong>Saioa hasi</strong>.',
+        t_step2_title:      'Partekatu kodea edo QR ikasleei.',
+        t_step2_desc:       'Sakatu <strong>Partekatu</strong> botoia 6 letretako kodea eta QR kodea ikusteko. Proiektatu arbel digitalean edo bidali zuzeneko esteka. Ikasleek kodea sartu edo QR eskaneatu besterik ez dute egin behar beren mugikorrean edo tabletan.',
+        t_step3_title:      'Sakatu <em>Hasi</em> kronometroan hitzorduen denbora abiarazteko.',
+        t_step3_desc:       'Kronometroa ikasleen gailuetan ere erakusten da. Zure panelean ikasle guztien erlojuak denbora errealean eguneratzen ikusiko dituzu. Denborak amaitzen denean edo denak beren erlojua bete dutenean, jarraitu dezakezu.',
+        t_step4_title:      'Sakatu <em>Jarduera fasera pasa</em>.',
+        t_step4_desc:       'Honek hitzorduak blokeatzen ditu aldatu ez daitezen eta orduen dei panela aktibatzen du.',
+        t_step5_title:      'Deitu ordu bat eta idatzi galdera edo zeregina.',
+        t_step5_desc:       'Hautatu ordua (adib. <em>3:00</em>), idatzi galdera testu eremuan eta sakatu <strong>Deitu</strong>. Berehalakoan, ikasle bakoitzaren gailuan galdera eta ordu horretan harekin hitzordua duen ikaslekidearen izena agertuko da. Errepikatu urrats hau nahi adina aldiz saioan zehar.',
+        t_odd_title:        'Ikasle kopurua bakoitia bada',
+        t_odd_desc:         'Ikasle bat agian ordu batean bikoterik gabe geratu daiteke. Zure panelean gorriz markatuta agertuko da <em>Bikoterik gabe</em> gisa. Ahozko bidez esan diezaiokezu beste talde bati elkitzeko.',
+        student_title:      'Ikaslearentzat',
+        s_step1_title:      'Ireki aplikazioa, sakatu <em>Ikaslea naiz</em> eta sartu zure izena eta saio kodea.',
+        s_step1_desc:       'Kodea irakasleak emango dizu. Arbel digitalaren QR zuzenean eskaneatu eta automatikoki beteko da. Sakatu <strong>Batu</strong>.',
+        s_step2_title:      'Adostu hitzorduak zure ikaslekideekin denbora amaitu baino lehen.',
+        s_step2_desc:       'Konektatutako ikaslekideen zerrenda ikusiko duzu. Sakatu <strong>+ Hitzordua</strong> botoia norbaiten izenaren ondoan. Panel bat irekiko da bientzat erabilgarri dauden orduak ikusteko; <span class="badge bg-green-100 text-green-700">berde</span> koloreko orduak bioentzat libre daude eta <span class="badge bg-orange-100 text-orange-700">laranja</span> kolorekoak zure ikaslekideak ocupatuta dauzkanak. Erreserbatzeko nahi duzun ordua ukitu.',
+        clock_demo_label:   'Horrela ikusten da zure erlojua',
+        badge_free:         '<span class="badge bg-gray-100 text-gray-500">Grisa</span> ordu librea',
+        badge_booked:       '<span class="badge bg-blue-100 text-blue-700">Urdina</span> hitzordua erreserbatua',
+        badge_called:       '<span class="badge bg-yellow-100 text-yellow-700">Horia</span> deitutako ordua',
+        s_step3_title:      'Saiatu 12 orduak betetzen denbora amaitu baino lehen.',
+        s_step3_desc:       'Ez da derrigorrezkoa erlojua betetzea, baina zenbat eta hitzordu gehiago izan, orduan eta ikaslekide aniztasun gehiagorekin lan egingo duzu saioan zehar. Huts egiten baduzu, erlojuan ordu hori ukituz hitzordua bertan behera utzi dezakezu.',
+        s_step4_title:      'Irakasleak ordu bat deitzen duenean, bila ezazu zure bikotea eta lan egin harekin.',
+        s_step4_desc:       'Zure pantailak handiz erakutsiko du deitutako ordua, zure hitzordukidearen izena eta irakasleak proposatutako galdera edo zeregina. Bilatu aretoan eta lan egin elkarrekin.',
+        faq_title:          'Galdera arruntak',
+        faq_q1:             'Zerbait instalatu behar al da?',
+        faq_a1:             'Ez. Aplikazioa edozein gailutako (mugikor, tableta edo ordenagailu) nabigatzailean zuzenean funtzionatzen du. Ez du erregistrorik edo konturik behar.',
+        faq_q2:             'Datuak gordetzen al dira?',
+        faq_a2:             'Ez. Informazio guztia saioan eta konektatutako gailuetan soilik existitzen da. Irakaslearen leihoa itxitakoan, saioa desagertzen da.',
+        faq_q3:             'Ikasle bat nahi gabe deskonektatu da. Haren hitzorduak galtzen al ditu?',
+        faq_a3:             'Ez. Izen eta kode berarekin sartzen bada, sistemak pertsona hori ezagutuko du eta haren hitzordu guztiak berreskuratuko ditu.',
+        faq_q4:             'Bi ikaslek aldi berean ordu bera erreserbatzen saiatu dira. Zer gertatzen da?',
+        faq_a4:             'Aplikazioak bien erabilgarritasuna egiaztatzen du erreserba baieztatzeko momentuan. Ordua bien eientzat libre ez badago, eskaera arbuiatzen da eta ikasleari beste bat aukeratzeko esaten zaio.',
+        faq_q5:             'Internetek gabe funtzionatzen al du?',
+        faq_a5:             'Gailuen arteko komunikazioa ezartzeko internet konexioa behar du. Konektatutakoan, komunikazioa zuzenean haien artean da (WebRTC teknologia), eta beraz, eskolako sareetan ondo funtzionatzen du.',
+        footer_by:          'Egilea:',
+    },
+    en: {
+        page_title:         'Manual — Appointment Clock',
+        back_link:          'Back to the app',
+        app_title:          'Appointment Clock',
+        app_subtitle_manual:'Quick user guide',
+        what_is_title:      'What is the Appointment Clock?',
+        what_is_p1:         'It is a cooperative technique in which each student arranges appointments with their classmates by assigning each one a clock hour (from 1 to 12). When the teacher calls an hour, each student finds the person they have an appointment with at that time and they work together on the proposed task.',
+        what_is_p2:         'This app digitizes that process: it manages the appointments, warns of scheduling conflicts, and sends the questions to all devices at the same time.',
+        teacher_title:      'For teachers',
+        t_step1_title:      'Open the app and tap <em>I am a teacher</em>.',
+        t_step1_desc:       'Choose how many minutes you want to give students to arrange their appointments (default: 5 minutes) and tap <strong>Start session</strong>.',
+        t_step2_title:      'Share the code or QR with students.',
+        t_step2_desc:       'Tap the <strong>Share</strong> button to see the 6-letter code and the QR code. Project it on the board or send the direct link. Students only need to enter the code or scan the QR from their phone or tablet.',
+        t_step3_title:      'Tap <em>Start</em> on the timer to begin the appointment time.',
+        t_step3_desc:       "In your panel, you will see all students' clocks updating in real time. The timer is also shown on students' devices. When everyone has their clock full (or when time runs out), you can continue.",
+        t_step4_title:      'Tap <em>Switch to activity phase</em>.',
+        t_step4_desc:       'This locks the appointments so they cannot be changed, and activates the hour call panel.',
+        t_step5_title:      'Call an hour and write the question or task.',
+        t_step5_desc:       'Select the hour (e.g. <em>3:00</em>), type the question in the text field and tap <strong>Call</strong>. Instantly, each student\'s device will show the question and the name of the classmate they have an appointment with at that hour. Repeat this step as many times as you like during the session.',
+        t_odd_title:        'If there is an odd number of students',
+        t_odd_desc:         'A student may end up without a partner at a given hour. In your panel they will appear highlighted in red as <em>No partner</em>. You can verbally tell them to join another group.',
+        student_title:      'For students',
+        s_step1_title:      'Open the app, tap <em>I am a student</em>, and enter your name and the session code.',
+        s_step1_desc:       'The teacher will give you the code. You can also scan the QR directly from the board and it will fill in automatically. Tap <strong>Join</strong>.',
+        s_step2_title:      'Arrange appointments with your classmates before time runs out.',
+        s_step2_desc:       'You will see a list of connected classmates. Tap the <strong>+ Appt</strong> button next to someone\'s name. A panel will open with the hours available for both of you; hours in <span class="badge bg-green-100 text-green-700">green</span> are free for both and those in <span class="badge bg-orange-100 text-orange-700">orange</span> are only free for you. Tap the hour you prefer to book it.',
+        clock_demo_label:   'This is what your clock looks like',
+        badge_free:         '<span class="badge bg-gray-100 text-gray-500">Grey</span> free hour',
+        badge_booked:       '<span class="badge bg-blue-100 text-blue-700">Blue</span> booked appointment',
+        badge_called:       '<span class="badge bg-yellow-100 text-yellow-700">Yellow</span> called hour',
+        s_step3_title:      'Try to fill all 12 hours before time runs out.',
+        s_step3_desc:       'It is not mandatory to complete the clock, but the more appointments you have, the more variety of classmates you will work with during the session. If you make a mistake, you can cancel an appointment by tapping that hour on the clock.',
+        s_step4_title:      'When the teacher calls an hour, find your partner and work with them.',
+        s_step4_desc:       'Your screen will show in large text the called hour, the name of the classmate you have an appointment with, and the question or task proposed by the teacher. Find them in the classroom and work together.',
+        faq_title:          'Frequently asked questions',
+        faq_q1:             'Do I need to install anything?',
+        faq_a1:             'No. The app works directly in the browser of any device (phone, tablet, or computer). No registration or account required.',
+        faq_q2:             'Is data saved?',
+        faq_a2:             'No. All information exists only during the session and on connected devices. When the teacher closes their window, the session disappears.',
+        faq_q3:             'A student accidentally disconnected. Do they lose their appointments?',
+        faq_a3:             'No. If they rejoin with the same name and code, the system will recognize them and restore all their appointments.',
+        faq_q4:             'Two students tried to book the same hour at the same time. What happens?',
+        faq_a4:             'The app checks the availability of both at the time of confirming the booking. If the hour is no longer free for either of them, the request is rejected and the student is asked to choose another.',
+        faq_q5:             'Does it work without internet?',
+        faq_a5:             'It needs an internet connection to establish communication between devices. Once connected, communication is direct between them (WebRTC technology), so it works well on school networks.',
+        footer_by:          'Created by',
+    },
+    fr: {
+        page_title:         'Manuel — Horloge de Rendez-vous',
+        back_link:          "Retour à l'application",
+        app_title:          'Horloge de Rendez-vous',
+        app_subtitle_manual:"Guide d'utilisation rapide",
+        what_is_title:      "Qu'est-ce que l'Horloge de Rendez-vous?",
+        what_is_p1:         "C'est une technique coopérative dans laquelle chaque élève prend des rendez-vous avec ses camarades en leur attribuant une heure de l'horloge (de 1 à 12). Quand l'enseignant appelle une heure, chaque élève cherche la personne avec qui il a rendez-vous à ce moment-là et ils travaillent ensemble sur la tâche proposée.",
+        what_is_p2:         "Cette application numérise ce processus : elle gère les rendez-vous, signale les conflits d'horaires et envoie les questions à tous les appareils en même temps.",
+        teacher_title:      'Pour les enseignants',
+        t_step1_title:      'Ouvrez l\'application et appuyez sur <em>Je suis enseignant(e)</em>.',
+        t_step1_desc:       'Choisissez combien de minutes vous souhaitez donner aux élèves pour organiser leurs rendez-vous (par défaut, 5 minutes) et appuyez sur <strong>Démarrer la session</strong>.',
+        t_step2_title:      'Partagez le code ou le QR avec les élèves.',
+        t_step2_desc:       "Appuyez sur le bouton <strong>Partager</strong> pour voir le code à 6 lettres et le code QR. Projetez-le au tableau ou envoyez le lien direct. Les élèves n'ont qu'à entrer le code ou scanner le QR depuis leur téléphone ou tablette.",
+        t_step3_title:      'Appuyez sur <em>Démarrer</em> sur le minuteur pour lancer le temps de rendez-vous.',
+        t_step3_desc:       "Le minuteur s'affiche également sur les appareils des élèves. Dans votre panneau, vous verrez les horloges de tous les élèves se mettre à jour en temps réel. Quand tout le monde a rempli son horloge (ou quand le temps est écoulé), vous pouvez continuer.",
+        t_step4_title:      "Appuyez sur <em>Passer à la phase d'activité</em>.",
+        t_step4_desc:       "Cela bloque les rendez-vous pour qu'ils ne puissent plus être modifiés et active le panneau d'appel des heures.",
+        t_step5_title:      'Appelez une heure et écrivez la question ou la tâche.',
+        t_step5_desc:       "Sélectionnez l'heure (p. ex. <em>3:00</em>), tapez la question dans le champ de texte et appuyez sur <strong>Appeler</strong>. Instantanément, sur l'appareil de chaque élève apparaîtront la question et le nom du camarade avec qui il a rendez-vous à cette heure. Répétez cette étape autant de fois que vous le souhaitez pendant la session.",
+        t_odd_title:        "S'il y a un nombre impair d'élèves",
+        t_odd_desc:         "Un élève peut se retrouver sans partenaire à une heure donnée. Dans votre panneau, il apparaîtra en rouge comme <em>Sans partenaire</em>. Vous pouvez lui dire verbalement de rejoindre un autre groupe.",
+        student_title:      'Pour les élèves',
+        s_step1_title:      'Ouvrez l\'application, appuyez sur <em>Je suis élève</em> et entrez votre prénom et le code de session.',
+        s_step1_desc:       "L'enseignant vous donnera le code. Vous pouvez aussi scanner directement le QR au tableau et il se remplira automatiquement. Appuyez sur <strong>Rejoindre</strong>.",
+        s_step2_title:      "Organisez des rendez-vous avec vos camarades avant que le temps ne soit écoulé.",
+        s_step2_desc:       'Vous verrez la liste des camarades connectés. Appuyez sur le bouton <strong>+ RDV</strong> à côté du nom de quelqu\'un. Un panneau s\'ouvrira avec les heures disponibles pour vous deux ; les heures en <span class="badge bg-green-100 text-green-700">vert</span> sont libres pour les deux et celles en <span class="badge bg-orange-100 text-orange-700">orange</span> seulement pour vous. Touchez l\'heure que vous préférez pour la réserver.',
+        clock_demo_label:   'Voici à quoi ressemble votre horloge',
+        badge_free:         '<span class="badge bg-gray-100 text-gray-500">Gris</span> heure libre',
+        badge_booked:       '<span class="badge bg-blue-100 text-blue-700">Bleu</span> rendez-vous réservé',
+        badge_called:       '<span class="badge bg-yellow-100 text-yellow-700">Jaune</span> heure appelée',
+        s_step3_title:      "Essayez de remplir les 12 heures avant que le temps ne soit écoulé.",
+        s_step3_desc:       "Il n'est pas obligatoire de compléter l'horloge, mais plus vous avez de rendez-vous, plus vous travaillerez avec des camarades variés pendant la session. Si vous faites une erreur, vous pouvez annuler un rendez-vous en touchant cette heure sur l'horloge.",
+        s_step4_title:      'Quand l\'enseignant appelle une heure, trouvez votre partenaire et travaillez avec lui.',
+        s_step4_desc:       "Votre écran affichera en grand l'heure appelée, le nom du camarade avec qui vous avez rendez-vous et la question ou tâche proposée par l'enseignant. Trouvez-le en classe et travaillez ensemble.",
+        faq_title:          'Questions fréquentes',
+        faq_q1:             'Faut-il installer quelque chose?',
+        faq_a1:             "No. L'application fonctionne directement dans le navigateur de n'importe quel appareil (téléphone, tablette ou ordinateur). Aucune inscription ni compte requis.",
+        faq_q2:             'Les données sont-elles sauvegardées?',
+        faq_a2:             "Non. Toutes les informations n'existent que pendant la session et sur les appareils connectés. Quand l'enseignant ferme sa fenêtre, la session disparaît.",
+        faq_q3:             "Un élève s'est déconnecté par inadvertance. Perd-il ses rendez-vous?",
+        faq_a3:             "Non. S'il se reconnecte avec le même prénom et le même code, le système le reconnaîtra et restaurera tous ses rendez-vous.",
+        faq_q4:             'Deux élèves ont essayé de réserver la même heure en même temps. Que se passe-t-il?',
+        faq_a4:             "L'application vérifie la disponibilité des deux au moment de confirmer la réservation. Si l'heure n'est plus libre pour l'un d'eux, la demande est rejetée et l'élève est invité à en choisir une autre.",
+        faq_q5:             'Fonctionne-t-il sans internet?',
+        faq_a5:             "Il a besoin d'une connexion internet pour établir la communication entre les appareils. Une fois connectés, la communication est directe entre eux (technologie WebRTC), ce qui fonctionne bien sur les réseaux scolaires.",
+        footer_by:          'Créé par',
+    },
+    de: {
+        page_title:         'Handbuch — Terminuhr',
+        back_link:          'Zurück zur App',
+        app_title:          'Terminuhr',
+        app_subtitle_manual:'Kurzanleitung',
+        what_is_title:      'Was ist die Terminuhr?',
+        what_is_p1:         'Es ist eine kooperative Technik, bei der jeder Schüler Termine mit seinen Mitschülern vereinbart und jedem eine Stunde auf der Uhr (von 1 bis 12) zuweist. Wenn der Lehrer eine Stunde aufruft, sucht jeder Schüler die Person, mit der er zu diesem Zeitpunkt einen Termin hat, und sie arbeiten gemeinsam an der vorgeschlagenen Aufgabe.',
+        what_is_p2:         'Diese App digitalisiert diesen Prozess: Sie verwaltet die Termine, warnt vor Terminüberschneidungen und sendet die Fragen gleichzeitig an alle Geräte.',
+        teacher_title:      'Für Lehrkräfte',
+        t_step1_title:      'Öffne die App und tippe auf <em>Ich bin Lehrer/in</em>.',
+        t_step1_desc:       'Wähle, wie viele Minuten du den Schülern geben möchtest, um ihre Termine zu vereinbaren (Standard: 5 Minuten), und tippe auf <strong>Sitzung starten</strong>.',
+        t_step2_title:      'Teile den Code oder den QR mit den Schülern.',
+        t_step2_desc:       'Tippe auf die Schaltfläche <strong>Teilen</strong>, um den 6-buchstabigen Code und den QR-Code zu sehen. Projiziere ihn an die Tafel oder sende den direkten Link. Die Schüler müssen nur den Code eingeben oder den QR von ihrem Handy oder Tablet scannen.',
+        t_step3_title:      'Tippe auf <em>Starten</em> am Timer, um die Terminvereinbarungszeit zu starten.',
+        t_step3_desc:       'Der Timer wird auch auf den Geräten der Schüler angezeigt. In deinem Panel siehst du die Uhren aller Schüler in Echtzeit aktualisiert. Wenn alle ihre Uhr vollständig haben (oder wenn die Zeit abläuft), kannst du fortfahren.',
+        t_step4_title:      'Tippe auf <em>Zur Aktivitätsphase wechseln</em>.',
+        t_step4_desc:       'Dadurch werden die Termine gesperrt, sodass sie nicht mehr geändert werden können, und das Stundenaufrufpanel wird aktiviert.',
+        t_step5_title:      'Rufe eine Stunde auf und schreibe die Frage oder Aufgabe.',
+        t_step5_desc:       'Wähle die Stunde (z. B. <em>3:00</em>), gib die Frage in das Textfeld ein und tippe auf <strong>Aufrufen</strong>. Sofort erscheint auf dem Gerät jedes Schülers die Frage und der Name des Mitschülers, mit dem er zu dieser Stunde einen Termin hat. Wiederhole diesen Schritt so oft du möchtest während der Sitzung.',
+        t_odd_title:        'Bei einer ungeraden Schüleranzahl',
+        t_odd_desc:         'Ein Schüler könnte zu einer bestimmten Stunde ohne Partner bleiben. In deinem Panel erscheint er rot markiert als <em>Kein Partner</em>. Du kannst ihm mündlich sagen, dass er sich einer anderen Gruppe anschließen soll.',
+        student_title:      'Für Schüler',
+        s_step1_title:      'Öffne die App, tippe auf <em>Ich bin Schüler/in</em> und gib deinen Namen und den Sitzungscode ein.',
+        s_step1_desc:       'Den Code bekommst du vom Lehrer. Du kannst auch den QR von der Tafel direkt scannen und er füllt sich automatisch aus. Tippe auf <strong>Beitreten</strong>.',
+        s_step2_title:      'Vereinbare Termine mit deinen Mitschülern, bevor die Zeit abläuft.',
+        s_step2_desc:       'Du siehst eine Liste der verbundenen Mitschüler. Tippe auf die Schaltfläche <strong>+ Termin</strong> neben dem Namen von jemandem. Ein Panel öffnet sich mit den für euch beiden verfügbaren Stunden; Stunden in <span class="badge bg-green-100 text-green-700">Grün</span> sind für beide frei und die in <span class="badge bg-orange-100 text-orange-700">Orange</span> nur für dich. Tippe auf die gewünschte Stunde, um sie zu buchen.',
+        clock_demo_label:   'So sieht deine Uhr aus',
+        badge_free:         '<span class="badge bg-gray-100 text-gray-500">Grau</span> freie Stunde',
+        badge_booked:       '<span class="badge bg-blue-100 text-blue-700">Blau</span> gebuchter Termin',
+        badge_called:       '<span class="badge bg-yellow-100 text-yellow-700">Gelb</span> aufgerufene Stunde',
+        s_step3_title:      'Versuche, alle 12 Stunden auszufüllen, bevor die Zeit abläuft.',
+        s_step3_desc:       'Es ist nicht obligatorisch, die Uhr zu vervollständigen, aber je mehr Termine du hast, desto mehr verschiedene Mitschüler wirst du während der Sitzung kennenlernen. Falls du einen Fehler machst, kannst du einen Termin stornieren, indem du auf diese Stunde auf der Uhr tippst.',
+        s_step4_title:      'Wenn der Lehrer eine Stunde aufruft, suche deinen Partner und arbeite mit ihm.',
+        s_step4_desc:       'Dein Bildschirm zeigt groß die aufgerufene Stunde, den Namen des Mitschülers, mit dem du einen Termin hast, und die vom Lehrer vorgeschlagene Frage oder Aufgabe. Finde ihn im Klassenzimmer und arbeitet zusammen.',
+        faq_title:          'Häufig gestellte Fragen',
+        faq_q1:             'Muss etwas installiert werden?',
+        faq_a1:             'Nein. Die App funktioniert direkt im Browser jedes Geräts (Handy, Tablet oder Computer). Keine Registrierung oder Konto erforderlich.',
+        faq_q2:             'Werden Daten gespeichert?',
+        faq_a2:             'Nein. Alle Informationen existieren nur während der Sitzung und auf den verbundenen Geräten. Wenn der Lehrer sein Fenster schließt, verschwindet die Sitzung.',
+        faq_q3:             'Ein Schüler hat sich versehentlich getrennt. Verliert er seine Termine?',
+        faq_a3:             'Nein. Wenn er sich mit demselben Namen und Code wieder anmeldet, erkennt das System ihn und stellt alle seine Termine wieder her.',
+        faq_q4:             'Zwei Schüler haben gleichzeitig versucht, dieselbe Stunde zu buchen. Was passiert?',
+        faq_a4:             'Die App prüft die Verfügbarkeit beider zum Zeitpunkt der Buchungsbestätigung. Wenn die Stunde für einen der beiden nicht mehr frei ist, wird die Anfrage abgelehnt und der Schüler wird gebeten, eine andere zu wählen.',
+        faq_q5:             'Funktioniert es ohne Internet?',
+        faq_a5:             'Es benötigt eine Internetverbindung, um die Kommunikation zwischen Geräten herzustellen. Einmal verbunden, erfolgt die Kommunikation direkt zwischen ihnen (WebRTC-Technologie), sodass es in Schulnetzwerken gut funktioniert.',
+        footer_by:          'Erstellt von',
+    }
+};
+
+let currentLang = 'es';
+
+function t(key) {
+    return (TRANSLATIONS[currentLang] || TRANSLATIONS.es)[key] || TRANSLATIONS.es[key] || key;
+}
+
+function applyTranslations() {
+    document.title = t('page_title');
+    document.documentElement.lang = currentLang;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = t(el.getAttribute('data-i18n'));
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        el.innerHTML = t(el.getAttribute('data-i18n-html'));
+    });
+}
+
+function setLanguage(lang) {
+    if (!TRANSLATIONS[lang]) return;
+    currentLang = lang;
+    localStorage.setItem('reloj_citas_lang', lang);
+    document.getElementById('lang-selector').value = lang;
+    applyTranslations();
+}
+
+function detectLanguage() {
+    const saved   = localStorage.getItem('reloj_citas_lang');
+    const browser = (navigator.language || 'es').split('-')[0];
+    const lang    = (saved && TRANSLATIONS[saved]) ? saved
+                  : (TRANSLATIONS[browser])        ? browser
+                  : 'es';
+    currentLang = lang;
+    document.getElementById('lang-selector').value = lang;
+}
+
+window.onload = () => {
+    detectLanguage();
+    applyTranslations();
+};
+</script>
 </body>
 </html>
