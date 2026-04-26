@@ -92,10 +92,18 @@
                 class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-xl transition text-base"
                 data-i18n="role_student">Soy alumno/a</button>
         </div>
-        <a href="manual.html" class="inline-flex items-center gap-1.5 mt-6 text-sm text-gray-400 hover:text-blue-600 transition">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <span data-i18n="how_it_works">¿Cómo funciona?</span>
-        </a>
+        <div class="mt-6 flex flex-col items-center gap-2">
+            <a href="manual.html" class="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-blue-600 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                <span data-i18n="how_it_works">¿Cómo funciona?</span>
+            </a>
+            <a href="https://metact.github.io/?t=metac_084&amp;lang=es" target="_blank" rel="noopener noreferrer"
+               data-technique-link
+               class="inline-flex items-center gap-1.5 text-sm text-gray-400 hover:text-blue-600 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 010 5.656l-2.121 2.121a4 4 0 01-5.657-5.657l1.414-1.414"/><path stroke-linecap="round" stroke-linejoin="round" d="M10.172 13.828a4 4 0 010-5.656l2.121-2.121a4 4 0 115.657 5.657l-1.414 1.414"/></svg>
+                <span data-i18n="learn_technique">Conocer la técnica</span>
+            </a>
+        </div>
     </div>
     <p class="text-center mt-6 text-sm text-gray-400">
         <a href="https://bilateria.org" class="underline hover:text-gray-600" target="_blank">Juan José de Haro</a> &mdash;
@@ -376,6 +384,7 @@ const TRANSLATIONS = {
         role_teacher:           'Soy profesor/a',
         role_student:           'Soy alumno/a',
         how_it_works:           '¿Cómo funciona?',
+        learn_technique:        'Conocer la técnica',
         back_btn:               'Atrás',
         setup_title:            'Configurar sesión',
         setup_timer_label:      'Tiempo de preparación (minutos)',
@@ -456,6 +465,7 @@ const TRANSLATIONS = {
         role_teacher:           'Soc professor/a',
         role_student:           'Soc alumne/a',
         how_it_works:           'Com funciona?',
+        learn_technique:        'Conèixer la tècnica',
         back_btn:               'Enrere',
         setup_title:            'Configurar sessió',
         setup_timer_label:      'Temps de preparació (minuts)',
@@ -536,6 +546,7 @@ const TRANSLATIONS = {
         role_teacher:           'Son profesor/a',
         role_student:           'Son alumno/a',
         how_it_works:           'Como funciona?',
+        learn_technique:        'Coñecer a técnica',
         back_btn:               'Atrás',
         setup_title:            'Configurar sesión',
         setup_timer_label:      'Tempo de preparación (minutos)',
@@ -616,6 +627,7 @@ const TRANSLATIONS = {
         role_teacher:           'Irakaslea naiz',
         role_student:           'Ikaslea naiz',
         how_it_works:           'Nola funtzionatzen du?',
+        learn_technique:        'Teknika ezagutu',
         back_btn:               'Atzera',
         setup_title:            'Saioa konfiguratu',
         setup_timer_label:      'Prestaketa denbora (minutuak)',
@@ -696,6 +708,7 @@ const TRANSLATIONS = {
         role_teacher:           'I am a teacher',
         role_student:           'I am a student',
         how_it_works:           'How does it work?',
+        learn_technique:        'Learn the technique',
         back_btn:               'Back',
         setup_title:            'Configure session',
         setup_timer_label:      'Preparation time (minutes)',
@@ -776,6 +789,7 @@ const TRANSLATIONS = {
         role_teacher:           'Je suis enseignant(e)',
         role_student:           'Je suis élève',
         how_it_works:           'Comment ça marche?',
+        learn_technique:        'Découvrir la technique',
         back_btn:               'Retour',
         setup_title:            'Configurer la session',
         setup_timer_label:      'Temps de préparation (minutes)',
@@ -856,6 +870,7 @@ const TRANSLATIONS = {
         role_teacher:           'Ich bin Lehrer/in',
         role_student:           'Ich bin Schüler/in',
         how_it_works:           'Wie funktioniert es?',
+        learn_technique:        'Technik kennenlernen',
         back_btn:               'Zurück',
         setup_title:            'Sitzung konfigurieren',
         setup_timer_label:      'Vorbereitungszeit (Minuten)',
@@ -942,12 +957,19 @@ function t(key, ...args) {
     return str;
 }
 
+function techniqueUrl() {
+    return `https://metact.github.io/?t=metac_084&lang=${encodeURIComponent(currentLang)}`;
+}
+
 function applyTranslations() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
         el.textContent = t(el.getAttribute('data-i18n'));
     });
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
         el.placeholder = t(el.getAttribute('data-i18n-placeholder'));
+    });
+    document.querySelectorAll('[data-technique-link]').forEach(el => {
+        el.href = techniqueUrl();
     });
     document.documentElement.lang = currentLang;
 }
