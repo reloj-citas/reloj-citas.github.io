@@ -82,7 +82,7 @@
                 <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
             </svg>
         </div>
-        <h1 class="text-3xl font-extrabold text-gray-900 mb-1">Reloj de Citas</h1>
+        <h1 class="text-3xl font-extrabold text-gray-900 mb-1" data-i18n="app_title">Reloj de Citas</h1>
         <p class="text-gray-500 mb-8 text-sm" data-i18n="app_subtitle">Técnica cooperativa de emparejamiento</p>
         <div class="space-y-3">
             <button onclick="selectRole('presenter')"
@@ -380,6 +380,7 @@
 // ======================== TRANSLATIONS ========================
 const TRANSLATIONS = {
     es: {
+        app_title:              'Reloj de Citas',
         app_subtitle:           'Técnica cooperativa de emparejamiento',
         role_teacher:           'Soy profesor/a',
         role_student:           'Soy alumno/a',
@@ -461,6 +462,7 @@ const TRANSLATIONS = {
         error_already_booked:   'Ya tienes una cita con {0}. Cada compañero solo puede aparecer una vez en el reloj.',
     },
     ca: {
+        app_title:              'Rellotge de Cites',
         app_subtitle:           "Tècnica cooperativa d'aparellament",
         role_teacher:           'Soc professor/a',
         role_student:           'Soc alumne/a',
@@ -542,6 +544,7 @@ const TRANSLATIONS = {
         error_already_booked:   'Ja tens una cita amb {0}. Cada company només pot aparèixer una vegada al rellotge.',
     },
     gl: {
+        app_title:              'Reloxo de Citas',
         app_subtitle:           'Técnica cooperativa de emparellamento',
         role_teacher:           'Son profesor/a',
         role_student:           'Son alumno/a',
@@ -623,6 +626,7 @@ const TRANSLATIONS = {
         error_already_booked:   'Xa tes unha cita con {0}. Cada compañeiro só pode aparecer unha vez no reloxo.',
     },
     eu: {
+        app_title:              'Hitzordu Erlojua',
         app_subtitle:           'Bikotekatzeko teknika kooperatiboa',
         role_teacher:           'Irakaslea naiz',
         role_student:           'Ikaslea naiz',
@@ -704,6 +708,7 @@ const TRANSLATIONS = {
         error_already_booked:   'Dagoeneko hitzordua duzu {0}-rekin. Laguntzaile bakoitza behin bakarrik ager daiteke erlojuan.',
     },
     en: {
+        app_title:              'Appointment Clock',
         app_subtitle:           'Cooperative pairing technique',
         role_teacher:           'I am a teacher',
         role_student:           'I am a student',
@@ -785,6 +790,7 @@ const TRANSLATIONS = {
         error_already_booked:   'You already have an appointment with {0}. Each classmate can only appear once on the clock.',
     },
     fr: {
+        app_title:              'Horloge de Rendez-vous',
         app_subtitle:           "Technique coopérative d'appariement",
         role_teacher:           'Je suis enseignant(e)',
         role_student:           'Je suis élève',
@@ -866,6 +872,7 @@ const TRANSLATIONS = {
         error_already_booked:   'Vous avez déjà un rendez-vous avec {0}. Chaque camarade ne peut apparaître qu\'une fois sur l\'horloge.',
     },
     de: {
+        app_title:              'Terminuhr',
         app_subtitle:           'Kooperative Partnervermittlungstechnik',
         role_teacher:           'Ich bin Lehrer/in',
         role_student:           'Ich bin Schüler/in',
@@ -962,6 +969,7 @@ function techniqueUrl() {
 }
 
 function applyTranslations() {
+    document.title = t('app_title');
     document.querySelectorAll('[data-i18n]').forEach(el => {
         el.textContent = t(el.getAttribute('data-i18n'));
     });
