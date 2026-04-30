@@ -985,12 +985,15 @@ function setLanguage(lang) {
 }
 
 function detectLanguage() {
+    const urlLang = new URLSearchParams(window.location.search).get('lang');
     const saved   = localStorage.getItem('reloj_citas_lang');
     const browser = (navigator.language || 'es').split('-')[0];
-    const lang    = (saved && TRANSLATIONS[saved]) ? saved
+    const lang    = (urlLang && TRANSLATIONS[urlLang]) ? urlLang
+                  : (saved && TRANSLATIONS[saved]) ? saved
                   : (TRANSLATIONS[browser])        ? browser
                   : 'es';
     currentLang = lang;
+    localStorage.setItem('reloj_citas_lang', lang);
     document.getElementById('lang-selector').value = lang;
 }
 
